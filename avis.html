@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conseils & Avis Experts | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e67e22;
+            --secondary: #2c3e50;
+            --bg-light: #f9f9f9;
+            --border: #eeeeee;
+        }
+
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-light); margin: 0; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Header de section */
+        .section-intro { text-align: center; margin-bottom: 50px; }
+        .section-intro h1 { font-size: 2rem; color: var(--secondary); margin-bottom: 10px; }
+        .section-intro p { color: #777; font-size: 1rem; }
+
+        /* Grille de Conseils (Articles) */
+        .grid-conseils {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .card-conseil {
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: 0.3s;
+        }
+
+        .card-conseil:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        .card-body { padding: 20px; }
+        .category-tag { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
+        .card-body h3 { font-size: 1.1rem; margin: 10px 0; color: var(--secondary); line-height: 1.4; }
+        .card-body p { font-size: 0.85rem; color: #666; line-height: 1.6; }
+        .read-more { display: inline-block; margin-top: 15px; font-size: 0.85rem; font-weight: 600; color: var(--secondary); text-decoration: none; border-bottom: 2px solid var(--primary); }
+
+        /* Section Avis Clients */
+        .reviews-section { background: white; padding: 40px; border-radius: 4px; border: 1px solid var(--border); }
+        .reviews-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        
+        .review-item {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .user-avatar { width: 50px; height: 50px; border-radius: 4px; background: var(--secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        
+        .review-content h4 { margin: 0; font-size: 0.95rem; color: var(--secondary); }
+        .stars { color: #f1c40f; font-size: 0.8rem; margin: 5px 0; }
+        .review-text { font-size: 0.9rem; color: #555; font-style: italic; }
+        .review-date { font-size: 0.75rem; color: #bbb; margin-top: 5px; }
+
+        @media (max-width: 768px) {
+            .grid-conseils { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="section-intro">
+        <h1>Conseils d'Experts & Retours d'Expérience</h1>
+        <p>Optimisez vos achats et vos chantiers avec nos guides techniques.</p>
+    </header>
+
+    <div class="grid-conseils">
+        <article class="card-conseil">
+            <div class="card-image"><i class="fa-solid fa-hard-hat fa-3x"></i></div>
+            <div class="card-body">
+                <span class="category-tag">Gros Œuvre</span>
+                <h3>Comment choisir son ciment pour les fondations ?</h3>
+                <p>Découvrez les différences entre CPJ45 et CPJ35 pour assurer la durabilité de votre structure...</p>
+                <a href="#" class="read-more">Lire l'article</a>
+            </div>
+        </article>
+
+        <article class="card-conseil">
+            <div class="card-image"><i class="fa-solid fa-faucet fa-3x"></i></div>
+            <div class="card-body">
+                <span class="category-tag">Plomberie</span>
+                <h3>Multicouche vs Cuivre : le comparatif complet</h3>
+                <p>Analyse des coûts, de la facilité de pose et de la longévité pour vos installations d'eau...</p>
+                <a href="#" class="read-more">Lire l'article</a>
+            </div>
+        </article>
+
+        <article class="card-conseil">
+            <div class="card-image"><i class="fa-solid fa-solar-panel fa-3x"></i></div>
+            <div class="card-body">
+                <span class="category-tag">Énergie</span>
+                <h3>L'efficacité des panneaux solaires au Maroc</h3>
+                <p>Rentabilisez votre installation en fonction de votre région et des subventions actuelles...</p>
+                <a href="#" class="read-more">Lire l'article</a>
+            </div>
+        </article>
+    </div>
+
+    <section class="reviews-section">
+        <div class="reviews-header">
+            <h2>Derniers Avis Vérifiés</h2>
+            <button style="background: var(--secondary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Donner mon avis</button>
+        </div>
+
+        <div class="review-item">
+            <div class="user-avatar">YS</div>
+            <div class="review-content">
+                <h4>Youssef S. <span style="font-weight: 400; color: #999; font-size: 0.8rem;">(Architecte - Rabat)</span></h4>
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                <p class="review-text">"Excellent comparatif sur les aciers. Les prix indiqués par les fournisseurs sur BinaaCompare étaient très proches de la réalité du marché."</p>
+                <div class="review-date">Il y a 2 jours</div>
+            </div>
+        </div>
+
+        <div class="review-item">
+            <div class="user-avatar">MK</div>
+            <div class="review-content">
+                <h4>Meryem K. <span style="font-weight: 400; color: #999; font-size: 0.8rem;">(Promoteur - Casablanca)</span></h4>
+                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
+                <p class="review-text">"La section conseil sur l'étanchéité m'a permis d'éviter une erreur coûteuse sur mon dernier projet. Très instructif."</p>
+                <div class="review-date">Il y a 1 semaine</div>
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

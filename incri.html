@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un compte | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-auth">
+
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <div class="auth-sidebar">
+                <div class="auth-branding">
+                    <a href="index.html" class="logo">Binaa<span>Compare</span></a>
+                    <p>Rejoignez la plus grande communauté d'acheteurs de matériaux au Maroc.</p>
+                </div>
+                <div class="auth-features">
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Accès gratuit à vie</div>
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Devis illimités</div>
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Support prioritaire</div>
+                </div>
+            </div>
+
+            <div class="auth-form-area">
+                <div class="form-box">
+                    <h2>Créer un compte</h2>
+                    <p class="subtitle">Inscrivez-vous en quelques secondes</p>
+
+                    <form id="registerForm">
+                        <div class="form-row-minimal">
+    <div class="input-container-pro">
+        <label>Prénom</label>
+        <input type="text" placeholder="Ahmed" required>
+    </div>
+    <div class="input-container-pro">
+        <label>Nom</label>
+        <input type="text" placeholder="Bennani" required>
+    </div>
+</div>
+                        </div>
+
+                        <div class="form-group-auth">
+                            <label>Email Professionnel</label>
+                            <div class="input-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" placeholder="nom@entreprise.ma" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group-auth">
+                            <label>Ville</label>
+                            <div class="input-icon">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <select required style="width: 100%; padding: 12px 15px 12px 45px; border: 1px solid #ddd; border-radius: 8px; appearance: none; background: white;">
+                                    <option value="">Sélectionnez votre ville</option>
+                                    <option value="casablanca">Casablanca</option>
+                                    <option value="rabat">Rabat</option>
+                                    <option value="tanger">Tanger</option>
+                                    <option value="marrakech">Marrakech</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group-auth">
+                            <label>Mot de passe</label>
+                            <div class="input-icon">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" placeholder="Minimum 8 caractères" required>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <label style="font-size: 0.8rem;">
+                                <input type="checkbox" required> J'accepte les conditions d'utilisation
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-auth-submit">S'inscrire gratuitement</button>
+                    </form>
+
+                    <div class="auth-divider"><span>ou</span></div>
+
+                    <p class="auth-footer">
+                        Déjà inscrit ? <a href="conx.html">Se connecter</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

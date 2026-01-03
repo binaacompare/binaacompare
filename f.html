@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annuaire Partenaires | BinaaCompare</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #e67e22;
+            --secondary: #2c3e50;
+            --light: #f8f9fa;
+            --border: #e0e4e8;
+            --text-muted: #6c757d;
+            --success: #27ae60;
+        }
+
+        body { font-family: 'Poppins', sans-serif; background-color: var(--light); margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header & Navigation */
+        .navbar { background: white; padding: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.5rem; font-weight: 700; color: var(--secondary); text-decoration: none; }
+        .logo span { color: var(--primary); }
+
+        /* Section Titre et Filtres */
+        .section-header { padding: 60px 0 30px; }
+        .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        h1 { color: var(--secondary); margin: 0; font-size: 1.8rem; }
+        
+        .filter-pills { display: flex; gap: 10px; }
+        .pill { 
+            padding: 8px 18px; background: white; border: 1px solid var(--border); 
+            border-radius: 25px; cursor: pointer; font-size: 0.9rem; font-weight: 500; 
+            transition: 0.3s; 
+        }
+        .pill.active, .pill:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+
+        /* Grille 3x3 */
+        .suppliers-pro-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+            gap: 25px;
+            padding-bottom: 80px;
+        }
+
+        .supplier-pro-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .supplier-pro-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        .mini-logo {
+            width: 50px; height: 50px; background: var(--light);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; border-radius: 8px; color: var(--secondary);
+            border: 1px solid var(--border);
+        }
+
+        .city-label {
+            font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
+            background: #f1f3f5; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;
+        }
+
+        .card-main h3 { font-size: 1.2rem; color: var(--secondary); margin: 0 0 5px; }
+        .expert-tag { color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
+        
+        .spec-list { margin-bottom: 25px; }
+        .spec-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #444; margin-bottom: 8px; }
+        .spec-item i { color: var(--success); font-size: 0.9rem; }
+
+        .btn-outline-pro {
+            display: block; text-align: center; text-decoration: none;
+            color: var(--secondary); border: 1.5px solid var(--border);
+            padding: 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+            transition: 0.3s; margin-top: auto;
+        }
+
+        .btn-outline-pro:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+
+        /* Responsive */
+        @media (max-width: 992px) { .suppliers-pro-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 650px) { .suppliers-pro-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Binaa<span>Compare</span></a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="section-header">
+            <div class="header-flex">
+                <h1>Annuaire des Partenaires</h1>
+                <div class="filter-pills">
+                    <span class="pill active">Tous</span>
+                    <span class="pill">Casablanca</span>
+                    <span class="pill">Tanger</span>
+                    <span class="pill">Rabat</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="suppliers-pro-grid">
+            
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">LH</div>
+                    <span class="city-label">Casablanca</span>
+                </div>
+                <div class="card-main">
+                    <h3>LafargeHolcim</h3>
+                    <p class="expert-tag">Gros Œuvre & Ciments</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Conforme Norme NM</div>
+                        <div class="spec-item"><i class="fa-solid fa-truck"></i> Livraison sur chantier</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo" style="background: #2c3e50; color: white;">MS</div>
+                    <span class="city-label">Tanger</span>
+                </div>
+                <div class="card-main">
+                    <h3>Maghreb Steel</h3>
+                    <p class="expert-tag">Aciers de Structure</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Certifié ISO 9001</div>
+                        <div class="spec-item"><i class="fa-solid fa-box"></i> Stock permanent</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">SK</div>
+                    <span class="city-label">Rabat</span>
+                </div>
+                <div class="card-main">
+                    <h3>Sika Maroc</h3>
+                    <p class="expert-tag">Étanchéité & Adjuvants</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Labo technique R&D</div>
+                        <div class="spec-item"><i class="fa-solid fa-award"></i> Leader Etanchéité</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">CM</div>
+                    <span class="city-label">Casablanca</span>
+                </div>
+                <div class="card-main">
+                    <h3>Ciments du Maroc</h3>
+                    <p class="expert-tag">Matériaux de base</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Production Locale</div>
+                        <div class="spec-item"><i class="fa-solid fa-leaf"></i> Béton Éco-responsable</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">AM</div>
+                    <span class="city-label">Marrakech</span>
+                </div>
+                <div class="card-main">
+                    <h3>Al Maghribia Grès</h3>
+                    <p class="expert-tag">Revêtements & Sols</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Choix Premium</div>
+                        <div class="spec-item"><i class="fa-solid fa-palette"></i> Large gamme coloris</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">BM</div>
+                    <span class="city-label">Fès</span>
+                </div>
+                <div class="card-main">
+                    <h3>Briqueterie Moderne</h3>
+                    <p class="expert-tag">Terre Cuite</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Briques 8/12 trous</div>
+                        <div class="spec-item"><i class="fa-solid fa-fire"></i> Cuisson haute densité</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">IF</div>
+                    <span class="city-label">Agadir</span>
+                </div>
+                <div class="card-main">
+                    <h3>Italcementi</h3>
+                    <p class="expert-tag">Liants hydrauliques</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Innovation BTP</div>
+                        <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> Haute résistance</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">PT</div>
+                    <span class="city-label">Casablanca</span>
+                </div>
+                <div class="card-main">
+                    <h3>Placo Tanger</h3>
+                    <p class="expert-tag">Cloisonnement & Plâtre</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Plaques BA13</div>
+                        <div class="spec-item"><i class="fa-solid fa-ear-deaf"></i> Isolation phonique</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+
+            <div class="supplier-pro-card">
+                <div class="card-top">
+                    <div class="mini-logo">SM</div>
+                    <span class="city-label">Kenitra</span>
+                </div>
+                <div class="card-main">
+                    <h3>Super Matériaux</h3>
+                    <p class="expert-tag">Distribution multi-produits</p>
+                    <div class="spec-list">
+                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Grand Entrepôt</div>
+                        <div class="spec-item"><i class="fa-solid fa-tags"></i> Tarifs compétitifs</div>
+                    </div>
+                </div>
+                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+            </div>
+            
+
+        </main>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>
