@@ -16,78 +16,104 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #2c3e50; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #2c3e50; overflow-x: hidden; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
         /* Navbar */
-        .navbar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+        .navbar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); }
+        .logo { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--dark); }
         .logo span { color: var(--orange); }
 
         /* Header */
-        .catalog-header { background: var(--dark); color: #fff; padding: 40px 0; border-bottom: 5px solid var(--orange); }
-        .catalog-header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .catalog-header { background: var(--dark); color: #fff; padding: 30px 0; border-bottom: 5px solid var(--orange); text-align: center; }
+        .catalog-header h1 { font-size: 1.5rem; margin-bottom: 8px; line-height: 1.2; }
+        .catalog-header p { font-size: 0.9rem; opacity: 0.8; padding: 0 10px; }
+
+        /* Mobile Filter Toggle */
+        .mobile-filter-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            position: sticky;
+            top: 60px;
+            z-index: 900;
+        }
 
         /* Layout */
-        .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 40px auto; }
+        .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 30px auto; }
 
         /* Sidebar Filtres */
-        .filter-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px; height: fit-content; }
+        .filter-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px; height: fit-content; transition: 0.3s; }
         .filter-group { margin-bottom: 25px; }
         .filter-group h4 { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px; color: var(--orange); border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .filter-group label { display: block; font-size: 0.85rem; margin-bottom: 10px; cursor: pointer; }
+        .filter-group label { display: block; font-size: 0.85rem; margin-bottom: 12px; cursor: pointer; }
         .filter-group input { margin-right: 10px; accent-color: var(--orange); }
-        .select-pro { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .select-pro { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
 
         /* Grille Matériaux */
         .material-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         
         .material-card { 
-            background: #fff; border: 1px solid var(--border); border-radius: 4px; 
+            background: #fff; border: 1px solid var(--border); border-radius: 8px; 
             overflow: hidden; position: relative; transition: 0.3s; display: flex; flex-direction: column; 
         }
-        .material-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+        .material-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         
-        /* --- STYLE DES PHOTOS --- */
-        .nm-badge { position: absolute; top: 10px; left: 10px; background: var(--dark); color: #fff; font-size: 9px; padding: 4px 8px; font-weight: 700; z-index: 5; }
+        .nm-badge { position: absolute; top: 10px; left: 10px; background: var(--dark); color: #fff; font-size: 9px; padding: 4px 8px; font-weight: 700; z-index: 5; border-radius: 3px; }
         
-        .mat-photo-container { 
-            width: 100%; 
-            height: 180px; 
-            background: #eee; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-        }
-        
-        .mat-photo-container img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; /* Important: pour que l'image remplisse le carré sans se déformer */
-            transition: 0.5s;
-        }
+        .mat-photo-container { width: 100%; height: 180px; background: #eee; overflow: hidden; }
+        .mat-photo-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 
-        .material-card:hover .mat-photo-container img { transform: scale(1.1); }
+        .mat-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .mat-cat { font-size: 10px; color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mat-content h3 { font-size: 1rem; margin: 5px 0; color: var(--dark); }
+        .mat-content p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 15px; line-height: 1.4; }
 
-        /* Infos */
-        .mat-content { padding: 20px; flex-grow: 1; }
-        .mat-cat { font-size: 10px; color: var(--orange); font-weight: 700; text-transform: uppercase; }
-        .mat-content h3 { font-size: 1.05rem; margin: 5px 0; color: var(--dark); }
-        .mat-content p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 15px; height: 35px; }
-
-        .price-tag { background: var(--bg); padding: 10px; border-left: 3px solid var(--orange); margin-bottom: 15px; }
+        .price-tag { background: #f8f9fa; padding: 10px; border-left: 3px solid var(--orange); margin-bottom: 15px; margin-top: auto; }
         .price-tag span { font-size: 10px; color: #999; display: block; }
-        .price-tag strong { font-size: 1.1rem; color: var(--dark); }
+        .price-tag strong { font-size: 1rem; color: var(--dark); }
 
         .btn-compare { 
             width: 100%; padding: 12px; background: #fff; border: 2px solid var(--dark); 
-            color: var(--dark); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+            color: var(--dark); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s; border-radius: 4px;
         }
         .btn-compare:hover { background: var(--dark); color: #fff; }
 
         .no-result { display: none; grid-column: 1 / -1; text-align: center; padding: 40px; color: #999; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 992px) {
+            .catalog-layout { grid-template-columns: 1fr; margin-top: 0; }
+            .mobile-filter-btn { display: block; }
+            
+            .filter-sidebar {
+                position: fixed; top: 0; left: -100%; width: 80%; height: 100%; 
+                z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+                padding-top: 60px;
+            }
+            .filter-sidebar.active { left: 0; }
+            
+            .sidebar-overlay {
+                display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1500;
+            }
+            .sidebar-overlay.active { display: block; }
+
+            .material-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+        }
+
+        @media (max-width: 580px) {
+            .material-grid { grid-template-columns: 1fr; }
+            .catalog-header h1 { font-size: 1.2rem; }
+            .mat-photo-container { height: 150px; }
+        }
     </style>
 </head>
 <body>
@@ -95,19 +121,30 @@
     <nav class="navbar">
         <div class="container nav-flex">
             <a href="index.html" class="logo">Binaa<span>Compare</span></a>
-            <div class="nav-links" style="font-size: 0.8rem; font-weight: 700;">GROS ŒUVRE </div>
+            <div style="font-size: 0.7rem; font-weight: 700; color: #7f8c8d; text-transform: uppercase;">Gros Œuvre</div>
         </div>
     </nav>
 
     <header class="catalog-header">
         <div class="container">
-            <h1>Ciments, bétons et liants certifiés NM</h1>
+            <h1>Ciments & Bétons NM</h1>
             <p>Sélection de matériaux conformes aux normes marocaines.</p>
         </div>
     </header>
 
+    <button class="mobile-filter-btn" id="openFilter">
+        <i class="fa-solid fa-filter"></i> Filtrer les produits
+    </button>
+
+    <div class="sidebar-overlay" id="overlay"></div>
+
     <div class="container catalog-layout">
-        <aside class="filter-sidebar">
+        <aside class="filter-sidebar" id="sidebar">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 style="font-size: 1rem;">Filtres</h3>
+                <i class="fa-solid fa-xmark" id="closeFilter" style="cursor: pointer; font-size: 1.5rem; display: none;"></i>
+            </div>
+            
             <div class="filter-group">
                 <h4>Type</h4>
                 <label><input type="checkbox" class="filter-check" value="ciment" checked> Ciments</label>
@@ -124,6 +161,8 @@
                     <option value="rabat">Rabat</option>
                 </select>
             </div>
+            
+            <button class="btn-compare" id="applyFilters" style="display: none; background: var(--orange); color: white; border: none;">Appliquer</button>
         </aside>
 
         <main>
@@ -132,12 +171,12 @@
                 <article class="material-card" data-category="ciment" data-cities="casablanca,rabat">
                     <div class="nm-badge">NM 10.1.004</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=500" alt="Ciment CPJ 45">
+                        <img src="https://www.rubi.com/fr/blog/wp-content/uploads/2023/08/shutterstock_2062504613-min-scaled-1-1-1-1-1-1-1-1-1.jpg" alt="Ciment CPJ 45">
                     </div>
                     <div class="mat-content">
                         <span class="mat-cat">Cimenterie</span>
                         <h3>Ciment CPJ 45</h3>
-                        <p>Béton armé structurel (Dalles, poteaux).</p>
+                        <p>Idéal pour le béton armé structurel (Dalles, poteaux).</p>
                         <div class="price-tag">
                             <span>Prix (Sac 50kg)</span>
                             <strong>74.50 — 76.00 DH</strong>
@@ -149,12 +188,12 @@
                 <article class="material-card" data-category="beton" data-cities="casablanca,tanger">
                     <div class="nm-badge">NM 10.1.008</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1533038590840-1cde6e668a91?auto=format&fit=crop&q=80&w=500" alt="Béton BPE">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6aOoZIHU2MBGgXB92HFbtcOtiFnNREKRtIQ&s" alt="Béton BPE">
                     </div>
                     <div class="mat-content">
                         <span class="mat-cat">Bétons BPE</span>
                         <h3>Béton B25 NM</h3>
-                        <p>Livraison par camion toupie, dosage certifié.</p>
+                        <p>Livraison par camion toupie, dosage certifié par labo.</p>
                         <div class="price-tag">
                             <span>Prix (m³)</span>
                             <strong>860.00 — 910.00 DH</strong>
@@ -166,12 +205,12 @@
                 <article class="material-card" data-category="liant" data-cities="tanger,rabat">
                     <div class="nm-badge">NM 10.1.162</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=500" alt="Chaux">
+                        <img src="https://www.hermex-stockage.fr/wp-content/uploads/2022/02/chaux.jpg" alt="Chaux">
                     </div>
                     <div class="mat-content">
                         <span class="mat-cat">Liants techniques</span>
                         <h3>Chaux Hydraulique</h3>
-                        <p>Rénovation et enduits traditionnels.</p>
+                        <p>Rénovation de façades et enduits traditionnels.</p>
                         <div class="price-tag">
                             <span>Prix (Sac)</span>
                             <strong>58.00 — 63.00 DH</strong>
@@ -187,11 +226,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const openBtn = document.getElementById('openFilter');
+            const closeBtn = document.getElementById('closeFilter');
+            const overlay = document.getElementById('overlay');
+            const applyBtn = document.getElementById('applyFilters');
+
             const checkboxes = document.querySelectorAll('.filter-check');
             const citySelect = document.getElementById('citySelect');
             const cards = document.querySelectorAll('.material-card');
             const noResult = document.getElementById('noResult');
 
+            // --- GESTION DU MENU MOBILE ---
+            function toggleMenu() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
+            }
+
+            openBtn.addEventListener('click', toggleMenu);
+            closeBtn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', toggleMenu);
+            if(applyBtn) applyBtn.addEventListener('click', toggleMenu);
+
+            if(window.innerWidth < 992) {
+                closeBtn.style.display = 'block';
+                applyBtn.style.display = 'block';
+            }
+
+            // --- LOGIQUE DE FILTRE ---
             function filterMaterials() {
                 const activeCategories = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
                 const selectedCity = citySelect.value;

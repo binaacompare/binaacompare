@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Second Œuvre | BinaaCompare</title>
+    <title>Gros Œuvre NM | BinaaCompare</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -16,62 +16,104 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #2c3e50; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #2c3e50; overflow-x: hidden; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
         /* Navbar */
-        .navbar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+        .navbar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); }
+        .logo { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--dark); }
         .logo span { color: var(--orange); }
 
         /* Header */
-        .catalog-header { background: var(--dark); color: #fff; padding: 40px 0; border-bottom: 5px solid var(--orange); }
-        .catalog-header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .catalog-header { background: var(--dark); color: #fff; padding: 30px 0; border-bottom: 5px solid var(--orange); text-align: center; }
+        .catalog-header h1 { font-size: 1.5rem; margin-bottom: 8px; line-height: 1.2; }
+        .catalog-header p { font-size: 0.9rem; opacity: 0.8; padding: 0 10px; }
+
+        /* Mobile Filter Toggle */
+        .mobile-filter-btn {
+            display: none;
+            width: 100%;
+            padding: 12px;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            position: sticky;
+            top: 60px;
+            z-index: 900;
+        }
 
         /* Layout */
-        .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 40px auto; }
+        .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 30px auto; }
 
         /* Sidebar Filtres */
-        .filter-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px; height: fit-content; }
+        .filter-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px; height: fit-content; transition: 0.3s; }
         .filter-group { margin-bottom: 25px; }
         .filter-group h4 { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px; color: var(--orange); border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .filter-group label { display: block; font-size: 0.85rem; margin-bottom: 10px; cursor: pointer; }
+        .filter-group label { display: block; font-size: 0.85rem; margin-bottom: 12px; cursor: pointer; }
         .filter-group input { margin-right: 10px; accent-color: var(--orange); }
-        .select-pro { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .select-pro { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; background: #fff; }
 
         /* Grille Matériaux */
         .material-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         
         .material-card { 
-            background: #fff; border: 1px solid var(--border); border-radius: 4px; 
+            background: #fff; border: 1px solid var(--border); border-radius: 8px; 
             overflow: hidden; position: relative; transition: 0.3s; display: flex; flex-direction: column; 
         }
-        .material-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+        .material-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         
-        /* Photo Container */
-        .nm-badge { position: absolute; top: 10px; left: 10px; background: var(--dark); color: #fff; font-size: 9px; padding: 4px 8px; font-weight: 700; z-index: 5; }
-        .mat-photo-container { width: 100%; height: 180px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .nm-badge { position: absolute; top: 10px; left: 10px; background: var(--dark); color: #fff; font-size: 9px; padding: 4px 8px; font-weight: 700; z-index: 5; border-radius: 3px; }
+        
+        .mat-photo-container { width: 100%; height: 180px; background: #eee; overflow: hidden; }
         .mat-photo-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .material-card:hover .mat-photo-container img { transform: scale(1.1); }
 
-        /* Infos */
-        .mat-content { padding: 20px; flex-grow: 1; }
-        .mat-cat { font-size: 10px; color: var(--orange); font-weight: 700; text-transform: uppercase; }
-        .mat-content h3 { font-size: 1.05rem; margin: 5px 0; color: var(--dark); }
-        .mat-content p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 15px; height: 35px; }
+        .mat-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .mat-cat { font-size: 10px; color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mat-content h3 { font-size: 1rem; margin: 5px 0; color: var(--dark); }
+        .mat-content p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 15px; line-height: 1.4; }
 
-        .price-tag { background: var(--bg); padding: 10px; border-left: 3px solid var(--orange); margin-bottom: 15px; }
+        .price-tag { background: #f8f9fa; padding: 10px; border-left: 3px solid var(--orange); margin-bottom: 15px; margin-top: auto; }
         .price-tag span { font-size: 10px; color: #999; display: block; }
-        .price-tag strong { font-size: 1.1rem; color: var(--dark); }
+        .price-tag strong { font-size: 1rem; color: var(--dark); }
 
         .btn-compare { 
             width: 100%; padding: 12px; background: #fff; border: 2px solid var(--dark); 
-            color: var(--dark); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+            color: var(--dark); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s; border-radius: 4px;
         }
         .btn-compare:hover { background: var(--dark); color: #fff; }
 
         .no-result { display: none; grid-column: 1 / -1; text-align: center; padding: 40px; color: #999; }
+
+        /* --- RESPONSIVE MOBILE --- */
+        @media (max-width: 992px) {
+            .catalog-layout { grid-template-columns: 1fr; margin-top: 0; }
+            .mobile-filter-btn { display: block; }
+            
+            .filter-sidebar {
+                position: fixed; top: 0; left: -100%; width: 80%; height: 100%; 
+                z-index: 2000; box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+                padding-top: 60px;
+            }
+            .filter-sidebar.active { left: 0; }
+            
+            .sidebar-overlay {
+                display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(0,0,0,0.5); z-index: 1500;
+            }
+            .sidebar-overlay.active { display: block; }
+
+            .material-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+        }
+
+        @media (max-width: 580px) {
+            .material-grid { grid-template-columns: 1fr; }
+            .catalog-header h1 { font-size: 1.2rem; }
+            .mat-photo-container { height: 150px; }
+        }
     </style>
 </head>
 <body>
@@ -118,7 +160,7 @@
                 <article class="material-card" data-category="plaque" data-cities="casablanca,rabat,fes">
                     <div class="nm-badge">BA13 Hydro</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=500" alt="Plaque de Plâtre BA13 Hydro">
+                        <img src="https://ba13.ma/wp-content/uploads/2023/08/002432503_product_list.jpg" alt="Plaque de Plâtre BA13 Hydro">
                     </div>
                     <div class="mat-content">
                         <span class="mat-cat">Cloisonnement</span>
@@ -135,7 +177,7 @@
                 <article class="material-card" data-category="isolation" data-cities="casablanca,marrakech">
                     <div class="nm-badge">Certifié CE</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1579547621113-e4c194b1a4f0?auto=format&fit=crop&q=80&w=500" alt="Laine de Roche">
+                        <img src="https://uploads.gedimat.fr/PHOTO1/0000126/666808.jpg" alt="Laine de Roche">
                     </div>
                     <div class="mat-content">
                         <span class="mat-cat">Isolation Thermique</span>
