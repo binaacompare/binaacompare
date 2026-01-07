@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Produit | BinaaPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --pro-blue: #1a2b3c;
+            --pro-orange: #e67e22;
+            --bg: #f4f7fa;
+            --white: #ffffff;
+            --border: #dcdde1;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .form-container {
+            background: var(--white);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .form-header {
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            font-size: 1.6rem;
+            color: var(--pro-blue);
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .full-width { grid-column: span 2; }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2f3640;
+        }
+
+        input, select, textarea {
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--pro-orange);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border);
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fafafa;
+        }
+
+        .upload-area:hover {
+            border-color: var(--pro-orange);
+            background: #fff8f2;
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: var(--pro-orange);
+            margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .form-actions {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+
+        .btn-cancel {
+            background: #eee;
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-submit {
+            background: var(--pro-orange);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-header">
+            <h1><i class="fa-solid fa-plus-circle"></i> Ajouter un nouveau matériau</h1>
+            <p style="color: #7f8c8d; font-size: 0.9rem;">Remplissez les informations pour publier votre produit sur le comparateur.</p>
+        </div>
+
+        <form id="addProductForm">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Nom du Produit / Matériau</label>
+                    <input type="text" placeholder="Ex: Ciment CPJ 45 Lafarge" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Catégorie</label>
+                    <select required>
+                        <option value="">Sélectionner...</option>
+                        <option value="acier">Acier / Fer à béton</option>
+                        <option value="gros-oeuvre">Gros Œuvre (Ciment, Brique...)</option>
+                        <option value="isolation">Isolation & Étanchéité</option>
+                        <option value="finition">Finition (Peinture, Carrelage...)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Ville de disponibilité</label>
+                    <select required>
+                        <option value="casablanca">Casablanca</option>
+                        <option value="tanger">Tanger</option>
+                        <option value="marrakech">Marrakech</option>
+                        <option value="rabat">Rabat</option>
+                        <option value="agadir">Agadir</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Prix Unitaire (DH TTC)</label>
+                    <input type="number" step="0.01" placeholder="0.00" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Unité de mesure</label>
+                    <select required>
+                        <option value="sac">Le Sac</option>
+                        <option value="kg">Le Kilogramme (kg)</option>
+                        <option value="tonne">La Tonne</option>
+                        <option value="m2">Le Mètre carré (m²)</option>
+                        <option value="unite">L'unité</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantité en Stock</label>
+                    <input type="number" placeholder="Ex: 500">
+                </div>
+
+                <div class="form-group">
+                    <label>Alerte stock faible (Seuil)</label>
+                    <input type="number" placeholder="Ex: 20">
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Description détaillée / Fiche technique</label>
+                    <textarea rows="4" placeholder="Précisez les normes techniques (ex: NM 10.1.004)..."></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Photo du produit</label>
+                    <div class="upload-area" id="dropZone">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Cliquez ou glissez une photo ici</p>
+                        <span style="font-size: 0.7rem; color: #95a5a6;">Format JPG, PNG (Max. 2 Mo)</span>
+                        <input type="file" id="fileInput" hidden accept="image/*">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="vendeur_dashboard.html" class="btn btn-cancel">Annuler</a>
+                <button type="submit" class="btn btn-submit">Publier le produit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Gestion simple de l'upload
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        dropZone.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            const fileName = e.target.files[0].name;
+            dropZone.querySelector('p').innerText = "Fichier sélectionné : " + fileName;
+            dropZone.style.borderColor = "#27ae60";
+        };
+
+        // Simulation de soumission
+        document.getElementById('addProductForm').onsubmit = (e) => {
+            e.preventDefault();
+            alert("✅ Produit ajouté avec succès au catalogue BinaaCompare !");
+            window.location.href = "vendeur_dashboard.html"; // Retour au dashboard
+        };
+    </script>
+
+</body>
+</html>

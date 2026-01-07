@@ -1,3 +1,52 @@
+/* تنسيق زر القائمة للهاتف */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #2c3e50;
+}
+
+.mobile-only { display: none; }
+
+/* إعدادات الهاتف (أقل من 992 بكسل) */
+@media (max-width: 992px) {
+    .menu-toggle {
+        display: block; /* إظهار الزر */
+    }
+
+    .nav-links {
+        display: none; /* إخفاء القائمة العادية */
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+    }
+
+    /* عندما نضغط على الزر تظهر القائمة */
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    .nav-buttons {
+        display: none; /* إخفاء الأزرار الكبيرة في الهاتف */
+    }
+
+    .mobile-only {
+        display: block; /* إظهار أزرار الدخول داخل القائمة */
+    }
+}
+
+
 /* 1. VARIABLES & RESET */
 :root {
     --primary-color: #e67e22;    /* Orange Construction */
@@ -678,7 +727,7 @@ incri chri
         gap: 20px;
     }
 }
-.simple-input {
+.simple-input {  
     width: 100%;
     padding: 12px 15px;
     border: 1px solid #ddd;

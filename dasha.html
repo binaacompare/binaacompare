@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BinaaCompare | Dashboard Mobile Ready</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e67e22;
+            --secondary-color: #2c3e50;
+            --bg-body: #f0f2f5;
+            --white: #ffffff;
+            --text-main: #333;
+            --text-light: #7f8c8d;
+            --sidebar-width: 280px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; }
+
+        /* --- SIDEBAR RESPONSIVE --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--secondary-color);
+            color: white;
+            position: fixed;
+            height: 100%;
+            padding: 30px 20px;
+            z-index: 2000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-brand { font-size: 1.5rem; font-weight: 700; margin-bottom: 40px; text-align: center; color: white; text-decoration: none; display: block;}
+        .sidebar-brand span { color: var(--primary-color); }
+
+        .nav-list { list-style: none; }
+        .nav-item { margin-bottom: 10px; }
+        .nav-link {
+            display: flex; align-items: center; padding: 12px 15px; color: #bdc3c7;
+            text-decoration: none; border-radius: 10px; transition: 0.3s;
+        }
+        .nav-link i { margin-right: 15px; width: 20px; font-size: 1.1rem; }
+        .nav-link:hover, .nav-link.active { background: var(--primary-color); color: white; }
+
+        /* --- MAIN CONTENT --- */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        /* Mobile Header (Hidden on Desktop) */
+        .mobile-nav-bar {
+            display: none;
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1500;
+        }
+
+        /* Top Header Desktop */
+        .top-header {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--white); padding: 15px 30px; border-radius: 15px;
+            margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--white); padding: 20px; border-radius: 15px;
+            display: flex; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 15px; }
+
+        /* Content Card / Table */
+        .content-card { background: var(--white); padding: 20px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow-x: auto; }
+        
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; padding: 12px; color: var(--text-light); border-bottom: 2px solid #f8f9fa; }
+        td { padding: 12px; border-bottom: 1px solid #f8f9fa; font-size: 0.9rem; }
+
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .status-valid { background: #e6fcf5; color: #27ae60; }
+
+        /* --- MEDIA QUERIES (MOBILE) --- */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); width: 250px; }
+            .sidebar.active { transform: translateX(0); }
+            
+            .main-wrapper { margin-left: 0; width: 100%; padding: 15px; }
+            .mobile-nav-bar { display: flex; }
+            .top-header { flex-direction: column; gap: 15px; text-align: center; }
+            
+            /* Masquer la barre de recherche sur mobile pour gagner de la place */
+            .search-bar { width: 100% !important; display: none; }
+            
+            /* Responsive Table */
+            .content-card { padding: 10px; }
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { display: none; }
+            tr { margin-bottom: 15px; border: 1px solid #eee; border-radius: 10px; padding: 10px; }
+            td { text-align: right; position: relative; padding-left: 50%; border: none; }
+            td::before {
+                content: attr(data-label);
+                position: absolute; left: 10px; width: 45%; text-align: left;
+                font-weight: 600; color: var(--text-light);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-nav-bar">
+        <div id="btn-toggle-sidebar"><i class="fa-solid fa-bars fa-lg"></i></div>
+        <div class="sidebar-brand" style="margin-bottom: 0;">Binaa<span>Compare</span></div>
+        <div class="notif-bell"><i class="fa-solid fa-bell"></i></div>
+    </div>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="index.html" class="sidebar-brand">Binaa<span>Compare</span></a>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#" class="nav-link active"><i class="fa-solid fa-gauge"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="index.html" class="nav-link"><i class="fa-solid fa-search"></i> <span>Comparer</span></a></li>
+            <li class="nav-item"><a href="#" class="nav-link"><i class="fa-solid fa-file-invoice"></i> <span>Mes Devis</span></a></li>
+            <hr style="margin: 20px 0; border-top: 1px solid #3e4f5f; border-bottom: none;">
+            <li class="nav-item"><a href="#" id="logoutBtn" class="nav-link" style="color: #e74c3c;"><i class="fa-solid fa-power-off"></i> <span>Déconnexion</span></a></li>
+        </ul>
+    </nav>
+
+    <main class="main-wrapper">
+        
+        <div class="top-header">
+            <div style="font-weight: 600;">Tableau de Bord Acheteur</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="text-align: right;" class="desktop-only">
+                    <div style="font-weight: 600; font-size: 0.9rem;">Ahmed Bennani</div>
+                    <div style="font-size: 0.75rem; color: var(--text-light);">Casablanca, MA</div>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Ahmed+Bennani&background=e67e22&color=fff" style="width: 40px; border-radius: 50%;">
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(230, 126, 34, 0.1); color: var(--primary-color);"><i class="fa-solid fa-file-contract"></i></div>
+                <div class="stat-info"><h3>Devis</h3><p>08</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: rgba(39, 174, 96, 0.1); color: #27ae60;"><i class="fa-solid fa-wallet"></i></div>
+                <div class="stat-info"><h3>Économie</h3><p>12k DH</p></div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2 style="font-size: 1.1rem; margin-bottom: 20px;">Derniers Comparatifs</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Matériau</th>
+                        <th>Fournisseur</th>
+                        <th>Prix</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td data-label="Matériau"><strong>Acier HA 12</strong></td>
+                        <td data-label="Fournisseur">Sté Fer Nord</td>
+                        <td data-label="Prix">9.45 DH/kg</td>
+                        <td data-label="Statut"><span class="status-badge status-valid">Validé</span></td>
+                    </tr>
+                    <tr>
+                        <td data-label="Matériau"><strong>Ciment CPJ 45</strong></td>
+                        <td data-label="Fournisseur">Lafarge Casa</td>
+                        <td data-label="Prix">73 DH/sac</td>
+                        <td data-label="Statut"><span class="status-badge status-valid">Validé</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        // Logique pour ouvrir/fermer la sidebar sur mobile
+        const btnToggle = document.getElementById('btn-toggle-sidebar');
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.querySelector('.main-wrapper');
+
+        btnToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // Fermer la sidebar si on clique sur le contenu principal (Mobile)
+        mainWrapper.addEventListener('click', () => {
+            if(window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

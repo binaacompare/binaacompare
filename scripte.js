@@ -1,3 +1,8 @@
+
+
+
+
+
 /**
  * BinaaCompare - Logiciel de comparaison de matériaux
  * Structure Professionnelle
@@ -301,3 +306,81 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('binaaSearchCity');
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const mobileBtn = document.getElementById('mobileBtn');
+  const closeBtn = document.getElementById('closeBtn');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('overlay');
+
+  function toggleMenu() {
+    const isActive = drawer.classList.toggle('active');
+    overlay.classList.toggle('active', isActive);
+    document.body.style.overflow = isActive ? 'hidden' : 'auto';
+    drawer.style.transform = isActive ? 'translateX(0)' : 'translateX(100%)';
+  }
+
+  mobileBtn.addEventListener('click', toggleMenu);
+  closeBtn.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', toggleMenu);
+});
+function moteurDeRecherche() {
+    // On récupère ce que l'utilisateur a tapé
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const city = document.getElementById('cityInput').value.toLowerCase().trim();
+
+    // Dictionnaire de correspondance (Mots-clés -> Pages)
+    const catalogue = {
+        "acier": "acier.html",
+        "fer": "acier.html",
+        "rond": "acier.html",
+        "isolation": "isola.html",
+        "laine": "isola.html",
+        "etancheite": "isola.html",
+        "finition": "finition.html",
+        "peinture": "finition.html",
+        "carrelage": "finition.html",
+        "gros": "grose_over.html",
+        "ciment": "grose_over.html",
+        "brique": "grose_over.html",
+        "beton": "grose_over.html"
+    };
+
+    // On cherche si un mot-clé correspond
+    let pageTrouvee = "";
+    
+    for (let motCle in catalogue) {
+        if (query.includes(motCle)) {
+            pageTrouvee = catalogue[motCle];
+            break;
+        }
+    }
+
+    if (pageTrouvee !== "") {
+        // Redirection vers la page avec les paramètres de recherche
+        // Exemple: acier.html?search=acier&city=casablanca
+        window.location.href = `${pageTrouvee}?search=${encodeURIComponent(query)}&city=${encodeURIComponent(city)}`;
+    } else {
+        alert("Désolé, nous n'avons pas trouvé de résultats pour '" + query + "'. Essayez: Acier, Ciment ou Isolation.");
+    }
+}
+
+// Permettre de valider en appuyant sur la touche "Entrée"
+document.getElementById('searchInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        moteurDeRecherche();
+    }
+});
+
+// À mettre dans acier.html
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchQuery = urlParams.get('search');
+    
+    if (searchQuery) {
+        console.log("L'utilisateur cherche : " + searchQuery);
+        // Ici, vous pouvez ajouter un code pour cacher les produits 
+        // qui ne contiennent pas le mot 'searchQuery'
+    }
+};
+
+

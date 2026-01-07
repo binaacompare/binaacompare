@@ -19,90 +19,100 @@
         }
 
         body { font-family: 'Poppins', sans-serif; background-color: var(--light); margin: 0; padding: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
         
-        /* Header & Navigation */
-        .navbar { background: white; padding: 20px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--secondary); text-decoration: none; }
+        /* Navbar */
+        .navbar { background: white; padding: 15px 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .logo { font-size: 1.3rem; font-weight: 700; color: var(--secondary); text-decoration: none; }
         .logo span { color: var(--primary); }
 
-        /* Section Titre et Filtres */
-        .section-header { padding: 60px 0 30px; }
-        .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
-        h1 { color: var(--secondary); margin: 0; font-size: 1.8rem; }
+        /* Header & Filters */
+        .section-header { padding: 30px 0 20px; }
+        .header-flex { display: flex; flex-direction: column; gap: 20px; }
         
-        .filter-pills { display: flex; gap: 10px; }
+        h1 { color: var(--secondary); margin: 0; font-size: 1.5rem; text-align: left; }
+        
+        /* Filtres défilants sur Mobile */
+        .filter-pills { 
+            display: flex; 
+            gap: 10px; 
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch; /* Défilement fluide iOS */
+        }
+        .filter-pills::-webkit-scrollbar { display: none; } /* Cache la scrollbar */
+
         .pill { 
             padding: 8px 18px; background: white; border: 1px solid var(--border); 
-            border-radius: 25px; cursor: pointer; font-size: 0.9rem; font-weight: 500; 
-            transition: 0.3s; 
+            border-radius: 25px; cursor: pointer; font-size: 0.85rem; font-weight: 500; 
+            transition: 0.3s; flex-shrink: 0;
         }
         .pill.active, .pill:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
 
-        /* Grille 3x3 */
+        /* Grille Responsive */
         .suppliers-pro-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
-            gap: 25px;
-            padding-bottom: 80px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px;
+            padding-bottom: 50px;
         }
 
         .supplier-pro-card {
             background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 25px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.3s;
         }
 
-        .supplier-pro-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         
         .mini-logo {
-            width: 50px; height: 50px; background: var(--light);
+            width: 45px; height: 45px; background: var(--light);
             display: flex; align-items: center; justify-content: center;
             font-weight: 700; border-radius: 8px; color: var(--secondary);
             border: 1px solid var(--border);
         }
 
         .city-label {
-            font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
+            font-size: 0.65rem; font-weight: 700; color: var(--text-muted);
             background: #f1f3f5; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;
         }
 
-        .card-main h3 { font-size: 1.2rem; color: var(--secondary); margin: 0 0 5px; }
-        .expert-tag { color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 15px; }
+        .card-main h3 { font-size: 1.1rem; color: var(--secondary); margin: 0 0 5px; }
+        .expert-tag { color: var(--primary); font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; }
         
-        .spec-list { margin-bottom: 25px; }
-        .spec-item { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #444; margin-bottom: 8px; }
-        .spec-item i { color: var(--success); font-size: 0.9rem; }
+        .spec-list { margin-bottom: 20px; }
+        .spec-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #444; margin-bottom: 8px; }
+        .spec-item i { color: var(--success); }
 
         .btn-outline-pro {
             display: block; text-align: center; text-decoration: none;
             color: var(--secondary); border: 1.5px solid var(--border);
-            padding: 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
+            padding: 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
             transition: 0.3s; margin-top: auto;
         }
 
-        .btn-outline-pro:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+        .btn-outline-pro:hover { background: var(--secondary); color: white; }
 
-        /* Responsive */
-        @media (max-width: 992px) { .suppliers-pro-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 650px) { .suppliers-pro-grid { grid-template-columns: 1fr; } }
+        /* Ajustements pour PC */
+        @media (min-width: 768px) {
+            .header-flex { flex-direction: row; justify-content: space-between; align-items: center; }
+            h1 { font-size: 1.8rem; }
+            .suppliers-pro-grid { grid-template-columns: repeat(3, 1fr); }
+            .navbar { padding: 20px 0; }
+            .logo { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="container">
-            <a href="index.html" class="logo">Binaa<span>Compare</span></a>
+            <a href="#" class="logo">Binaa<span>Compare</span></a>
         </div>
     </nav>
 
@@ -115,12 +125,12 @@
                     <span class="pill">Casablanca</span>
                     <span class="pill">Tanger</span>
                     <span class="pill">Rabat</span>
+                    <span class="pill">Marrakech</span>
                 </div>
             </div>
         </header>
 
         <main class="suppliers-pro-grid">
-            
             <div class="supplier-pro-card">
                 <div class="card-top">
                     <div class="mini-logo">LH</div>
@@ -134,7 +144,7 @@
                         <div class="spec-item"><i class="fa-solid fa-truck"></i> Livraison sur chantier</div>
                     </div>
                 </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
             </div>
 
             <div class="supplier-pro-card">
@@ -150,7 +160,7 @@
                         <div class="spec-item"><i class="fa-solid fa-box"></i> Stock permanent</div>
                     </div>
                 </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
             </div>
 
             <div class="supplier-pro-card">
@@ -166,108 +176,10 @@
                         <div class="spec-item"><i class="fa-solid fa-award"></i> Leader Etanchéité</div>
                     </div>
                 </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
+                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
             </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">CM</div>
-                    <span class="city-label">Casablanca</span>
-                </div>
-                <div class="card-main">
-                    <h3>Ciments du Maroc</h3>
-                    <p class="expert-tag">Matériaux de base</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Production Locale</div>
-                        <div class="spec-item"><i class="fa-solid fa-leaf"></i> Béton Éco-responsable</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">AM</div>
-                    <span class="city-label">Marrakech</span>
-                </div>
-                <div class="card-main">
-                    <h3>Al Maghribia Grès</h3>
-                    <p class="expert-tag">Revêtements & Sols</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Choix Premium</div>
-                        <div class="spec-item"><i class="fa-solid fa-palette"></i> Large gamme coloris</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">BM</div>
-                    <span class="city-label">Fès</span>
-                </div>
-                <div class="card-main">
-                    <h3>Briqueterie Moderne</h3>
-                    <p class="expert-tag">Terre Cuite</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Briques 8/12 trous</div>
-                        <div class="spec-item"><i class="fa-solid fa-fire"></i> Cuisson haute densité</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">IF</div>
-                    <span class="city-label">Agadir</span>
-                </div>
-                <div class="card-main">
-                    <h3>Italcementi</h3>
-                    <p class="expert-tag">Liants hydrauliques</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Innovation BTP</div>
-                        <div class="spec-item"><i class="fa-solid fa-shield-halved"></i> Haute résistance</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">PT</div>
-                    <span class="city-label">Casablanca</span>
-                </div>
-                <div class="card-main">
-                    <h3>Placo Tanger</h3>
-                    <p class="expert-tag">Cloisonnement & Plâtre</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Plaques BA13</div>
-                        <div class="spec-item"><i class="fa-solid fa-ear-deaf"></i> Isolation phonique</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">SM</div>
-                    <span class="city-label">Kenitra</span>
-                </div>
-                <div class="card-main">
-                    <h3>Super Matériaux</h3>
-                    <p class="expert-tag">Distribution multi-produits</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Grand Entrepôt</div>
-                        <div class="spec-item"><i class="fa-solid fa-tags"></i> Tarifs compétitifs</div>
-                    </div>
-                </div>
-                <a href="profil-fournisseur.html" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-            
-
         </main>
     </div>
-<script src="script.js"></script>
+
 </body>
 </html>

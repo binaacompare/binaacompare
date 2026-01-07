@@ -15,39 +15,108 @@
 <body>
 
     <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">Binaa<span>Compare</span></a>
-            <ul class="nav-links">
-                <li><a href="#">Accueil</a></li>
-               <li> <a href="materiaux.html">Matériaux</a></li>
-                <li><a href="f.html">Fournisseurs</a></li>
-                <li><a href="avis.html">Avis & Conseils</a></li>
-            </ul>
-            <div class="nav-buttons">
-                <a href="cnx cendeur.html" class="btn btn-secondary">Espace vendeur</a>
-                <a href="conx.html" class="btn btn-primary">Espace Acheteur</a>
-            </div>
+    <div class="container">
+        <a href="index.html" class="logo">Binaa<span>Compare</span></a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
         </div>
-    </nav>
+
+        <ul class="nav-links" id="nav-list">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="materiaux.html">Matériaux</a></li>
+            <li><a href="f.html">Fournisseurs</a></li>
+            <li><a href="avis.html">Avis</a></li>
+            
+            <li class="mobile-only auth-guest"><a href="cnx cendeur.html"><i class="fa-solid fa-shop"></i> Espace Vendeur</a></li>
+            <li class="mobile-only auth-guest"><a href="conx.html"><i class="fa-solid fa-user-tag"></i> Espace Acheteur</a></li>
+            
+            <li class="mobile-only auth-logged" style="display: none;"><a href="dachv.html"><i class="fa-solid fa-circle-user"></i> Mon Profil</a></li>
+            <li class="mobile-only auth-logged" style="display: none;"><a href="#" class="logout-action" style="color: #e67e22;"><i class="fa-solid fa-power-off"></i> Déconnexion</a></li>
+        </ul>
+
+        
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // --- MENU MOBILE ---
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+        menuToggle.onclick = () => {
+            navList.classList.toggle('active');
+            menuToggle.querySelector('i').classList.toggle('fa-bars');
+            menuToggle.querySelector('i').classList.toggle('fa-xmark');
+        };
+
+        // --- GESTION DES ETATS (CONNECTÉ / DÉCONNECTÉ) ---
+        const guestElements = document.querySelectorAll('.auth-guest');
+        const loggedElements = document.querySelectorAll('.auth-logged');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Masquer boutons visiteurs, afficher profil
+                guestElements.forEach(el => el.style.setProperty('display', 'none', 'important'));
+                loggedElements.forEach(el => {
+                    el.style.display = (el.tagName === 'LI') ? 'block' : 'flex';
+                });
+            } else {
+                // Masquer profil, afficher boutons visiteurs
+                guestElements.forEach(el => {
+                    el.style.display = (el.tagName === 'LI') ? 'block' : 'flex';
+                });
+                loggedElements.forEach(el => el.style.setProperty('display', 'none', 'important'));
+            }
+        });
+
+        // --- LOGIQUE DE DÉCONNEXION ---
+        const logoutActions = document.querySelectorAll('.logout-action');
+        logoutActions.forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                signOut(auth).then(() => {
+                    window.location.href = "index.html";
+                });
+            };
+        });
+    </script>
+</nav>
 
     <header class="hero-section">
         <div class="container">
             <h1>Comparez les prix des matériaux de construction au Maroc</h1>
              
             
-            <div class="search-box">
-                <div class="input-group">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="Que cherchez-vous ? (ex: Ciment CPJ 45)">
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <input type="text" placeholder="Ville (ex: Casablanca, Tanger)">
-                </div>
-                <button class="btn-search">Comparer</button>
+           <div class="search-box">
+    <div class="input-group">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Que cherchez-vous ? (ex: Ciment, Acier...)">
+    </div>
+    <div class="input-group">
+        <i class="fa-solid fa-location-dot"></i>
+        <input type="text" id="cityInput" placeholder="Ville (ex: Casablanca)">
+    </div>
+    <button class="btn-search" onclick="moteurDeRecherche()">Comparer</button>
+</div>
+
                 
             </div>
-        </div>
+        </div> 
     </header>
 
     <section class="categories section-padding">
@@ -150,5 +219,8 @@
     </footer>
 
     <script src="script.js"></script>
+    
+
+
 </body>
 </html>

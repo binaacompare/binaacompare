@@ -3,67 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion Fournisseur | BinaaCompare Pro</title>
+    <title>Connexion Vendeur | BinaaCompare</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-vendeur">
+<body class="bg-auth">
 
-    <div class="auth-vendeur-container">
-        <div class="auth-vendeur-hero">
-            <div class="hero-overlay">
-                <a href="index.html" class="logo-light">Binaa<span>Pro</span></a>
-                <div class="hero-content">
-                    <h1>Espace Partenaire</h1>
-                    <p>Gérez vos catalogues, mettez à jour vos prix en temps réel et répondez aux appels d'offres du marché marocain.</p>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <div class="auth-sidebar" style="background: #1a2b3c;"> <div class="auth-branding">
+                    <a href="index.html" class="logo">Binaa<span>Pro</span></a>
+                    <p>Gérez vos catalogues et développez vos ventes au Maroc.</p>
                 </div>
-                <div class="hero-footer">
-                    <p>© 2026 BinaaCompare Pro - Plateforme certifiée</p>
+                <div class="auth-features">
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Gestion de catalogue</div>
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Mise à jour des prix</div>
+                    <div class="f-item"><i class="fa-solid fa-check"></i> Accès aux appels d'offres</div>
                 </div>
             </div>
-        </div>
 
-        <div class="auth-vendeur-form">
-            <div class="form-wrapper">
-                <div class="form-header">
-                    <h2>Connexion Marchand</h2>
-                    <p>Entrez vos identifiants pour accéder au Dashboard.</p>
-                </div>
+            <div class="auth-form-area">
+                <div class="form-box">
+                    <h2>Espace Vendeur</h2>
+                    <p class="subtitle">Heureux de vous revoir !</p>
 
-                <form id="vendeurLoginForm">
-                    <div class="form-group-pro">
-                        <label><i class="fa-solid fa-briefcase"></i> Identifiant Entreprise (ICE)</label>
-                        <input type="text" placeholder="Ex: 00123456..." required>
-                    </div>
+                    <div id="errorMessage" style="color: red; margin-bottom: 10px; display: none; font-size: 0.8rem;"></div>
 
-                    <div class="form-group-pro">
-                        <label><i class="fa-solid fa-user-tie"></i> Email Administrateur</label>
-                        <input type="email" placeholder="admin@entreprise.ma" required>
-                    </div>
+                    <form id="loginForm">
+                        <div class="form-group-auth">
+                            <label>Email Professionnel</label>
+                            <div class="input-icon">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="email" id="email" placeholder="contact@entreprise.ma" required>
+                            </div>
+                        </div>
 
-                    <div class="form-group-pro">
-                        <label><i class="fa-solid fa-key"></i> Mot de passe</label>
-                        <input type="password" placeholder="••••••••" required>
-                    </div>
+                        <div class="form-group-auth">
+                            <label>Mot de passe</label>
+                            <div class="input-icon">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="password" placeholder="••••••••" required>
+                            </div>
+                        </div>
 
-                    <div class="form-aux">
-                        <label><input type="checkbox"> Session sécurisée (24h)</label>
-                        <a href="#">Problème de connexion ?</a>
-                    </div>
+                        <div class="form-options">
+                            <label><input type="checkbox"> Se souvenir de moi</label>
+                            <a href="#" class="forgot-link">Mot de passe oublié ?</a>
+                        </div>
 
-                    <button type="submit" class="btn-vendeur-login">Accéder à la console</button>
-                </form>
+                        <button type="submit" class="btn-auth-submit" id="loginBtn" style="background: #1a2b3c;">Se connecter</button>
+                    </form>
 
-                <div class="vendeur-support">
-                    <p>Besoin d'aide ? <a href="#">Contactez le Support Pro</a></p>
+                    <div class="auth-divider"><span>ou</span></div>
+
                     <p class="auth-footer">
-                        Nouveau sur BinaaCompare ? <a href="incriv.html">Créer un compte</a>
+                        Nouveau sur BinaaCompare Pro ? <a href="incriv.html">Créer un compte marchand</a>
                     </p>
                 </div>
             </div>
         </div>
     </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d",
+            measurementId: "G-72S596N8DE"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+
+            loginBtn.innerText = "Chargement...";
+            loginBtn.disabled = true;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log("Connecté en tant que vendeur:", user.email);
+                    window.location.href = "dachv.html"; // Direction dashboard vendeur
+                })
+                .catch((error) => {
+                    loginBtn.innerText = "Se connecter";
+                    loginBtn.disabled = false;
+                    errorMessage.style.display = "block";
+                    
+                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+                        errorMessage.innerText = "Email ou mot de passe incorrect.";
+                    } else {
+                        errorMessage.innerText = "Erreur: " + error.message;
+                    }
+                });
+        });
+    </script>
 </body>
 </html>

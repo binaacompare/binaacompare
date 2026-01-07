@@ -29,12 +29,14 @@
                     <h2>Espace Acheteur</h2>
                     <p class="subtitle">Heureux de vous revoir !</p>
 
+                    <div id="errorMessage" style="color: red; margin-bottom: 10px; display: none; font-size: 0.8rem;"></div>
+
                     <form id="loginForm">
                         <div class="form-group-auth">
                             <label>Email Professionnel</label>
                             <div class="input-icon">
                                 <i class="fa-solid fa-envelope"></i>
-                                <input type="email" placeholder="nom@entreprise.ma" required>
+                                <input type="email" id="email" placeholder="nom@entreprise.ma" required>
                             </div>
                         </div>
 
@@ -42,7 +44,7 @@
                             <label>Mot de passe</label>
                             <div class="input-icon">
                                 <i class="fa-solid fa-lock"></i>
-                                <input type="password" placeholder="••••••••" required>
+                                <input type="password" id="password" placeholder="••••••••" required>
                             </div>
                         </div>
 
@@ -51,7 +53,7 @@
                             <a href="#" class="forgot-link">Mot de passe oublié ?</a>
                         </div>
 
-                        <button type="submit" class="btn-auth-submit">Se connecter</button>
+                        <button type="submit" class="btn-auth-submit" id="loginBtn">Se connecter</button>
                     </form>
 
                     <div class="auth-divider"><span>ou</span></div>
@@ -64,6 +66,62 @@
         </div>
     </div>
 
+    <script type="module">
+        // استيراد الأدوات اللازمة من Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+        // إعدادات Firebase الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d",
+            measurementId: "G-72S596N8DE"
+        };
+
+        // تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // التعامل مع نموذج تسجيل الدخول
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // منع الصفحة من التحديث
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+
+            // تغيير نص الزر أثناء التحميل
+            loginBtn.innerText = "Chargement...";
+            loginBtn.disabled = true;
+
+            // عملية تسجيل الدخول
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // تم تسجيل الدخول بنجاح
+                    const user = userCredential.user;
+                    console.log("Connecté:", user.email);
+                    window.location.href = "dasha.html"; // التوجه لصفحة الداشبورد
+                })
+                .catch((error) => {
+                    // في حالة حدوث خطأ
+                    loginBtn.innerText = "Se connecter";
+                    loginBtn.disabled = false;
+                    errorMessage.style.display = "block";
+                    
+                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                        errorMessage.innerText = "Email ou mot de passe incorrect.";
+                    } else {
+                        errorMessage.innerText = "Erreur: " + error.message;
+                    }
+                });
+        });
+    </script>
 </body>
 </html>

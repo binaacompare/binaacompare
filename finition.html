@@ -3,75 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fluides & Réseaux | BinaaCompare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Second Œuvre | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
+            --primary: #e67e22;
             --dark: #1a2b3c;
-            --orange: #e67e22;
             --bg: #f4f7f9;
+            --white: #ffffff;
             --border: #d1d9e0;
+            --text: #2c3e50;
         }
 
+        /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: #2c3e50; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
 
-        /* Navbar */
-        .navbar { background: #fff; border-bottom: 1px solid var(--border); padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+        /* Navbar Sticky */
+        .navbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 12px 0; position: sticky; top: 0; z-index: 1000; }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); }
-        .logo span { color: var(--orange); }
+        .logo { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: var(--dark); }
+        .logo span { color: var(--primary); }
+        .nav-tag { font-size: 0.7rem; font-weight: 700; background: var(--bg); padding: 5px 12px; border-radius: 20px; display: none; }
 
         /* Header */
-        .catalog-header { background: var(--dark); color: #fff; padding: 40px 0; border-bottom: 5px solid var(--orange); }
-        .catalog-header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .catalog-header { background: var(--dark); color: var(--white); padding: 40px 0; border-bottom: 5px solid var(--primary); text-align: center; }
+        .catalog-header h1 { font-size: 1.8rem; margin-bottom: 8px; font-weight: 800; }
+        .catalog-header p { font-size: 0.95rem; opacity: 0.8; max-width: 700px; margin: 0 auto; }
 
-        /* Layout */
-        .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 40px auto; }
+        /* Status Bar */
+        .status-bar { background: var(--white); padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+        .status-flex { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600; }
+        #res-count { color: var(--primary); font-weight: 800; }
+
+        /* Layout Grid */
+        .catalog-layout { display: flex; flex-direction: column; gap: 25px; }
 
         /* Sidebar Filtres */
-        .filter-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 20px; height: fit-content; }
+        .filter-sidebar { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 20px; height: fit-content; }
         .filter-group { margin-bottom: 25px; }
-        .filter-group h4 { font-size: 0.8rem; text-transform: uppercase; margin-bottom: 15px; color: var(--orange); border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .filter-group label { display: block; font-size: 0.85rem; margin-bottom: 10px; cursor: pointer; }
-        .filter-group input { margin-right: 10px; accent-color: var(--orange); }
-        .select-pro { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 4px; }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-group h4 { font-size: 0.75rem; text-transform: uppercase; color: var(--primary); margin-bottom: 15px; letter-spacing: 1px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        
+        .filter-options { display: flex; flex-wrap: wrap; gap: 10px; }
+        .check-item { display: flex; align-items: center; background: var(--bg); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; transition: 0.2s; border: 1px solid transparent; width: 100%; }
+        .check-item input { margin-right: 10px; accent-color: var(--primary); }
+        .check-item:hover { border-color: var(--primary); background: #fff; }
 
-        /* Grille Matériaux */
+        .select-pro { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-family: inherit; font-size: 0.9rem; }
+
+        /* Material Grid */
         .material-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        /* Cards */
+        .material-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; }
+        .material-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+
+        .nm-badge { position: absolute; top: 12px; left: 12px; background: var(--dark); color: white; font-size: 9px; padding: 5px 12px; border-radius: 6px; font-weight: 700; z-index: 10; text-transform: uppercase; }
         
-        .material-card { 
-            background: #fff; border: 1px solid var(--border); border-radius: 4px; 
-            overflow: hidden; position: relative; transition: 0.3s; display: flex; flex-direction: column; 
-        }
-        .material-card:hover { border-color: var(--orange); transform: translateY(-3px); }
-        
-        /* Photo Style */
-        .nm-badge { position: absolute; top: 10px; left: 10px; background: var(--dark); color: #fff; font-size: 9px; padding: 4px 8px; font-weight: 700; z-index: 5; }
-        .mat-photo-container { width: 100%; height: 180px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .mat-photo-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .mat-photo-container { width: 100%; height: 200px; overflow: hidden; background: #eee; }
+        .mat-photo-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
         .material-card:hover .mat-photo-container img { transform: scale(1.1); }
 
-        /* Infos */
-        .mat-content { padding: 20px; flex-grow: 1; }
-        .mat-cat { font-size: 10px; color: var(--orange); font-weight: 700; text-transform: uppercase; }
-        .mat-content h3 { font-size: 1.05rem; margin: 5px 0; color: var(--dark); }
-        .mat-content p { font-size: 0.8rem; color: #7f8c8d; margin-bottom: 15px; height: 35px; }
+        .mat-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .mat-cat { font-size: 10px; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .mat-content h3 { font-size: 1.15rem; margin: 8px 0; color: var(--dark); font-weight: 700; }
+        .mat-content p { font-size: 0.85rem; color: #6c757d; margin-bottom: 20px; min-height: 40px; }
 
-        .price-tag { background: var(--bg); padding: 10px; border-left: 3px solid var(--orange); margin-bottom: 15px; }
-        .price-tag span { font-size: 10px; color: #999; display: block; }
-        .price-tag strong { font-size: 1.1rem; color: var(--dark); }
+        .price-tag { background: var(--bg); padding: 15px; border-radius: 10px; border-left: 4px solid var(--primary); margin-top: auto; }
+        .price-tag span { font-size: 10px; color: #888; display: block; margin-bottom: 2px; }
+        .price-tag strong { font-size: 1.25rem; color: var(--dark); }
 
-        .btn-compare { 
-            width: 100%; padding: 12px; background: #fff; border: 2px solid var(--dark); 
-            color: var(--dark); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        .btn-compare { width: 100%; padding: 14px; background: var(--dark); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-transform: uppercase; margin-top: 15px; transition: 0.3s; letter-spacing: 0.5px; }
+        .btn-compare:hover { background: var(--primary); }
+
+        .no-result { display: none; text-align: center; padding: 60px 20px; background: white; border-radius: 15px; border: 2px dashed var(--border); grid-column: 1 / -1; }
+
+        /* Responsive Desktop (> 768px) */
+        @media (min-width: 768px) {
+            .nav-tag { display: block; }
+            .catalog-header { text-align: left; padding: 60px 0; }
+            .catalog-header h1 { font-size: 2.2rem; }
+            .catalog-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin: 40px auto; }
+            .filter-sidebar { position: sticky; top: 100px; }
         }
-        .btn-compare:hover { background: var(--dark); color: #fff; }
-
-        .no-result { display: none; grid-column: 1 / -1; text-align: center; padding: 40px; color: #999; }
     </style>
 </head>
 <body>
@@ -79,34 +97,44 @@
     <nav class="navbar">
         <div class="container nav-flex">
             <a href="index.html" class="logo">Binaa<span>Compare</span></a>
-            <div class="nav-links" style="font-size: 0.8rem; font-weight: 700;">FLUIDES & RÉSEAUX</div>
+            <div class="nav-tag">FINITIONS & SECOND ŒUVRE</div>
         </div>
     </nav>
 
     <header class="catalog-header">
         <div class="container">
-            <h1>Solutions Fluides & Réseaux</h1>
-            <p>Plomberie certifiée, installations sanitaires et équipements électriques industriels.</p>
+            <h1>Second Œuvre & Finitions</h1>
+            <p>Isolation, plaques de plâtre, peintures et menuiseries intérieures. Trouvez les meilleurs tarifs pour vos finitions de chantier.</p>
         </div>
     </header>
+
+    <div class="status-bar">
+        <div class="container status-flex">
+            <span>Catalogue Matériaux</span>
+            <div><span id="res-count">0</span> articles trouvés</div>
+        </div>
+    </div>
 
     <div class="container catalog-layout">
         <aside class="filter-sidebar">
             <div class="filter-group">
-                <h4>Secteurs</h4>
-                <label><input type="checkbox" class="filter-check" value="plomberie" checked> Plomberie & PPR</label>
-                <label><input type="checkbox" class="filter-check" value="elec" checked> Électricité Industrielle</label>
-                <label><input type="checkbox" class="filter-check" value="sanitaire" checked> Sanitaire & Robinetterie</label>
-                <label><input type="checkbox" class="filter-check" value="climatisation" checked> CVC (Climatisation)</label>
+                <h4>Catégories</h4>
+                <div class="filter-options">
+                    <label class="check-item"><input type="checkbox" class="filter-check" value="plaque" checked> Plâtrerie / Cloisons</label>
+                    <label class="check-item"><input type="checkbox" class="filter-check" value="isolation" checked> Isolation</label>
+                    <label class="check-item"><input type="checkbox" class="filter-check" value="peinture" checked> Peintures & Enduits</label>
+                    <label class="check-item"><input type="checkbox" class="filter-check" value="menuiserie" checked> Menuiserie</label>
+                </div>
             </div>
 
             <div class="filter-group">
-                <h4>Région</h4>
+                <h4>Zone de livraison</h4>
                 <select id="citySelect" class="select-pro">
-                    <option value="all">Toutes les régions</option>
-                    <option value="casablanca">Casablanca-Settat</option>
-                    <option value="tanger">Tanger-Tétouan</option>
-                    <option value="rabat">Rabat-Salé</option>
+                    <option value="all">Tout le Maroc</option>
+                    <option value="casablanca">Casablanca</option>
+                    <option value="rabat">Rabat</option>
+                    <option value="fes">Fès</option>
+                    <option value="marrakech">Marrakech</option>
                 </select>
             </div>
         </aside>
@@ -114,58 +142,78 @@
         <main>
             <div class="material-grid" id="productGrid">
                 
-                <article class="material-card" data-category="plomberie" data-cities="casablanca,rabat">
-                    <div class="nm-badge">PN25 CERTIFIÉ</div>
+                <article class="material-card" data-category="plaque" data-cities="casablanca,rabat,fes">
+                    <div class="nm-badge">BA13 HYDROFUGE</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1585704032915-c3400ca1f963?auto=format&fit=crop&q=80&w=500" alt="Tube PPR">
+                        <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=500" alt="Plâtre BA13">
                     </div>
                     <div class="mat-content">
-                        <span class="mat-cat">Réseaux Hydrauliques</span>
-                        <h3>Tube PPR Haute Pression (D25)</h3>
-                        <p>Système de distribution d'eau potable et chauffage, soudure thermique.</p>
+                        <span class="mat-cat">Cloisonnement</span>
+                        <h3>Plaque de Plâtre BA13 Hydro</h3>
+                        <p>Idéal pour pièces humides (SDB, cuisines). Protection contre l'humidité renforcée.</p>
                         <div class="price-tag">
-                            <span>Prix (Mètre linéaire)</span>
-                            <strong>14.50 — 18.00 DH</strong>
+                            <span>Prix estimé (m²)</span>
+                            <strong>28.00 — 35.00 DH</strong>
                         </div>
-                        <button class="btn-compare">Comparer les grossistes</button>
+                        <button class="btn-compare">Comparer les stocks</button>
                     </div>
                 </article>
 
-                <article class="material-card" data-category="elec" data-cities="casablanca,tanger">
-                    <div class="nm-badge">NORME CE/NM</div>
+                <article class="material-card" data-category="isolation" data-cities="casablanca,marrakech">
+                    <div class="nm-badge">Efficacité A+</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1621905252507-b354bcadcabc?auto=format&fit=crop&q=80&w=500" alt="Tableau Électrique">
+                        <img src="https://images.unsplash.com/photo-1579547621113-e4c194b1a4f0?auto=format&fit=crop&q=80&w=500" alt="Laine de Roche">
                     </div>
                     <div class="mat-content">
-                        <span class="mat-cat">Électricité Industrielle</span>
-                        <h3>Coffret Électrique Équipé (IP65)</h3>
-                        <p>Tableau de protection complet avec disjoncteurs modulaires.</p>
+                        <span class="mat-cat">Isolation Thermique</span>
+                        <h3>Laine de Roche (100mm)</h3>
+                        <p>Isolation acoustique et thermique haute performance pour cloisons et combles.</p>
                         <div class="price-tag">
-                            <span>Prix unitaire (Dès)</span>
-                            <strong>1 250.00 — 2 100.00 DH</strong>
+                            <span>Prix estimé (m²)</span>
+                            <strong>60.00 — 75.00 DH</strong>
                         </div>
-                        <button class="btn-compare">Voir les installateurs</button>
+                        <button class="btn-compare">Voir les distributeurs</button>
                     </div>
                 </article>
 
-                <article class="material-card" data-category="sanitaire" data-cities="rabat,casablanca">
-                    <div class="nm-badge">HORS SÉRIE</div>
+                <article class="material-card" data-category="peinture" data-cities="rabat,fes,marrakech">
+                    <div class="nm-badge">HAUTE COUVRANCE</div>
                     <div class="mat-photo-container">
-                        <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=500" alt="Robinetterie Sanitaire">
+                        <img src="https://images.unsplash.com/photo-1582219749176-b51e06e3e5b3?auto=format&fit=crop&q=80&w=500" alt="Peinture">
                     </div>
                     <div class="mat-content">
-                        <span class="mat-cat">Équipement Sanitaire</span>
-                        <h3>Mitigeur Lavabo Professionnel</h3>
-                        <p>Finition chrome, économiseur d'eau, cartouche céramique.</p>
+                        <span class="mat-cat">Finitions Murs</span>
+                        <h3>Peinture Acrylique Mate</h3>
+                        <p>Peinture lavable pour intérieur. Excellente tenue et séchage rapide.</p>
                         <div class="price-tag">
-                            <span>Prix unitaire</span>
-                            <strong>450.00 — 780.00 DH</strong>
+                            <span>Prix (Seau 10L)</span>
+                            <strong>350.00 — 420.00 DH</strong>
                         </div>
                         <button class="btn-compare">Comparer les marques</button>
                     </div>
                 </article>
 
-                <div id="noResult" class="no-result">Aucun équipement de réseau trouvé.</div>
+                <article class="material-card" data-category="menuiserie" data-cities="casablanca,rabat">
+                    <div class="nm-badge">FINITION PREMIUM</div>
+                    <div class="mat-photo-container">
+                        <img src="https://images.unsplash.com/photo-1542867866-e3d64117b960?auto=format&fit=crop&q=80&w=500" alt="Porte Bois">
+                    </div>
+                    <div class="mat-content">
+                        <span class="mat-cat">Menuiserie Intérieure</span>
+                        <h3>Porte en Bois Massif</h3>
+                        <p>Bloc-porte prêt à poser. Design contemporain, bois traité anti-humidité.</p>
+                        <div class="price-tag">
+                            <span>Prix unitaire</span>
+                            <strong>1 200 — 1 800 DH</strong>
+                        </div>
+                        <button class="btn-compare">Voir les modèles</button>
+                    </div>
+                </article>
+
+                <div id="noResult" class="no-result">
+                    <i class="fa-solid fa-ghost" style="font-size: 3rem; color: #ddd; margin-bottom: 15px; display: block;"></i>
+                    Aucun matériau ne correspond à vos filtres actuels.
+                </div>
             </div>
         </main>
     </div>
@@ -176,6 +224,7 @@
             const citySelect = document.getElementById('citySelect');
             const cards = document.querySelectorAll('.material-card');
             const noResult = document.getElementById('noResult');
+            const resCount = document.getElementById('res-count');
 
             function filterMaterials() {
                 const activeCategories = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
@@ -193,11 +242,16 @@
                         card.style.display = 'none';
                     }
                 });
+
+                resCount.textContent = visibleCount;
                 noResult.style.display = visibleCount === 0 ? 'block' : 'none';
             }
 
             checkboxes.forEach(b => b.addEventListener('change', filterMaterials));
             citySelect.addEventListener('change', filterMaterials);
+            
+            // Initialisation
+            filterMaterials();
         });
     </script>
 </body>
