@@ -3,86 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un compte | BinaaCompare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Inscription Acheteur | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css"> </head>
-<body class="bg-auth">
+    <style>
+        :root {
+            --primary: #e67e22;
+            --primary-hover: #d35400;
+            --secondary: #1e293b;
+            --text-main: #334155;
+            --bg-grad: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --white: #ffffff;
+        }
 
-    <div class="auth-wrapper">
-        <div class="auth-container">
-            <div class="auth-sidebar">
-                <div class="auth-branding">
-                    <a href="index.html" class="logo">Binaa<span>Compare</span></a>
-                    <p>Rejoignez la plus grande communauté d'acheteurs de matériaux au Maroc.</p>
-                </div>
-                <div class="auth-features">
-                    <div class="f-item"><i class="fa-solid fa-check"></i> Accès gratuit à vie</div>
-                    <div class="f-item"><i class="fa-solid fa-check"></i> Devis illimités</div>
-                    <div class="f-item"><i class="fa-solid fa-check"></i> Support prioritaire</div>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg-grad); 
+            min-height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+        }
+
+        .auth-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- SECTION INFO (GAUCHE) --- */
+        .auth-info {
+            background: var(--secondary);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo { font-size: 1.8rem; font-weight: 800; color: white; text-decoration: none; margin-bottom: 20px; }
+        .logo span { color: var(--primary); }
+        .auth-info p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; }
+
+        .benefit-item { display: flex; align-items: flex-start; margin-bottom: 20px; gap: 12px; }
+        .benefit-item i { color: var(--primary); margin-top: 4px; }
+        .benefit-text h4 { font-size: 0.9rem; font-weight: 600; }
+        .benefit-text p { font-size: 0.8rem; margin-bottom: 0; }
+
+        /* --- FORMULAIRE (DROITE) --- */
+        .auth-form-container { padding: 45px; }
+        .auth-form-container h2 { font-size: 1.6rem; color: var(--secondary); margin-bottom: 10px; }
+        .subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 30px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--secondary); margin-bottom: 8px; }
+        
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .input-field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1); }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { background: var(--primary-hover); transform: translateY(-1px); }
+        .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+        #statusMessage {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            text-align: center;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .auth-card { grid-template-columns: 1fr; }
+            .auth-info { display: none; }
+            .auth-form-container { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-card">
+        <div class="auth-info">
+            <a href="index.html" class="logo">Binaa<span>Compare</span></a>
+            <p>Le portail n°1 pour les acheteurs de matériaux au Maroc.</p>
+            
+            <div class="benefit-item">
+                <i class="fa-solid fa-bolt"></i>
+                <div class="benefit-text">
+                    <h4>Devis Rapides</h4>
+                    <p>Obtenez des offres en moins de 24h.</p>
                 </div>
             </div>
-
-            <div class="auth-form-area">
-                <div class="form-box">
-                    <h2>Créer un compte</h2>
-                    <p class="subtitle">Inscrivez-vous en quelques secondes</p>
-
-                    <div id="statusMessage" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; display: none; font-size: 0.85rem; text-align: center;"></div>
-
-                    <form id="registerForm">
-                        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                            <div style="flex: 1;">
-                                <label style="font-size: 0.85rem; font-weight: 600;">Prénom</label>
-                                <input type="text" id="firstName" placeholder="Ahmed" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                            </div>
-                            <div style="flex: 1;">
-                                <label style="font-size: 0.85rem; font-weight: 600;">Nom</label>
-                                <input type="text" id="lastName" placeholder="Bennani" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
-                            </div>
-                        </div>
-
-                        <div class="form-group-auth" style="margin-bottom: 15px;">
-                            <label style="font-size: 0.85rem; font-weight: 600;">Email Professionnel</label>
-                            <div class="input-icon" style="position: relative;">
-                                <i class="fa-solid fa-envelope" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #7f8c8d;"></i>
-                                <input type="email" id="email" placeholder="nom@entreprise.ma" required style="width: 100%; padding: 12px 12px 12px 45px; border: 1px solid #ddd; border-radius: 8px;">
-                            </div>
-                        </div>
-
-                        <div class="form-group-auth" style="margin-bottom: 15px;">
-                            <label style="font-size: 0.85rem; font-weight: 600;">Ville</label>
-                            <div class="input-icon" style="position: relative;">
-                                <i class="fa-solid fa-location-dot" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #7f8c8d;"></i>
-                                <select id="city" required style="width: 100%; padding: 12px 12px 12px 45px; border: 1px solid #ddd; border-radius: 8px; background: white;">
-                                    <option value="">Sélectionnez votre ville</option>
-                                    <option value="Casablanca">Casablanca</option>
-                                    <option value="Rabat">Rabat</option>
-                                    <option value="Tanger">Tanger</option>
-                                    <option value="Marrakech">Marrakech</option>
-                                    <option value="Agadir">Agadir</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group-auth" style="margin-bottom: 15px;">
-                            <label style="font-size: 0.85rem; font-weight: 600;">Mot de passe</label>
-                            <div class="input-icon" style="position: relative;">
-                                <i class="fa-solid fa-lock" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #7f8c8d;"></i>
-                                <input type="password" id="password" placeholder="Min. 8 caractères" required style="width: 100%; padding: 12px 12px 12px 45px; border: 1px solid #ddd; border-radius: 8px;">
-                            </div>
-                        </div>
-
-                        <button type="submit" id="regBtn" class="btn-auth-submit" style="width: 100%; padding: 14px; background: #e67e22; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px;">
-                            S'inscrire gratuitement
-                        </button>
-                    </form>
-
-                    <p class="auth-footer" style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
-                        Déjà inscrit ? <a href="conx.html" style="color: #e67e22; font-weight: 600; text-decoration: none;">Se connecter</a>
-                    </p>
+            <div class="benefit-item">
+                <i class="fa-solid fa-shield-halved"></i>
+                <div class="benefit-text">
+                    <h4>Prix Vérifiés</h4>
+                    <p>Comparez uniquement des fournisseurs certifiés.</p>
                 </div>
             </div>
+        </div>
+
+        <div class="auth-form-container">
+            <h2>Créer un compte Acheteur</h2>
+            <p class="subtitle">Accédez gratuitement aux meilleurs prix du marché.</p>
+
+            <div id="statusMessage"></div>
+
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Prénom</label>
+                        <input type="text" id="firstName" class="input-field" placeholder="Ahmed" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Nom</label>
+                        <input type="text" id="lastName" class="input-field" placeholder="Bennani" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Email Personnel ou Professionnel</label>
+                    <input type="email" id="email" class="input-field" placeholder="votre@email.ma" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Ville</label>
+                        <select id="city" class="input-field" required>
+                            <option value="Casablanca">Casablanca</option>
+                            <option value="Rabat">Rabat</option>
+                            <option value="Tanger">Tanger</option>
+                            <option value="Marrakech">Marrakech</option>
+                            <option value="Agadir">Agadir</option>
+                            <option value="Fès">Fès</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Mot de passe</label>
+                        <input type="password" id="password" class="input-field" placeholder="••••••••" required minlength="8">
+                    </div>
+                </div>
+
+                <button type="submit" id="regBtn" class="btn-submit">Créer mon compte gratuit</button>
+            </form>
+
+            <p style="text-align: center; margin-top: 25px; font-size: 0.9rem; color: #64748b;">
+                Déjà inscrit ? <a href="login.html" style="color: var(--primary); font-weight: 700; text-decoration: none;">Se connecter</a>
+            </p>
         </div>
     </div>
 
@@ -91,7 +188,7 @@
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // إعدادات Firebase
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
             authDomain: "binaacompare-fa5e1.firebaseapp.com",
@@ -106,59 +203,60 @@
         const db = getFirestore(app);
 
         const registerForm = document.getElementById('registerForm');
-        const statusMessage = document.getElementById('statusMessage');
+        const statusMsg = document.getElementById('statusMessage');
         const regBtn = document.getElementById('regBtn');
 
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const firstName = document.getElementById('firstName').value;
             const lastName = document.getElementById('lastName').value;
             const city = document.getElementById('city').value;
 
-            // بدء التحميل
-            regBtn.innerText = "Création en cours...";
+            // UI Feedback
             regBtn.disabled = true;
+            regBtn.innerText = "Création du compte...";
 
             try {
-                // 1. إنشاء الحساب في Firebase Auth
+                // 1. Création de l'utilisateur dans Firebase Auth
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // 2. حفظ المعلومات الإضافية في Firestore
+                // 2. Enregistrement des données profil dans Firestore
                 await setDoc(doc(db, "users", user.uid), {
-                    firstName: firstName,
-                    lastName: lastName,
-                    city: city,
-                    email: email,
-                    role: "buyer",
-                    createdAt: new Date()
+                    firstName,
+                    lastName,
+                    email,
+                    city,
+                    role: "buyer", // Fixé sur buyer uniquement
+                    createdAt: new Date(),
+                    profilePic: "default"
                 });
 
-                // نجاح العملية
-                statusMessage.style.display = "block";
-                statusMessage.style.backgroundColor = "#d4edda";
-                statusMessage.style.color = "#155724";
-                statusMessage.innerText = "Succès ! Redirection vers votre dashboard...";
+                // Succès
+                statusMsg.style.display = "block";
+                statusMsg.style.background = "#dcfce7";
+                statusMsg.style.color = "#166534";
+                statusMsg.innerText = "Bienvenue ! Redirection vers votre dashboard...";
 
                 setTimeout(() => {
                     window.location.href = "dasha.html";
                 }, 2000);
 
             } catch (error) {
-                // فشل العملية
-                regBtn.innerText = "S'inscrire gratuitement";
                 regBtn.disabled = false;
-                statusMessage.style.display = "block";
-                statusMessage.style.backgroundColor = "#f8d7da";
-                statusMessage.style.color = "#721c24";
+                regBtn.innerText = "Créer mon compte gratuit";
+                statusMsg.style.display = "block";
+                statusMsg.style.background = "#fee2e2";
+                statusMsg.style.color = "#991b1b";
                 
+                // Gestion des erreurs communes
                 if (error.code === 'auth/email-already-in-use') {
-                    statusMessage.innerText = "Cet email existe déjà.";
+                    statusMsg.innerText = "Cet email est déjà utilisé.";
                 } else {
-                    statusMessage.innerText = "Erreur: " + error.message;
+                    statusMsg.innerText = "Erreur : " + error.message;
                 }
             }
         });

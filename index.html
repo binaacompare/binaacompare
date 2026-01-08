@@ -32,7 +32,70 @@
             <li class="mobile-only auth-guest"><a href="cnx cendeur.html"><i class="fa-solid fa-shop"></i> Espace Vendeur</a></li>
             <li class="mobile-only auth-guest"><a href="conx.html"><i class="fa-solid fa-user-tag"></i> Espace Acheteur</a></li>
             
-            <li class="mobile-only auth-logged" style="display: none;"><a href="dachv.html"><i class="fa-solid fa-circle-user"></i> Mon Profil</a></li>
+            <li id="dynamicProfileLink" class="mobile-only auth-logged" style="display: none;">
+    <a href="#" id="profileAnchor" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+        <i class="fa-solid fa-circle-user"></i> 
+        <span id="profileText">Mon Profil</span>
+    </a>
+</li>
+
+<script type="module">
+    // 1. Importations Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // 2. Votre Configuration (Vérifiez qu'elle correspond à votre projet)
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+        authDomain: "binaacompare-fa5e1.firebaseapp.com",
+        projectId: "binaacompare-fa5e1",
+        storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+        messagingSenderId: "667570543544",
+        appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+    };
+
+    // 3. Initialisation
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 4. Logique de redirection
+    const profileLi = document.getElementById('dynamicProfileLink');
+    const profileAnchor = document.getElementById('profileAnchor');
+    const profileText = document.getElementById('profileText');
+
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            try {
+                // On va chercher le document de l'utilisateur dans la collection "users"
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
+
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    profileLi.style.display = "block"; // On affiche le bouton
+
+                    // Vérification du rôle
+                    if (userData.role === "vendor") {
+                        profileAnchor.href = "dachv.html"; // Lien Vendeur
+                        profileText.innerText = "Dashboard Vendeur";
+                    } else {
+                        profileAnchor.href = "dasha.html"; // Lien Acheteur
+                        profileText.innerText = "Espace Client";
+                    }
+                } else {
+                    console.log("Utilisateur connecté mais aucun document trouvé dans Firestore.");
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération du profil:", error);
+            }
+        } else {
+            // Si pas de session active, on cache le lien
+            profileLi.style.display = "none";
+        }
+    });
+</script>
             <li class="mobile-only auth-logged" style="display: none;"><a href="#" class="logout-action" style="color: #e67e22;"><i class="fa-solid fa-power-off"></i> Déconnexion</a></li>
         </ul>
 
@@ -99,26 +162,39 @@
 </nav>
 
     <header class="hero-section">
-        <div class="container">
-            <h1>Comparez les prix des matériaux de construction au Maroc</h1>
-             
-            
-           <div class="search-box">
-    <div class="input-group">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="Que cherchez-vous ? (ex: Ciment, Acier...)">
-    </div>
-    <div class="input-group">
-        <i class="fa-solid fa-location-dot"></i>
-        <input type="text" id="cityInput" placeholder="Ville (ex: Casablanca)">
-    </div>
-    <button class="btn-search" onclick="moteurDeRecherche()">Comparer</button>
-</div>
-
-                
+    <div class="container">
+        <h1>Comparez les prix des matériaux de construction au Maroc</h1>
+        
+        <div class="search-box">
+            <div class="input-group">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Que cherchez-vous ? (ex: Ciment, Acier...)">
             </div>
-        </div> 
-    </header>
+            <div class="input-group">
+                <i class="fa-solid fa-location-dot"></i>
+                <input type="text" id="cityInput" placeholder="Ville (ex: Casablanca)">
+            </div>
+            <button class="btn-search" id="btnSearch">Comparer</button>
+        </div>
+    </div>
+</header>
+
+<script>
+    // استخدام id="btnSearch" لضمان عمل الزر
+    document.getElementById('btnSearch').addEventListener('click', () => {
+        const keyword = document.getElementById('searchInput').value.trim();
+        const city = document.getElementById('cityInput').value.trim();
+        
+        // إرسال المستخدم إلى صفحة materiaux.html مع الكلمات البحثية في الرابط (URL)
+        // إذا تركت الخانات فارغة، سيعرض كل المنتجات
+        window.location.href = `repro.html?search=${encodeURIComponent(keyword)}&city=${encodeURIComponent(city)}`;
+    });
+
+    // للسماح للمستخدم بالضغط على Enter للبحث
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('btnSearch').click();
+    });
+</script>
 
     <section class="categories section-padding">
         <div class="container">

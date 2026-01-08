@@ -29,52 +29,39 @@
         /* Header & Filters */
         .section-header { padding: 30px 0 20px; }
         .header-flex { display: flex; flex-direction: column; gap: 20px; }
-        
         h1 { color: var(--secondary); margin: 0; font-size: 1.5rem; text-align: left; }
         
-        /* Filtres défilants sur Mobile */
         .filter-pills { 
-            display: flex; 
-            gap: 10px; 
-            overflow-x: auto; 
-            padding-bottom: 5px;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch; /* Défilement fluide iOS */
+            display: flex; gap: 10px; overflow-x: auto; 
+            padding-bottom: 5px; white-space: nowrap;
         }
-        .filter-pills::-webkit-scrollbar { display: none; } /* Cache la scrollbar */
-
         .pill { 
             padding: 8px 18px; background: white; border: 1px solid var(--border); 
             border-radius: 25px; cursor: pointer; font-size: 0.85rem; font-weight: 500; 
             transition: 0.3s; flex-shrink: 0;
         }
-        .pill.active, .pill:hover { background: var(--secondary); color: white; border-color: var(--secondary); }
+        .pill.active { background: var(--secondary); color: white; border-color: var(--secondary); }
 
-        /* Grille Responsive */
+        /* Grille Dynamique */
         .suppliers-pro-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
-            gap: 20px;
-            padding-bottom: 50px;
+            gap: 20px; padding-bottom: 50px;
         }
 
         .supplier-pro-card {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            transition: 0.3s;
+            background: #ffffff; border: 1px solid var(--border);
+            border-radius: 10px; padding: 20px; display: flex;
+            flex-direction: column; transition: 0.3s;
         }
 
         .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         
         .mini-logo {
-            width: 45px; height: 45px; background: var(--light);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; border-radius: 8px; color: var(--secondary);
-            border: 1px solid var(--border);
+            width: 50px; height: 50px; border-radius: 8px;
+            object-fit: cover; border: 1px solid var(--border);
+            background: var(--light); display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: var(--secondary);
         }
 
         .city-label {
@@ -85,34 +72,22 @@
         .card-main h3 { font-size: 1.1rem; color: var(--secondary); margin: 0 0 5px; }
         .expert-tag { color: var(--primary); font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; }
         
-        .spec-list { margin-bottom: 20px; }
-        .spec-item { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #444; margin-bottom: 8px; }
-        .spec-item i { color: var(--success); }
-
         .btn-outline-pro {
             display: block; text-align: center; text-decoration: none;
             color: var(--secondary); border: 1.5px solid var(--border);
             padding: 10px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;
             transition: 0.3s; margin-top: auto;
         }
-
         .btn-outline-pro:hover { background: var(--secondary); color: white; }
 
-        /* Ajustements pour PC */
-        @media (min-width: 768px) {
-            .header-flex { flex-direction: row; justify-content: space-between; align-items: center; }
-            h1 { font-size: 1.8rem; }
-            .suppliers-pro-grid { grid-template-columns: repeat(3, 1fr); }
-            .navbar { padding: 20px 0; }
-            .logo { font-size: 1.5rem; }
-        }
+        #loading { text-align: center; padding: 40px; color: var(--text-muted); grid-column: 1 / -1; }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
         <div class="container">
-            <a href="#" class="logo">Binaa<span>Compare</span></a>
+            <a href="index.html" class="logo">Binaa<span>Compare</span></a>
         </div>
     </nav>
 
@@ -120,66 +95,108 @@
         <header class="section-header">
             <div class="header-flex">
                 <h1>Annuaire des Partenaires</h1>
-                <div class="filter-pills">
-                    <span class="pill active">Tous</span>
-                    <span class="pill">Casablanca</span>
-                    <span class="pill">Tanger</span>
-                    <span class="pill">Rabat</span>
-                    <span class="pill">Marrakech</span>
+                <div class="filter-pills" id="cityFilters">
+                    <span class="pill active" data-city="all">Tous</span>
+                    <span class="pill" data-city="Casablanca">Casablanca</span>
+                    <span class="pill" data-city="Tanger">Tanger</span>
+                    <span class="pill" data-city="Rabat">Rabat</span>
+                    <span class="pill" data-city="Marrakech">Marrakech</span>
                 </div>
             </div>
         </header>
 
-        <main class="suppliers-pro-grid">
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">LH</div>
-                    <span class="city-label">Casablanca</span>
-                </div>
-                <div class="card-main">
-                    <h3>LafargeHolcim</h3>
-                    <p class="expert-tag">Gros Œuvre & Ciments</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Conforme Norme NM</div>
-                        <div class="spec-item"><i class="fa-solid fa-truck"></i> Livraison sur chantier</div>
-                    </div>
-                </div>
-                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo" style="background: #2c3e50; color: white;">MS</div>
-                    <span class="city-label">Tanger</span>
-                </div>
-                <div class="card-main">
-                    <h3>Maghreb Steel</h3>
-                    <p class="expert-tag">Aciers de Structure</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Certifié ISO 9001</div>
-                        <div class="spec-item"><i class="fa-solid fa-box"></i> Stock permanent</div>
-                    </div>
-                </div>
-                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
-
-            <div class="supplier-pro-card">
-                <div class="card-top">
-                    <div class="mini-logo">SK</div>
-                    <span class="city-label">Rabat</span>
-                </div>
-                <div class="card-main">
-                    <h3>Sika Maroc</h3>
-                    <p class="expert-tag">Étanchéité & Adjuvants</p>
-                    <div class="spec-list">
-                        <div class="spec-item"><i class="fa-solid fa-circle-check"></i> Labo technique R&D</div>
-                        <div class="spec-item"><i class="fa-solid fa-award"></i> Leader Etanchéité</div>
-                    </div>
-                </div>
-                <a href="#" class="btn-outline-pro">Consulter la fiche</a>
-            </div>
+        <main class="suppliers-pro-grid" id="suppliersGrid">
+            <div id="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des partenaires...</div>
         </main>
     </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const grid = document.getElementById('suppliersGrid');
+
+        // Fonction pour charger les vendeurs
+        async function loadSuppliers(cityFilter = 'all') {
+            grid.innerHTML = '<div id="loading"><i class="fas fa-spinner fa-spin"></i> Filtrage en cours...</div>';
+            
+            try {
+                // On récupère tous les utilisateurs qui sont des "vendor"
+                let q = query(collection(db, "users"), where("role", "==", "vendor"));
+                
+                const querySnapshot = await getDocs(q);
+                grid.innerHTML = ''; // Vide le loader
+
+                if (querySnapshot.empty) {
+                    grid.innerHTML = '<p>Aucun partenaire trouvé.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    
+                    // Filtrage manuel côté client pour la ville (plus flexible pour les démos)
+                    if (cityFilter !== 'all' && data.city !== cityFilter) return;
+
+                    // Création de la carte
+                    const card = document.createElement('div');
+                    card.className = 'supplier-pro-card';
+                    
+                    // Gestion du logo (si pas d'image, on met les initiales)
+                    const logoContent = (data.profilePic && data.profilePic !== "default") 
+                        ? `<img src="${data.profilePic}" class="mini-logo">` 
+                        : `<div class="mini-logo">${data.companyName.substring(0,2).toUpperCase()}</div>`;
+
+                    card.innerHTML = `
+                        <div class="card-top">
+                            ${logoContent}
+                            <span class="city-label">${data.city || 'Maroc'}</span>
+                        </div>
+                        <div class="card-main">
+                            <h3>${data.companyName}</h3>
+                            <p class="expert-tag">Partenaire Certifié</p>
+                            <div class="spec-list">
+                                <div style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">
+                                    <i class="fa-solid fa-user"></i> Contact : ${data.firstName}
+                                </div>
+                                <div style="font-size: 0.8rem; color: #666;">
+                                    <i class="fa-solid fa-id-card"></i> ICE : ${data.ice}
+                                </div>
+                            </div>
+                        </div>
+                        <a href="fpro.html?id=${doc.id}" class="btn-outline-pro">Consulter la fiche</a>
+                    `;
+                    grid.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Erreur:", error);
+                grid.innerHTML = '<p>Erreur lors du chargement des données.</p>';
+            }
+        }
+
+        // Gestion des filtres
+        document.querySelectorAll('.pill').forEach(pill => {
+            pill.addEventListener('click', (e) => {
+                document.querySelector('.pill.active').classList.remove('active');
+                e.target.classList.add('active');
+                loadSuppliers(e.target.dataset.city);
+            });
+        });
+
+        // Chargement initial
+        loadSuppliers();
+
+    </script>
 </body>
 </html>

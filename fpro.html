@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Fournisseur | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --orange: #e67e22; --blue: #1a2b3c; --bg: #f4f7fa; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; }
+        
+        .header-vendor { background: var(--blue); color: white; padding: 60px 0 40px; text-align: center; }
+        .vendor-badge { background: var(--orange); padding: 5px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        
+        /* Vendor Info Card */
+        .info-card { 
+            background: white; border-radius: 15px; padding: 30px; 
+            margin-top: -50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+        }
+        .info-item i { color: var(--orange); margin-right: 10px; width: 20px; }
+        
+        /* Products List */
+        .vendor-products { margin-top: 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        
+        .p-card { background: white; border-radius: 12px; padding: 15px; border: 1px solid #eee; }
+        .p-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; }
+        .p-price { font-weight: 700; color: #27ae60; margin-top: 10px; display: block; }
+    </style>
+</head>
+<body>
+
+    <div class="header-vendor">
+        <div class="container">
+            <span class="vendor-badge"><i class="fas fa-check-circle"></i> Fournisseur Vérifié</span>
+            <h1 id="companyName" style="margin: 15px 0 5px;">Chargement...</h1>
+            <p id="vendorCity" style="opacity: 0.8;"><i class="fas fa-map-marker-alt"></i> --</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="info-card">
+            <div class="info-item">
+                <p><strong>Contact :</strong></p>
+                <p id="vendorEmail"><i class="fas fa-envelope"></i> --</p>
+                <p id="vendorPhone"><i class="fas fa-phone"></i> --</p>
+            </div>
+            <div class="info-item">
+                <p><strong>À propos :</strong></p>
+                <p id="vendorDesc" style="color: #666; font-size: 0.9rem;">Ce fournisseur propose des matériaux de qualité pour vos chantiers au Maroc.</p>
+            </div>
+        </div>
+
+        <div class="vendor-products">
+            <h2>Catalogue de ce fournisseur</h2>
+            <div id="vendorProductsGrid" class="grid">
+                </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadVendorProfile() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const vendorId = urlParams.get('id');
+
+            if (!vendorId) {
+                alert("Fournisseur non trouvé");
+                return;
+            }
+
+            try {
+                // 1. Récupérer les infos du fournisseur (Collection USERS)
+                const userDoc = await getDoc(doc(db, "users", vendorId));
+                if (userDoc.exists()) {
+                    const data = userDoc.data();
+                    document.getElementById('companyName').innerText = data.companyName || (data.firstName + " " + data.lastName);
+                    document.getElementById('vendorCity').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city || 'Maroc'}`;
+                    document.getElementById('vendorEmail').innerHTML = `<i class="fas fa-envelope"></i> ${data.email}`;
+                    document.getElementById('vendorPhone').innerHTML = `<i class="fas fa-phone"></i> ${data.phone || 'Non renseigné'}`;
+                }
+
+                // 2. Récupérer les produits de ce vendeur (Collection PRODUCTS)
+                const q = query(collection(db, "products"), where("vendorId", "==", vendorId));
+                const querySnapshot = await getDocs(q);
+                const grid = document.getElementById('vendorProductsGrid');
+                grid.innerHTML = "";
+
+                querySnapshot.forEach((docSnap) => {
+                    const p = docSnap.data();
+                    grid.innerHTML += `
+                        <div class="p-card">
+                            <img src="${p.imageUrl || 'https://via.placeholder.com/150'}" alt="${p.name}">
+                            <h4 style="margin:10px 0 5px;">${p.name}</h4>
+                            <small style="color:#777;">${p.category}</small>
+                            <span class="p-price">${p.price} DH / ${p.unit}</span>
+                            <a href="datapro.html?id=${docSnap.id}" style="display:block; text-align:center; margin-top:10px; color:var(--orange); text-decoration:none; font-weight:600; font-size:0.8rem;">VOIR PRODUIT</a>
+                        </div>
+                    `;
+                });
+
+            } catch (error) {
+                console.error("Erreur:", error);
+            }
+        }
+
+        loadVendorProfile();
+    </script>
+</body>
+</html>
