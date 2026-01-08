@@ -29,7 +29,7 @@
                     <h2>Espace Acheteur</h2>
                     <p class="subtitle">Heureux de vous revoir !</p>
 
-                    <div id="errorMessage" style="color: red; margin-bottom: 10px; display: none; font-size: 0.8rem;"></div>
+                    <div id="errorMessage" style="color: #e74c3c; background: #fdeaea; padding: 10px; border-radius: 8px; margin-bottom: 15px; display: none; font-size: 0.85rem; border: 1px solid #fabebe;"></div>
 
                     <form id="loginForm">
                         <div class="form-group-auth">
@@ -67,135 +67,83 @@
     </div>
 
     <script type="module">
-        // استيراد الأدوات اللازمة من Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // إعدادات Firebase الخاصة بك
+        // Configuration Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
             authDomain: "binaacompare-fa5e1.firebaseapp.com",
             projectId: "binaacompare-fa5e1",
             storageBucket: "binaacompare-fa5e1.firebasestorage.app",
             messagingSenderId: "667570543544",
-            appId: "1:667570543544:web:652218ab5a773eb2154d4d",
-            measurementId: "G-72S596N8DE"
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
         };
 
-        // تهيئة Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // التعامل مع نموذج تسجيل الدخول
         const loginForm = document.getElementById('loginForm');
         const errorMessage = document.getElementById('errorMessage');
+        const loginBtn = document.getElementById('loginBtn');
 
-        loginForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // منع الصفحة من التحديث
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const loginBtn = document.getElementById('loginBtn');
 
-            // تغيير نص الزر أثناء التحميل
-            loginBtn.innerText = "Chargement...";
+            // État de chargement
+            loginBtn.innerText = "Vérification...";
             loginBtn.disabled = true;
+            errorMessage.style.display = "none";
 
-            // عملية تسجيل الدخول
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // تم تسجيل الدخول بنجاح
-                    const user = userCredential.user;
-                    console.log("Connecté:", user.email);
-                    window.location.href = "dasha.html"; // التوجه لصفحة الداشبورد
-                })
-                .catch((error) => {
-                    // في حالة حدوث خطأ
-                    loginBtn.innerText = "Se connecter";
-                    loginBtn.disabled = false;
-                    errorMessage.style.display = "block";
-                    
-                    if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
-                        errorMessage.innerText = "Email ou mot de passe incorrect.";
+            try {
+                // 1. Authentification Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. Vérification du rôle dans Firestore
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+
+                    if (userData.role === 'buyer') {
+                        // Succès : Redirection vers le dashboard acheteur
+                        window.location.href = "dasha.html";
                     } else {
-                        errorMessage.innerText = "Erreur: " + error.message;
+                        // Erreur : C'est un vendeur qui tente de se connecter ici
+                        await signOut(auth); // Déconnexion de sécurité
+                        showError("Accès refusé. Ce compte est un compte Vendeur. Veuillez utiliser l'espace Pro.");
                     }
-                });
-        });
-     type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    // Ajout de Firestore pour vérifier le rôle
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
-        authDomain: "binaacompare-fa5e1.firebaseapp.com",
-        projectId: "binaacompare-fa5e1",
-        storageBucket: "binaacompare-fa5e1.firebasestorage.app",
-        messagingSenderId: "667570543544",
-        appId: "1:667570543544:web:652218ab5a773eb2154d4d"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const loginForm = document.getElementById('loginForm');
-    const errorMessage = document.getElementById('errorMessage');
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const loginBtn = document.getElementById('loginBtn');
-
-        loginBtn.innerText = "Vérification...";
-        loginBtn.disabled = true;
-        errorMessage.style.display = "none";
-
-        try {
-            // 1. Authentification de base
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
-
-            // 2. Vérification du rôle dans Firestore
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-
-                if (userData.role === 'buyer') {
-                    // Succès : C'est bien un acheteur
-                    window.location.href = "dasha.html";
                 } else {
-                    // Échec : C'est un vendeur (ou autre)
-                    await signOut(auth); // On le déconnecte immédiatement
-                    errorMessage.style.display = "block";
-                    errorMessage.innerText = "Accès refusé. Ce compte est un compte Vendeur.";
-                    loginBtn.innerText = "Se connecter";
-                    loginBtn.disabled = false;
+                    showError("Erreur : Aucun profil trouvé pour cet utilisateur.");
+                    await signOut(auth);
                 }
-            } else {
-                errorMessage.style.display = "block";
-                errorMessage.innerText = "Profil utilisateur introuvable.";
+
+            } catch (error) {
+                console.error("Login error:", error);
+                
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    showError("Email ou mot de passe incorrect.");
+                } else if (error.code === 'auth/too-many-requests') {
+                    showError("Trop de tentatives échouées. Réessayez plus tard.");
+                } else {
+                    showError("Une erreur est survenue. Veuillez vérifier votre connexion.");
+                }
+            } finally {
+                loginBtn.innerText = "Se connecter";
                 loginBtn.disabled = false;
             }
+        });
 
-        } catch (error) {
-            loginBtn.innerText = "Se connecter";
-            loginBtn.disabled = false;
+        function showError(text) {
+            errorMessage.innerText = text;
             errorMessage.style.display = "block";
-            
-            // Traduction des erreurs courantes
-            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-                errorMessage.innerText = "Email ou mot de passe incorrect.";
-            } else {
-                errorMessage.innerText = "Une erreur est survenue. Veuillez réessayer.";
-            }
         }
-    });
-</script>
+    </script>
 </body>
 </html>
