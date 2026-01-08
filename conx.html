@@ -122,6 +122,80 @@
                     }
                 });
         });
-    </script>
+     type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    // Ajout de Firestore pour vérifier le rôle
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+        authDomain: "binaacompare-fa5e1.firebaseapp.com",
+        projectId: "binaacompare-fa5e1",
+        storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+        messagingSenderId: "667570543544",
+        appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const loginBtn = document.getElementById('loginBtn');
+
+        loginBtn.innerText = "Vérification...";
+        loginBtn.disabled = true;
+        errorMessage.style.display = "none";
+
+        try {
+            // 1. Authentification de base
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 2. Vérification du rôle dans Firestore
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+
+                if (userData.role === 'buyer') {
+                    // Succès : C'est bien un acheteur
+                    window.location.href = "dasha.html";
+                } else {
+                    // Échec : C'est un vendeur (ou autre)
+                    await signOut(auth); // On le déconnecte immédiatement
+                    errorMessage.style.display = "block";
+                    errorMessage.innerText = "Accès refusé. Ce compte est un compte Vendeur.";
+                    loginBtn.innerText = "Se connecter";
+                    loginBtn.disabled = false;
+                }
+            } else {
+                errorMessage.style.display = "block";
+                errorMessage.innerText = "Profil utilisateur introuvable.";
+                loginBtn.disabled = false;
+            }
+
+        } catch (error) {
+            loginBtn.innerText = "Se connecter";
+            loginBtn.disabled = false;
+            errorMessage.style.display = "block";
+            
+            // Traduction des erreurs courantes
+            if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                errorMessage.innerText = "Email ou mot de passe incorrect.";
+            } else {
+                errorMessage.innerText = "Une erreur est survenue. Veuillez réessayer.";
+            }
+        }
+    });
+</script>
 </body>
 </html>
