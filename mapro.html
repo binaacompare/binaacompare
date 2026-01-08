@@ -8,56 +8,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --primary: #e67e22; --dark: #1a2b3c; --bg: #f4f7fa; --danger: #e74c3c; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding-bottom: 50px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 15px; }
         
-        /* Navigation / Back Button */
-        .nav-top { display: flex; align-items: center; margin-bottom: 20px; }
+        /* Navigation */
+        .nav-top { margin-bottom: 20px; }
         .btn-back { 
             text-decoration: none; color: var(--dark); font-weight: 600; 
-            display: flex; align-items: center; gap: 8px; transition: 0.3s;
-            background: white; padding: 8px 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: inline-flex; align-items: center; gap: 8px;
+            background: white; padding: 10px 18px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-        .btn-back:hover { color: var(--primary); transform: translateX(-5px); }
 
         /* Header Dashboard */
-        .dash-header { display: flex; justify-content: space-between; align-items: center; background: white; padding: 20px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .btn-add { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: 0.3s; }
-        .btn-add:hover { background: #d35400; }
+        .dash-header { 
+            display: flex; flex-direction: column; gap: 15px; background: white; 
+            padding: 20px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+        }
+        @media (min-width: 768px) { .dash-header { flex-direction: row; justify-content: space-between; align-items: center; } }
 
-        /* Table Style */
-        .product-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .product-table th { background: var(--dark); color: white; padding: 15px; text-align: left; font-size: 0.9rem; }
-        .product-table td { padding: 15px; border-bottom: 1px solid #eee; vertical-align: middle; }
-        .product-img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #eee; }
+        .btn-add { background: var(--primary); color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; text-align: center; }
+
+        /* Responsive Product Table/Cards */
+        #productContainer { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 768px) { #productContainer { display: block; } }
+
+        /* Desktop Table View */
+        .product-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; display: none; }
+        @media (min-width: 768px) { .product-table { display: table; } }
+        .product-table th { background: var(--dark); color: white; padding: 15px; text-align: left; }
+        .product-table td { padding: 15px; border-bottom: 1px solid #eee; }
+
+        /* Mobile Card View */
+        .product-card-mobile { 
+            background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex; gap: 15px; align-items: center; border: 1px solid #eee;
+        }
+        @media (min-width: 768px) { .product-card-mobile { display: none; } }
         
-        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-        .status-active { background: #e8f5e9; color: #2e7d32; }
+        .product-img { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; background: #eee; flex-shrink: 0; }
+        .product-info { flex-grow: 1; }
+        .product-info h3 { margin: 0; font-size: 1rem; color: var(--dark); }
+        .product-info p { margin: 3px 0; font-size: 0.85rem; color: #666; }
+        
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; background: #e8f5e9; color: #2e7d32; }
 
         /* Actions */
-        .action-btns { display: flex; gap: 10px; }
-        .btn-icon { border: none; padding: 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .action-btns { display: flex; gap: 10px; margin-top: 10px; }
+        @media (min-width: 768px) { .action-btns { margin-top: 0; } }
+        .btn-icon { flex: 1; border: none; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; font-size: 1rem; }
         .btn-edit { background: #e3f2fd; color: #1976d2; }
         .btn-delete { background: #ffebee; color: #c62828; }
-        .btn-edit:hover { background: #1976d2; color: white; }
-        .btn-delete:hover { background: #c62828; color: white; }
 
-        #emptyState { text-align: center; padding: 50px; display: none; }
+        #emptyState { text-align: center; padding: 60px 20px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="nav-top">
-            <a href="dachv.html" class="btn-back">
-                <i class="fas fa-arrow-left"></i> Retour au Dashboard
-            </a>
+            <a href="dachv.html" class="btn-back"><i class="fas fa-arrow-left"></i> Retour</a>
         </div>
 
         <div class="dash-header">
             <div>
-                <h1 style="margin:0; font-size: 1.5rem;">Mes Matériaux en Vente</h1>
-                <p style="margin:5px 0 0; color: #666; font-size: 0.9rem;">Gérez votre catalogue de produits</p>
+                <h1 style="margin:0; font-size: 1.3rem;">Mes Matériaux</h1>
+                <p style="margin:5px 0 0; color: #666; font-size: 0.85rem;">Gérez votre catalogue</p>
             </div>
             <a href="ajp.html" class="btn-add"><i class="fas fa-plus"></i> Ajouter un produit</a>
         </div>
@@ -66,20 +81,20 @@
             <thead>
                 <tr>
                     <th>Image</th>
-                    <th>Nom du produit</th>
-                    <th>Catégorie</th>
+                    <th>Produit</th>
                     <th>Prix</th>
                     <th>Stock</th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody id="myProductsList"></tbody>
+            <tbody id="desktopList"></tbody>
         </table>
 
-        <div id="emptyState">
+        <div id="mobileList"></div>
+
+        <div id="emptyState" style="display:none;">
             <i class="fas fa-box-open fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
-            <p>Vous n'avez pas encore de produits en vente.</p>
-            <a href="ajp.html" style="color: var(--primary); font-weight: 600;">Cliquez ici pour commencer</a>
+            <p>Aucun produit en vente.</p>
         </div>
     </div>
 
@@ -101,74 +116,73 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const listContainer = document.getElementById('myProductsList');
-        const emptyState = document.getElementById('emptyState');
-
         onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                loadMyProducts(user.uid);
-            } else {
-                window.location.href = "login.html";
-            }
+            if (user) loadMyProducts(user.uid);
+            else window.location.href = "login.html";
         });
 
         async function loadMyProducts(vendorUid) {
             try {
                 const q = query(collection(db, "products"), where("vendorId", "==", vendorUid));
                 const snapshot = await getDocs(q);
-
-                listContainer.innerHTML = "";
+                
+                const desktopList = document.getElementById('desktopList');
+                const mobileList = document.getElementById('mobileList');
+                
+                desktopList.innerHTML = "";
+                mobileList.innerHTML = "";
 
                 if (snapshot.empty) {
                     document.getElementById('productTable').style.display = "none";
-                    emptyState.style.display = "block";
+                    document.getElementById('emptyState').style.display = "block";
                     return;
                 }
 
                 snapshot.forEach((pDoc) => {
                     const p = pDoc.data();
-                    const tr = document.createElement('tr');
-                    
-                    tr.innerHTML = `
-                        <td><img src="${p.imageUrl || 'https://via.placeholder.com/60'}" class="product-img"></td>
-                        <td><strong>${p.name}</strong><br><small style="color:#999">ID: ${pDoc.id.substring(0,6)}</small></td>
-                        <td><span class="status-badge status-active">${p.category}</span></td>
-                        <td><span style="font-weight:700">${p.price} DH</span> / ${p.unit}</td>
-                        <td>${p.stock || '0'}</td>
-                        <td class="action-btns">
-                            <button class="btn-icon btn-edit" onclick="location.href='edit_product.html?id=${pDoc.id}'">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn-icon btn-delete" data-id="${pDoc.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    listContainer.appendChild(tr);
+                    const img = p.imageUrl || 'https://via.placeholder.com/80';
+
+                    // Row for Desktop
+                    desktopList.innerHTML += `
+                        <tr>
+                            <td><img src="${img}" class="product-img"></td>
+                            <td><strong>${p.name}</strong><br><span class="status-badge">${p.category}</span></td>
+                            <td>${p.price} DH / ${p.unit}</td>
+                            <td>${p.stock}</td>
+                            <td>
+                                <div class="action-btns">
+                                    <button class="btn-icon btn-edit" onclick="location.href='edit_product.html?id=${pDoc.id}'"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon btn-delete" data-id="${pDoc.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>`;
+
+                    // Card for Mobile
+                    mobileList.innerHTML += `
+                        <div class="product-card-mobile">
+                            <img src="${img}" class="product-img">
+                            <div class="product-info">
+                                <h3>${p.name}</h3>
+                                <p><strong>${p.price} DH</strong> | Stock: ${p.stock}</p>
+                                <div class="action-btns">
+                                    <button class="btn-icon btn-edit" onclick="location.href='edit_product.html?id=${pDoc.id}'"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon btn-delete" data-id="${pDoc.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>`;
                 });
 
-                addDeleteListeners();
-
-            } catch (error) {
-                console.error("Erreur:", error);
-            }
-        }
-
-        function addDeleteListeners() {
-            document.querySelectorAll('.btn-delete').forEach(btn => {
-                btn.addEventListener('click', async (e) => {
-                    const id = e.currentTarget.dataset.id;
-                    if (confirm("Êtes-vous sûr de vouloir supprimer ce produit ?")) {
-                        try {
+                document.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.onclick = async (e) => {
+                        const id = e.currentTarget.dataset.id;
+                        if(confirm("Supprimer ce produit ?")) {
                             await deleteDoc(doc(db, "products", id));
-                            alert("Produit supprimé !");
                             location.reload();
-                        } catch (err) {
-                            alert("Erreur lors de la suppression");
                         }
-                    }
+                    };
                 });
-            });
+
+            } catch (e) { console.error(e); }
         }
     </script>
 </body>

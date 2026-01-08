@@ -24,120 +24,129 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- LAYOUT --- */
-        .app-shell { display: flex; min-height: 100vh; }
-
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (MOBILE FRIENDLY) --- */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--secondary);
             color: white;
             height: 100vh;
             position: fixed;
+            left: 0; top: 0;
             display: flex;
             flex-direction: column;
             padding: 1.5rem;
-            transition: 0.3s;
-            z-index: 1000;
+            transition: transform 0.3s ease;
+            z-index: 2000;
         }
 
-        .brand { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 3rem; color: white; text-decoration: none; }
+        .brand { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; color: white; text-decoration: none; }
         .brand span { color: var(--primary); }
 
-        .nav-section { margin-bottom: 2rem; }
-        .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #475569; letter-spacing: 0.1rem; margin-bottom: 1rem; display: block; }
+        .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #475569; letter-spacing: 0.1rem; margin: 1.5rem 0 0.5rem 0; display: block; }
         
         .nav-link {
             display: flex; align-items: center; padding: 0.8rem 1rem;
             color: #94a3b8; text-decoration: none; border-radius: 10px;
-            margin-bottom: 0.5rem; transition: 0.3s; font-weight: 500;
+            margin-bottom: 0.3rem; transition: 0.3s; font-weight: 500;
         }
-        .nav-link i { width: 25px; font-size: 1.1rem; }
+        .nav-link i { width: 25px; }
         .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
         .nav-link.active { background: var(--primary); color: white; }
 
-        /* --- MAIN CONTENT --- */
-        .main-wrapper { flex-grow: 1; margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+        /* --- MAIN LAYOUT --- */
+        .main-wrapper { flex-grow: 1; margin-left: var(--sidebar-width); transition: 0.3s; }
 
         /* --- TOPBAR --- */
         .topbar {
             height: 70px; background: var(--white); border-bottom: 1px solid var(--border);
             display: flex; align-items: center; justify-content: space-between;
-            padding: 0 2rem; position: sticky; top: 0; z-index: 900;
+            padding: 0 1.5rem; position: sticky; top: 0; z-index: 900;
         }
-        .search-bar { display: flex; align-items: center; background: #f8fafc; padding: 0.5rem 1rem; border-radius: 8px; width: 400px; border: 1px solid var(--border); }
+
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
+
+        .search-bar { display: flex; align-items: center; background: #f8fafc; padding: 0.5rem 1rem; border-radius: 8px; width: 100%; max-width: 400px; border: 1px solid var(--border); }
         .search-bar input { border: none; background: transparent; margin-left: 10px; width: 100%; outline: none; }
 
-        .topbar-tools { display: flex; align-items: center; gap: 1.5rem; }
-        .notif-badge { position: relative; cursor: pointer; color: var(--text-muted); font-size: 1.2rem; }
-        .notif-count { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; }
+        .topbar-tools { display: flex; align-items: center; gap: 1rem; }
+        .user-meta { display: flex; align-items: center; gap: 8px; }
+        .user-meta span { display: block; }
+        .user-meta img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
 
-        /* --- DASHBOARD CONTENT --- */
-        .content-body { padding: 2rem; }
-        .page-header { margin-bottom: 2rem; }
-        .page-header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.5rem; }
+        /* --- CONTENT --- */
+        .content-body { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
+        .page-header { margin-bottom: 1.5rem; }
+        .page-header h1 { font-size: 1.5rem; font-weight: 700; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
-        .stat-card { background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); display: flex; justify-content: space-between; }
-        .stat-info p { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
-        .stat-info h2 { font-size: 1.8rem; margin-top: 0.5rem; }
-        .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--white); padding: 1.2rem; border-radius: 16px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .stat-info h2 { font-size: 1.5rem; margin-top: 0.2rem; }
 
-        .data-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-md); }
-        .data-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .data-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-md); overflow: hidden; }
+        .data-header { padding: 1.2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
         
-        /* --- TABLE STYLE --- */
-        .table-container { width: 100%; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 1rem 1.5rem; background: #f8fafc; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05rem; }
-        td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; vertical-align: middle; }
-        
-        .user-meta { display: flex; align-items: center; gap: 10px; }
-        .user-meta img { width: 32px; height: 32px; border-radius: 50%; }
+        /* --- TABLE --- */
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; padding: 1rem; background: #f8fafc; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
+        td { padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
 
-        .status-pill { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-        .status-online { background: #dcfce7; color: #15803d; }
+        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
 
+        /* --- MOBILE OVERLAY --- */
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
+
+        /* --- RESPONSIVE QUERIES --- */
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
-            .main-wrapper { margin-left: 0; width: 100%; }
             .sidebar.active { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-wrapper { margin-left: 0; }
+            .menu-btn { display: block; }
+            .search-bar { display: none; } /* On cache la recherche sur petit mobile pour gagner de la place */
+            .user-meta span { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .content-body { padding: 1rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .page-header h1 { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="sidebar-overlay" id="overlay"></div>
+
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="brand"><i class="fa-solid fa-cubes-stacked"></i> Binaa<span>compare</span></a>
+            <a href="index.html" class="brand"><i class="fa-solid fa-cubes-stacked"></i> Binaa<span>Pro</span></a>
             
-            <span class="nav-label">Menu Principal</span>
             <nav class="nav-menu">
+                <span class="nav-label">Menu Principal</span>
                 <a href="#" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
                 <div id="dynamicNav"></div>
-                <a href="#" class="nav-link"><i class="fa-solid fa-envelope"></i> Messages</a>
                 <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Paramètres</a>
             </nav>
 
             <div style="margin-top: auto;">
-                <a href="index.html" id="logoutBtn" class="nav-link" style="color: #fb7185;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</a>
+                <a href="#" id="logoutBtn" class="nav-link" style="color: #fb7185;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</a>
             </div>
         </aside>
 
         <div class="main-wrapper">
             <header class="topbar">
+                <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+                
                 <div class="search-bar">
                     <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted);"></i>
-                    <input type="text" placeholder="Rechercher un devis, un produit...">
+                    <input type="text" placeholder="Rechercher...">
                 </div>
+
                 <div class="topbar-tools">
-                    <div class="notif-badge">
-                        <i class="fa-solid fa-bell"></i>
-                        <span class="notif-count">3</span>
-                    </div>
                     <div class="user-meta">
-                        <span id="topUserName" style="font-weight: 600; font-size: 0.9rem;">Chargement...</span>
-                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User" alt="Profil">
+                        <span id="topUserName">Chargement...</span>
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?background=e67e22&color=fff" alt="Profil">
                     </div>
                 </div>
             </header>
@@ -145,24 +154,23 @@
             <main class="content-body">
                 <div class="page-header">
                     <h1 id="welcomeTitle">Bonjour !</h1>
-                    <p id="subTitle">Bienvenue sur votre espace de gestion.</p>
+                    <p id="subTitle" style="color: var(--text-muted); font-size: 0.9rem;">Voici vos activités récentes.</p>
                 </div>
 
-                <div class="stats-grid" id="statsGrid">
-                    </div>
+                <div class="stats-grid" id="statsGrid"></div>
 
                 <div class="data-card">
                     <div class="data-header">
-                        <h3 id="tableTitle">Activités Récentes</h3>
-                        <button id="mainActionBtn" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer;">
-                            + Nouvelle Action
+                        <h3 id="tableTitle" style="font-size: 1rem;">Activités Récentes</h3>
+                        <button id="mainActionBtn" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.8rem;">
+                            + Nouveau
                         </button>
                     </div>
                     <div class="table-container">
                         <table>
                             <thead id="tableHead"></thead>
                             <tbody id="tableBody">
-                                <tr><td colspan="4" style="text-align:center; padding: 3rem;">Initialisation des données...</td></tr>
+                                <tr><td colspan="5" style="text-align:center; padding: 2rem;">Chargement...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -189,6 +197,19 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- GESTION MENU MOBILE ---
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        menuBtn.onclick = toggleMenu;
+        overlay.onclick = toggleMenu;
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 const userDoc = await getDoc(doc(db, "users", user.uid));
@@ -196,41 +217,38 @@
                     renderDashboard(userDoc.data(), user.uid);
                 }
             } else {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
             }
         });
 
         async function renderDashboard(userData, uid) {
             const isVendor = userData.role === 'vendor';
-            
-            // 1. Header & Profil
             document.getElementById('topUserName').innerText = isVendor ? userData.companyName : userData.firstName;
-            document.getElementById('welcomeTitle').innerText = `Ravi de vous revoir, ${userData.firstName} !`;
+            document.getElementById('welcomeTitle').innerText = `Bonjour, ${userData.firstName} 👋`;
+            
             if(userData.profilePic && userData.profilePic !== 'default') {
                 document.getElementById('userAvatar').src = userData.profilePic;
             }
 
-            // 2. Navigation Dynamique
             const nav = document.getElementById('dynamicNav');
             nav.innerHTML = isVendor ? `
-                <a href="mes-produits.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Mes Produits</a>
-                <a href="devis-recus.html" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Devis Reçus</a>
+                <a href="mapro.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Mes Produits</a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Devis Reçus</a>
             ` : `
                 <a href="index.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Comparateur</a>
-                <a href="mes-devis.html" class="nav-link"><i class="fa-solid fa-file-lines"></i> Mes Demandes</a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-file-lines"></i> Mes Demandes</a>
             `;
 
-            // 3. Stats réelles (Exemple de structure)
             const statsContainer = document.getElementById('statsGrid');
             if(isVendor) {
-                statsContainer.innerHTML = createStatCard("Produits Actifs", "14", "fa-box", "#fff7ed", "#ea580c") +
-                                          createStatCard("Vues (30j)", "2,840", "fa-eye", "#f0f9ff", "#0284c7") +
-                                          createStatCard("Devis à traiter", "5", "fa-clock", "#fdf2f8", "#db2777");
+                statsContainer.innerHTML = createStatCard("Produits", "14", "fa-box", "#fff7ed", "#ea580c") +
+                                           createStatCard("Vues", "2,840", "fa-eye", "#f0f9ff", "#0284c7") +
+                                           createStatCard("Devis", "5", "fa-clock", "#fdf2f8", "#db2777");
                 loadVendorTable(uid);
             } else {
-                statsContainer.innerHTML = createStatCard("Demandes Envoyées", "3", "fa-paper-plane", "#f0fdf4", "#16a34a") +
-                                          createStatCard("Offres Reçues", "12", "fa-tags", "#fefce8", "#ca8a04") +
-                                          createStatCard("Économie Estimée", "1,200 DH", "fa-wallet", "#f5f3ff", "#7c3aed");
+                statsContainer.innerHTML = createStatCard("Demandes", "3", "fa-paper-plane", "#f0fdf4", "#16a34a") +
+                                           createStatCard("Offres", "12", "fa-tags", "#fefce8", "#ca8a04") +
+                                           createStatCard("Économie", "1,2k DH", "fa-wallet", "#f5f3ff", "#7c3aed");
                 loadBuyerTable(uid);
             }
         }
@@ -238,21 +256,19 @@
         function createStatCard(title, val, icon, bg, color) {
             return `
                 <div class="stat-card">
-                    <div class="stat-info"><p>${title}</p><h2>${val}</h2></div>
-                    <div class="stat-icon" style="background:${bg}; color:${color}"><i class="fa-solid ${icon}"></i></div>
+                    <div class="stat-info"><p style="font-size:0.8rem; color:var(--text-muted)">${title}</p><h2>${val}</h2></div>
+                    <div class="stat-icon" style="background:${bg}; color:${color}; padding:10px; border-radius:12px;"><i class="fa-solid ${icon}"></i></div>
                 </div>`;
         }
 
         async function loadVendorTable(uid) {
             const tableHead = document.getElementById('tableHead');
             const tableBody = document.getElementById('tableBody');
-            
-            tableHead.innerHTML = `<tr><th>Client</th><th>Matériau</th><th>Date</th><th>Statut</th><th>Action</th></tr>`;
+            tableHead.innerHTML = `<tr><th>Client</th><th>Matériau</th><th>Statut</th></tr>`;
             
             const q = query(collection(db, "quotes"), where("vendorId", "==", uid), limit(5));
             const snap = await getDocs(q);
-            
-            tableBody.innerHTML = snap.empty ? "<tr><td colspan='5' style='text-align:center;'>Aucun devis pour le moment.</td></tr>" : "";
+            tableBody.innerHTML = snap.empty ? "<tr><td colspan='3' style='text-align:center;'>Aucune activité.</td></tr>" : "";
             
             snap.forEach(doc => {
                 const data = doc.data();
@@ -260,9 +276,7 @@
                     <tr>
                         <td><strong>${data.clientName || 'Anonyme'}</strong></td>
                         <td>${data.material}</td>
-                        <td>${data.date || 'Aujourd\'hui'}</td>
-                        <td><span class="status-pill status-online">Nouveau</span></td>
-                        <td><button style="border:none; background:none; cursor:pointer; color:var(--primary); font-weight:600;">Répondre</button></td>
+                        <td><span class="status-pill" style="background:#dcfce7; color:#15803d;">Nouveau</span></td>
                     </tr>`;
             });
         }
@@ -270,28 +284,24 @@
         async function loadBuyerTable(uid) {
             const tableHead = document.getElementById('tableHead');
             const tableBody = document.getElementById('tableBody');
-            
-            tableHead.innerHTML = `<tr><th>Demande</th><th>Fournisseurs</th><th>Meilleur Prix</th><th>Statut</th></tr>`;
+            tableHead.innerHTML = `<tr><th>Matériau</th><th>Réponses</th><th>Prix Min</th></tr>`;
             
             const q = query(collection(db, "requests"), where("buyerId", "==", uid), limit(5));
             const snap = await getDocs(q);
-            
-            tableBody.innerHTML = snap.empty ? "<tr><td colspan='4' style='text-align:center;'>Aucune demande en cours.</td></tr>" : "";
+            tableBody.innerHTML = snap.empty ? "<tr><td colspan='3' style='text-align:center;'>Aucune demande.</td></tr>" : "";
             
             snap.forEach(doc => {
                 const data = doc.data();
                 tableBody.innerHTML += `
                     <tr>
                         <td><strong>${data.material}</strong></td>
-                        <td>${data.responsesCount || 0} réponses</td>
+                        <td>${data.responsesCount || 0} devis</td>
                         <td>${data.minPrice || '--'} DH</td>
-                        <td><span class="status-pill" style="background:#e0f2fe; color:#0369a1;">En cours</span></td>
                     </tr>`;
             });
         }
 
         document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => window.location.href = "index.html");
-        
     </script>
 </body>
 </html>
