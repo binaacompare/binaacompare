@@ -116,6 +116,7 @@
             .panel { padding: 15px; }
             .logo { margin-bottom: 20px; }
         }
+        
     </style>
 </head>
 <body>
@@ -133,6 +134,15 @@
             <a class="nav-link" onclick="openModal('editProfileModal')"><i class="fa-solid fa-user-pen"></i> <span>Mon Profil</span></a>
             <a class="nav-link" id="logoutBtn" style="color:#f87171; margin-top: 50px;"><i class="fa-solid fa-power-off"></i> <span>Déconnexion</span></a>
         </nav>
+        <div class="panel">
+    <div class="section-title">
+        <i class="fa-solid fa-bell animate__animated animate__swing animate__infinite" style="color:#f1c40f"></i> 
+        Alertes de Prix
+    </div>
+    <div id="notificationsList" class="fav-list" style="max-height: 300px; overflow-y: auto;">
+        <p style="text-align:center; color:#94a3b8; font-size:0.8rem; padding:20px;">Aucune nouvelle alerte.</p>
+    </div>
+</div>
     </aside>
 
     <main class="main-content">
@@ -321,7 +331,7 @@
                     if (pSnap.exists()) {
                         const p = pSnap.data();
                         favList.innerHTML += `
-                            <a href="product-detail.html?id=${pId}" class="fav-card">
+                            <a href="datapro.html?id=${pId}" class="fav-card">
                                 <img src="${p.imageUrl || 'https://via.placeholder.com/50'}" class="fav-img">
                                 <div>
                                     <p style="font-weight:700; font-size:0.9rem">${p.name}</p>
@@ -352,6 +362,100 @@
     window.openModal = (id) => document.getElementById(id).classList.add('active');
     window.closeModal = (id) => document.getElementById(id).classList.remove('active');
     document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => window.location.href = "index.html");
+    // --- FONCTION NOTIFICATIONS EN TEMPS RÉEL ---
+async function listenToPriceChanges(uid) {
+    const notifContainer = document.getElementById('notificationsList');
+    
+    // 1. Récupérer la liste des IDs de produits favoris de l'utilisateur
+    const qFavs = query(collection(db, "favorites"), where("userId", "==", uid));
+    const favSnap = await getDocs(qFavs);
+    
+    if (favSnap.empty) return;
+
+    const favoriteProductIds = favSnap.docs.map(doc => doc.data().productId);
+
+    // 2. Écouter les notifications spécifiques à cet utilisateur
+    // Note: Vous devez avoir une fonction côté vendeur qui écrit dans la collection "notifications"
+    const qNotifs = query(
+        collection(db, "notifications"), 
+        where("userId", "==", uid),
+        orderBy("createdAt", "desc"),
+        limit(5)
+    );
+
+    // Utilisation de onSnapshot pour le temps réel sans recharger la page
+    onSnapshot(qNotifs, (snapshot) => {
+        if (snapshot.empty) return;
+        
+        notifContainer.innerHTML = "";
+        snapshot.forEach((doc) => {
+            const n = doc.data();
+            const date = n.createdAt?.toDate() ? n.createdAt.toDate().toLocaleTimeString() : "Maintenant";
+            
+            const item = document.createElement('div');
+            item.className = "fav-item"; // On réutilise le style existant
+            item.style.borderLeft = "4px solid #f1c40f";
+            item.innerHTML = `
+                <div class="fav-info">
+                    <h4 style="font-size:0.85rem;">${n.message}</h4>
+                    <p style="font-size:0.7rem; color:#94a3b8;">${date} • <a href="datapro.html?id=${n.productId}" style="color:var(--primary)">Voir le nouveau prix</a></p>
+                </div>
+            `;
+            notifContainer.appendChild(item);
+        });
+    });
+}
+
+// Appelez la fonction dans votre onAuthStateChanged
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // ... vos fonctions précédentes ...
+        listenToPriceChanges(user.uid); 
+    }
+});
+
+</script>
+<script>
+    import { collection, query, where, orderBy, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+function listenToMyNotifications(uid) {
+    const notifList = document.getElementById("notificationsList");
+
+    // On écoute les notifications créées pour cet utilisateur spécifique
+    const q = query(
+        collection(db, "notifications"),
+        where("userId", "==", uid),
+        orderBy("createdAt", "desc"),
+        limit(10)
+    );
+
+    // Temps réel : onSnapshot
+    onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+            notifList.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">Aucune alerte de prix.</p>';
+            return;
+        }
+
+        notifList.innerHTML = ""; // Vider la liste
+        snapshot.forEach((docSnap) => {
+            const n = docSnap.data();
+            const li = document.createElement("div");
+            li.className = "fav-item"; // Utilisation du style existant
+            li.style.borderRight = "4px solid #e67e22"; // Bordure orange pour l'alerte
+            li.innerHTML = `
+                <div class="fav-info" style="width:100%">
+                    <div style="display:flex; justify-content:space-between; align-items:start;">
+                        <h4 style="font-size:0.85rem; margin-bottom:5px;">🔔 Baisse de prix !</h4>
+                        <small style="color:#94a3b8; font-size:0.7rem;">${n.createdAt?.toDate().toLocaleTimeString() || ''}</small>
+                    </div>
+                    <p style="font-size:0.85rem; color:var(--dark);">${n.message}</p>
+                    <a href="product-detail.html?id=${n.productId}" style="color:var(--primary); font-size:0.8rem; font-weight:700; text-decoration:none;">Voir le produit →</a>
+                </div>
+            `;
+            notifList.appendChild(li);
+        });
+    });
+}
 </script>
 </body>
 </html>

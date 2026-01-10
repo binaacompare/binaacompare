@@ -278,6 +278,57 @@
         document.getElementById('logoutBtn').addEventListener('click', () => {
             signOut(auth).then(() => { window.location.href = "index.html"; });
         });
+        
+    </script>
+    <script>
+        import { 
+    getFirestore, 
+    doc, 
+    updateDoc, 
+    collection, 
+    query, 
+    where, 
+    getDocs, 
+    addDoc, 
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const db = getFirestore();
+
+async function updatePriceAndNotify(productId, newPrice, productName) {
+    try {
+        // 1. Mise à jour du prix du produit
+        const productRef = doc(db, "products", productId);
+        await updateDoc(productRef, { 
+            price: newPrice,
+            lastUpdate: serverTimestamp() 
+        });
+
+        // 2. Recherche des utilisateurs qui aiment ce produit
+        const favQuery = query(collection(db, "favorites"), where("productId", "==", productId));
+        const favSnapshot = await getDocs(favQuery);
+
+        // 3. Liaison : Création des notifications pour chaque acheteur
+        const notifications = favSnapshot.docs.map(favDoc => {
+            const userId = favDoc.data().userId; // L'ID de l'acheteur
+            
+            return addDoc(collection(db, "notifications"), {
+                userId: userId,           // Destinataire
+                productId: productId,     // Produit concerné
+                type: "PRICE_DROP",
+                message: `Bonne nouvelle ! Le prix de "${productName}" est maintenant de ${newPrice} DH.`,
+                createdAt: serverTimestamp(),
+                status: "unread"
+            });
+        });
+
+        await Promise.all(notifications);
+        console.log("Prix mis à jour et acheteurs notifiés !");
+
+    } catch (error) {
+        console.error("Erreur de liaison database:", error);
+    }
+}
     </script>
 </body>
 </html>
