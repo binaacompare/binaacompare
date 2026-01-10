@@ -415,47 +415,5 @@ onAuthStateChanged(auth, (user) => {
 });
 
 </script>
-<script>
-    import { collection, query, where, orderBy, onSnapshot, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-function listenToMyNotifications(uid) {
-    const notifList = document.getElementById("notificationsList");
-
-    // On écoute les notifications créées pour cet utilisateur spécifique
-    const q = query(
-        collection(db, "notifications"),
-        where("userId", "==", uid),
-        orderBy("createdAt", "desc"),
-        limit(10)
-    );
-
-    // Temps réel : onSnapshot
-    onSnapshot(q, (snapshot) => {
-        if (snapshot.empty) {
-            notifList.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">Aucune alerte de prix.</p>';
-            return;
-        }
-
-        notifList.innerHTML = ""; // Vider la liste
-        snapshot.forEach((docSnap) => {
-            const n = docSnap.data();
-            const li = document.createElement("div");
-            li.className = "fav-item"; // Utilisation du style existant
-            li.style.borderRight = "4px solid #e67e22"; // Bordure orange pour l'alerte
-            li.innerHTML = `
-                <div class="fav-info" style="width:100%">
-                    <div style="display:flex; justify-content:space-between; align-items:start;">
-                        <h4 style="font-size:0.85rem; margin-bottom:5px;">🔔 Baisse de prix !</h4>
-                        <small style="color:#94a3b8; font-size:0.7rem;">${n.createdAt?.toDate().toLocaleTimeString() || ''}</small>
-                    </div>
-                    <p style="font-size:0.85rem; color:var(--dark);">${n.message}</p>
-                    <a href="product-detail.html?id=${n.productId}" style="color:var(--primary); font-size:0.8rem; font-weight:700; text-decoration:none;">Voir le produit →</a>
-                </div>
-            `;
-            notifList.appendChild(li);
-        });
-    });
-}
-</script>
 </body>
 </html>
