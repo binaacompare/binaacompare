@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Édition Premium | BinaaPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --orange: #e67e22; --blue: #1a2b3c; --gray: #f4f7fa; --border: #e2e8f0; --white: #ffffff; }
+        
+        body { font-family: 'Poppins', sans-serif; background: var(--gray); margin: 0; overflow-x: hidden; }
+
+        /* ANIMATIONS DE MOUVEMENT */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseBorder {
+            0% { border-color: var(--border); }
+            50% { border-color: var(--orange); }
+            100% { border-color: var(--border); }
+        }
+
+        .edit-container { 
+            max-width: 900px; margin: 40px auto; background: var(--white); 
+            padding: 40px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        /* ZONE UPLOAD PHOTO MOUVEMENT */
+        .upload-zone {
+            width: 100%; height: 250px; border: 3px dashed var(--border);
+            border-radius: 20px; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; cursor: pointer;
+            transition: 0.3s; position: relative; overflow: hidden;
+            background: #fafafa; margin-bottom: 30px;
+        }
+        .upload-zone:hover { border-color: var(--orange); background: #fff9f4; }
+        .upload-zone i { font-size: 3rem; color: #bdc3c7; margin-bottom: 10px; }
+        #previewImg { position: absolute; width: 100%; height: 100%; object-fit: cover; display: none; }
+
+        /* FORMULAIRE DESIGN */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .full { grid-column: span 2; }
+
+        .input-group { position: relative; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 8px; color: var(--blue); font-size: 0.85rem; text-transform: uppercase; }
+        
+        .field {
+            width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: 12px;
+            font-family: inherit; font-size: 1rem; transition: 0.3s; box-sizing: border-box;
+        }
+        .field:focus { border-color: var(--orange); outline: none; box-shadow: 0 0 15px rgba(230,126,34,0.1); transform: translateX(5px); }
+
+        .address-box { background: #fdfdfd; padding: 20px; border-radius: 15px; border: 1px solid var(--border); margin-top: 10px; }
+
+        .btn-save {
+            width: 100%; background: var(--blue); color: white; border: none; padding: 20px;
+            border-radius: 15px; font-size: 1.2rem; font-weight: 700; cursor: pointer;
+            margin-top: 30px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-save:hover { background: var(--orange); transform: scale(1.02); box-shadow: 0 15px 30px rgba(230,126,34,0.3); }
+
+        /* LOADER OVERLAY */
+        #loader { 
+            position: fixed; inset: 0; background: rgba(26, 43, 60, 0.9); 
+            z-index: 9999; display: none; align-items: center; justify-content: center; color: white; font-weight: 600;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="loader"><i class="fas fa-sync fa-spin fa-3x"></i> &nbsp; Mise à jour...</div>
+
+    <div class="edit-container">
+        <h1 style="color: var(--blue); font-weight: 800; margin-bottom: 5px;">Mettre à jour le produit</h1>
+        <p style="color: #7f8c8d; margin-bottom: 30px;">ID : <span id="prodID">Chargement...</span></p>
+
+        <form id="editForm">
+            <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                <img id="previewImg" src="">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Cliquez ou glissez une nouvelle photo ici</p>
+                <input type="file" id="fileInput" hidden accept="image/*">
+            </div>
+
+            <div class="form-grid">
+                <div class="input-group">
+                    <label>Nom de l'article</label>
+                    <input type="text" id="name" class="field" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Catégorie</label>
+                    <select id="category" class="field">
+                        <option>Gros Œuvre</option>
+                        <option>Second Œuvre</option>
+                        <option>Outillage</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Prix (DH)</label>
+                    <input type="number" id="price" class="field" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Stock</label>
+                    <input type="number" id="stock" class="field" required>
+                </div>
+
+                <div class="input-group full">
+                    <label><i class="fas fa-map-marker-alt"></i> Adresse de retrait / Magasin</label>
+                    <div class="address-box">
+                        <input type="text" id="address" class="field" placeholder="Ex: 45 Rue Mohammed V, Casablanca">
+                    </div>
+                </div>
+
+                <div class="input-group full">
+                    <label>Description technique</label>
+                    <textarea id="description" class="field" rows="4"></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-save">
+                <i class="fas fa-check-circle"></i> ENREGISTRER LES MODIFICATIONS
+            </button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app", // Correction ici pour le stockage
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        document.getElementById('prodID').innerText = productId;
+
+        // --- GESTION DE LA PRÉVISUALISATION PHOTO ---
+        const fileInput = document.getElementById('fileInput');
+        const previewImg = document.getElementById('previewImg');
+        
+        fileInput.onchange = (e) => {
+            const [file] = fileInput.files;
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
+                previewImg.style.display = 'block';
+            }
+        };
+
+        // --- CHARGEMENT DES DONNÉES ---
+        async function loadData() {
+            const docSnap = await getDoc(doc(db, "products", productId));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('name').value = data.name || "";
+                document.getElementById('price').value = data.price || "";
+                document.getElementById('stock').value = data.stock || "";
+                document.getElementById('category').value = data.category || "Gros Œuvre";
+                document.getElementById('description').value = data.description || "";
+                document.getElementById('address').value = data.address || "";
+                
+                if(data.imageUrl) {
+                    previewImg.src = data.imageUrl;
+                    previewImg.style.display = 'block';
+                }
+            }
+        }
+
+        // --- SAUVEGARDE AVEC UPLOAD ---
+        document.getElementById('editForm').onsubmit = async (e) => {
+            e.preventDefault();
+            document.getElementById('loader').style.display = 'flex';
+
+            let finalImageUrl = previewImg.src;
+
+            // Si une nouvelle photo a été choisie
+            if (fileInput.files[0]) {
+                const storageRef = ref(storage, `products/${productId}_${Date.now()}`);
+                const snapshot = await uploadBytes(storageRef, fileInput.files[0]);
+                finalImageUrl = await getDownloadURL(snapshot.ref);
+            }
+
+            try {
+                await updateDoc(doc(db, "products", productId), {
+                    name: document.getElementById('name').value,
+                    price: Number(document.getElementById('price').value),
+                    stock: Number(document.getElementById('stock').value),
+                    category: document.getElementById('category').value,
+                    address: document.getElementById('address').value,
+                    description: document.getElementById('description').value,
+                    imageUrl: finalImageUrl,
+                    updatedAt: new Date()
+                });
+                alert("Produit synchronisé !");
+                window.location.reload();
+            } catch (err) {
+                console.error(err);
+                alert("Erreur lors de la mise à jour.");
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        };
+
+        loadData();
+    </script>
+</body>
+</html>

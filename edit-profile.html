@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Profil | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --orange: #e67e22; --blue: #0f172a; --bg: #f8fafc; --white: #ffffff; --border: #e2e8f0; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 0; color: #1e293b; }
+        
+        .header-edit { background: var(--blue); color: white; padding: 40px 15px; text-align: center; position: relative; }
+        .btn-back { position: absolute; top: 20px; left: 20px; color: white; text-decoration: none; font-size: 0.9rem; }
+
+        .container { max-width: 700px; margin: -40px auto 40px; padding: 0 15px; }
+        .edit-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+
+        /* Photo Upload amélioré */
+        .photo-upload-container { text-align: center; margin-bottom: 30px; position: relative; }
+        .profile-preview-wrapper { position: relative; display: inline-block; }
+        .profile-preview { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--white); box-shadow: 0 4px 10px rgba(0,0,0,0.1); background: #eee; }
+        .upload-icon { 
+            position: absolute; bottom: 5px; right: 5px; background: var(--orange); 
+            color: white; width: 35px; height: 35px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            cursor: pointer; border: 3px solid white; transition: 0.3s;
+        }
+        .upload-icon:hover { transform: scale(1.1); }
+        #fileInput { display: none; }
+
+        /* Form styling */
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--blue); }
+        input, select, textarea { 
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; 
+            font-family: inherit; font-size: 0.9rem; transition: 0.3s; box-sizing: border-box;
+        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1); }
+
+        .btn-save { 
+            background: var(--orange); color: white; border: none; width: 100%; padding: 15px; 
+            border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem; margin-top: 10px;
+            transition: 0.3s;
+        }
+        .btn-save:hover { background: #d35400; }
+        .btn-save:disabled { background: #ccc; cursor: not-allowed; }
+        
+        #statusMsg { text-align: center; margin-top: 15px; font-size: 0.9rem; display: none; padding: 10px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="header-edit">
+        <a href="javascript:history.back()" class="btn-back"><i class="fas fa-arrow-left"></i> Retour</a>
+        <h1>Paramètres du Profil</h1>
+    </div>
+
+    <div class="container">
+        <div class="edit-card">
+            <div class="photo-upload-container">
+                <div class="profile-preview-wrapper">
+                    <img id="currentPhoto" src="https://ui-avatars.com/api/?background=e67e22&color=fff" class="profile-preview">
+                    <label for="fileInput" class="upload-icon">
+                        <i class="fas fa-camera"></i>
+                    </label>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
+                <p style="font-size: 0.75rem; color: #777; margin-top: 8px;">Cliquez sur l'icône pour changer la photo</p>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-phone"></i> Numéro de téléphone</label>
+                <input type="tel" id="editPhone" placeholder="Ex: 06 00 00 00 00">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email professionnel</label>
+                <input type="email" id="editEmail" placeholder="contact@entreprise.ma">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-city"></i> Ville</label>
+                <select id="editCity">
+                    <option value="">Choisir une ville...</option>
+                    <option value="Casablanca">Casablanca</option>
+                    <option value="Rabat">Rabat</option>
+                    <option value="Marrakech">Marrakech</option>
+                    <option value="Tanger">Tanger</option>
+                    <option value="Agadir">Agadir</option>
+                    <option value="Fès">Fès</option>
+                    <option value="Meknès">Meknès</option>
+                    <option value="Oujda">Oujda</option>
+                    <option value="Kenitra">Kenitra</option>
+                    <option value="Tétouan">Tétouan</option>
+                    <option value="Laâyoune">Laâyoune</option>
+                    <option value="Dakhla">Dakhla</option>
+                    <option value="Béni Mellal">Béni Mellal</option>
+                    <option value="El Jadida">El Jadida</option>
+                    <option value="Nador">Nador</option>
+                    </select>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-map-marked-alt"></i> Adresse complète</label>
+                <input type="text" id="editAddress" placeholder="N°, Rue, Quartier...">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-align-left"></i> À propos / Description</label>
+                <textarea id="editAbout" rows="4" placeholder="Présentez votre entreprise en quelques lignes..."></textarea>
+            </div>
+
+            <button class="btn-save" id="btnSaveProfile">ENREGISTRER LES MODIFICATIONS</button>
+            <div id="statusMsg"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let currentUser = null;
+        let base64Image = ""; // Stockera la nouvelle image si elle est changée
+
+        // 1. Charger les données existantes
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const docSnap = await getDoc(doc(db, "users", user.uid));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if(data.profilePic) document.getElementById('currentPhoto').src = data.profilePic;
+                    document.getElementById('editPhone').value = data.phone || "";
+                    document.getElementById('editEmail').value = data.email || "";
+                    document.getElementById('editCity').value = data.city || "";
+                    document.getElementById('editAddress').value = data.address || "";
+                    document.getElementById('editAbout').value = data.about || data.description || "";
+                }
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        // 2. Gérer l'upload de photo (Conversion en Base64 pour Firestore)
+        document.getElementById('fileInput').onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (file.size > 500000) { // Limite 500KB pour Base64 dans Firestore
+                    alert("Image trop lourde. Max 500KB.");
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    base64Image = event.target.result;
+                    document.getElementById('currentPhoto').src = base64Image;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        // 3. Sauvegarder les modifications
+        document.getElementById('btnSaveProfile').onclick = async () => {
+            if (!currentUser) return;
+
+            const btn = document.getElementById('btnSaveProfile');
+            const msg = document.getElementById('statusMsg');
+
+            btn.disabled = true;
+            btn.innerText = "Enregistrement...";
+
+            try {
+                const updateData = {
+                    phone: document.getElementById('editPhone').value,
+                    email: document.getElementById('editEmail').value,
+                    city: document.getElementById('editCity').value,
+                    address: document.getElementById('editAddress').value,
+                    about: document.getElementById('editAbout').value
+                };
+
+                // Si une nouvelle photo a été choisie, on l'ajoute à la mise à jour
+                if (base64Image) {
+                    updateData.profilePic = base64Image;
+                }
+
+                await updateDoc(doc(db, "users", currentUser.uid), updateData);
+
+                msg.style.display = "block";
+                msg.style.background = "#dcfce7";
+                msg.style.color = "#166534";
+                msg.innerHTML = "✅ Profil mis à jour avec succès !";
+                
+                setTimeout(() => { history.back(); }, 1500);
+
+            } catch (error) {
+                console.error(error);
+                msg.style.display = "block";
+                msg.style.background = "#fee2e2";
+                msg.style.color = "#991b1b";
+                msg.innerText = "Erreur de sauvegarde.";
+                btn.disabled = false;
+                btn.innerText = "ENREGISTRER LES MODIFICATIONS";
+            }
+        };
+    </script>
+</body>
+</html>

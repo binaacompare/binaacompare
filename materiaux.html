@@ -3,154 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogue Matériaux | BinaaCompare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Catalogue Premium Matériaux | BinaaCompare</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        :root { --primary: #e67e22; --dark: #1a2b3c; --bg: #f4f7fa; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        
-        nav { background: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-weight: 700; font-size: 1.4rem; color: var(--dark); text-decoration: none; }
-        .logo span { color: var(--primary); }
-        .nav-links { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
-        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 500; font-size: 0.9rem; }
+        :root {
+            --primary: #e67e22;
+            --dark: #1a2b3c;
+            --light-bg: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
 
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
-        .product-card { background: white; border-radius: 15px; padding: 15px; border: 1px solid #e1e8ed; transition: 0.3s; position: relative; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .product-img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--dark);
+        }
+
+        /* --- BACKGROUND ANIMATION (Matériaux) --- */
+        .bg-animate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.06; pointer-events: none;
+        }
+        .material-icon {
+            position: absolute; color: var(--dark);
+            animation: floatMove linear infinite;
+        }
+        @keyframes floatMove {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .logo { font-weight: 800; font-size: 1.6rem; color: var(--dark); text-decoration: none; }
+        .logo span { color: var(--primary); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: radial-gradient(circle at top, #ffffff 0%, var(--light-bg) 100%);
+        }
+        .hero h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 15px; }
+
+        /* --- SEARCH BAR --- */
+        .search-container {
+            max-width: 600px; margin: 0 auto 40px; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 18px 30px 18px 60px; border-radius: 50px;
+            border: none; box-shadow: 0 15px 35px rgba(0,0,0,0.07);
+            font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .search-input:focus { box-shadow: 0 15px 35px rgba(230, 126, 34, 0.2); }
+        .search-container i {
+            position: absolute; left: 25px; top: 50%; transform: translateY(-50%);
+            color: var(--primary); font-size: 1.3rem;
+        }
+
+        /* --- CATEGORY PILLS --- */
+        .category-filter {
+            display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 50px;
+        }
+        .pill {
+            padding: 12px 25px; background: white; border-radius: 50px;
+            cursor: pointer; font-size: 0.9rem; font-weight: 600;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .pill i { font-size: 1rem; }
+        .pill.active {
+            background: var(--primary); color: white; border-color: var(--primary);
+            transform: scale(1.1); box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
+        }
+        .pill:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+        /* --- PRODUCT GRID --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px; padding-bottom: 80px;
+        }
+
+        .card {
+            background: white; border-radius: 20px; overflow: hidden;
+            transition: 0.4s; border: 1px solid rgba(0,0,0,0.02);
+            display: flex; flex-direction: column; position: relative;
+        }
+        .card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
         
-        .badge { background: #fff4eb; color: var(--primary); font-size: 0.7rem; padding: 4px 10px; border-radius: 50px; font-weight: 700; text-transform: uppercase; }
-        .vendor-name { font-size: 0.75rem; color: #7f8c8d; font-weight: 600; display: block; margin-top: 5px; }
-        .vendor-name i { color: #27ae60; margin-right: 3px; }
+        .card-img-wrapper { position: relative; height: 200px; width: 100%; overflow: hidden; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card:hover .card-img { transform: scale(1.1); }
         
-        .price-tag { font-size: 1.2rem; font-weight: 700; color: var(--dark); }
-        #loading { grid-column: 1/-1; text-align: center; padding: 50px; color: #666; }
+        .city-tag {
+            position: absolute; top: 15px; left: 15px; background: rgba(0,0,0,0.6);
+            color: white; padding: 5px 12px; border-radius: 50px; font-size: 0.7rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-cat { color: var(--primary); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .card-title { font-size: 1.15rem; margin: 8px 0; font-weight: 700; color: var(--dark); }
+        
+        .vendor-line { font-size: 0.8rem; color: #7f8c8d; display: flex; align-items: center; gap: 6px; margin-bottom: 15px; }
+        .vendor-line i { color: #27ae60; }
+
+        .price-row {
+            margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+            padding-top: 15px; border-top: 1px solid #f1f5f9;
+        }
+        .price-val { font-size: 1.3rem; font-weight: 800; color: var(--dark); }
+        .price-val small { font-size: 0.75rem; color: #666; font-weight: 400; }
+        
+        .btn-view {
+            background: var(--dark); color: white; padding: 10px 18px; border-radius: 12px;
+            text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: 0.3s;
+        }
+        .btn-view:hover { background: var(--primary); }
+
+        #no-result { grid-column: 1/-1; text-align: center; padding: 60px; display: none; }
     </style>
 </head>
 <body>
 
+    <div class="bg-animate" id="bgLayer"></div>
+
     <nav>
         <a href="index.html" class="logo">Binaa<span>Compare</span></a>
-        <ul class="nav-links">
-            <li><a href="index.html">Accueil</a></li>
-            <li id="dynamicProfileLink" style="display: none;">
-                <a href="#" id="profileAnchor" style="color: var(--primary); font-weight: 700;">
-                    <i class="fa-solid fa-circle-user"></i> <span id="profileText">Mon Profil</span>
-                </a>
-            </li>
-        </ul>
+        <div id="userProfile"></div>
     </nav>
 
-    <div class="container">
-        <header style="display: flex; justify-content: space-between; align-items: center;">
-            <h1>Matériaux au Maroc</h1>
-            <div id="userGreeting" style="font-size: 0.9rem; color: #666;"></div>
-        </header>
+    <div class="hero">
+        <div class="container">
+            <h1>Catalogue des Matériaux</h1>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Chercher un produit (ex: Ciment, Acier...)">
+            </div>
 
-        <div id="productsGrid" class="products-grid">
-            <div id="loading"><i class="fas fa-circle-notch fa-spin"></i> Chargement des offres...</div>
+            <div class="category-filter">
+                <div class="pill active" data-cat="all"><i class="fas fa-th-large"></i> Tous</div>
+                <div class="pill" data-cat="acier"><i class="fas fa-bridge"></i> Acier</div>
+                <div class="pill" data-cat="gros-oeuvre"><i class="fas fa-trowel-bricks"></i> Gros Œuvre</div>
+                <div class="pill" data-cat="isolation"><i class="fas fa-layer-group"></i> Isolation</div>
+                <div class="pill" data-cat="finition"><i class="fas fa-paint-roller"></i> Finition</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="productGrid">
+            <div style="grid-column:1/-1; text-align:center;"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary)"></i></div>
+        </div>
+        <div id="no-result">
+            <i class="fas fa-box-open fa-3x" style="color:#ccc; margin-bottom:15px"></i>
+            <h3>Aucun matériau trouvé</h3>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
             authDomain: "binaacompare-fa5e1.firebaseapp.com",
             projectId: "binaacompare-fa5e1",
             storageBucket: "binaacompare-fa5e1.firebasestorage.app",
-            messagingSenderId: "667570543544",
             appId: "1:667570543544:web:652218ab5a773eb2154d4d"
         };
 
         const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Cache pour éviter de re-télécharger le même vendeur plusieurs fois
+        // --- BACKGROUND ANIMATION GENERATOR ---
+        const icons = ['fa-hammer', 'fa-screwdriver-wrench', 'fa-helmet-safety', 'fa-ruler-combined', 'fa-truck-pickup', 'fa-trowel-bricks'];
+        const bgLayer = document.getElementById('bgLayer');
+        for(let i=0; i<20; i++) {
+            const icon = document.createElement('i');
+            icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} material-icon`;
+            icon.style.left = Math.random() * 100 + 'vw';
+            icon.style.fontSize = (Math.random() * 25 + 20) + 'px';
+            icon.style.animationDuration = (Math.random() * 12 + 10) + 's';
+            icon.style.animationDelay = (Math.random() * 8) + 's';
+            bgLayer.appendChild(icon);
+        }
+
+        // --- DATA LOGIC ---
+        let allProducts = [];
         const vendorCache = {};
 
-        async function getVendorName(vendorId) {
-            if (!vendorId) return "Fournisseur Inconnu";
-            if (vendorCache[vendorId]) return vendorCache[vendorId];
-
-            try {
-                const vDoc = await getDoc(doc(db, "users", vendorId));
-                if (vDoc.exists()) {
-                    const name = vDoc.data().companyName || vDoc.data().firstName || "Partenaire";
-                    vendorCache[vendorId] = name;
-                    return name;
+        async function init() {
+            const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
+            const snapshot = await getDocs(q);
+            
+            allProducts = await Promise.all(snapshot.docs.map(async (pDoc) => {
+                const data = pDoc.data();
+                // Fetch vendor name if not in cache
+                if(!vendorCache[data.vendorId]) {
+                    const vSnap = await getDoc(doc(db, "users", data.vendorId));
+                    vendorCache[data.vendorId] = vSnap.exists() ? vSnap.data().companyName : "Fournisseur";
                 }
-            } catch (e) { console.error(e); }
-            return "Partenaire Binaa";
+                return { id: pDoc.id, ...data, vendorName: vendorCache[data.vendorId] };
+            }));
+
+            render();
         }
 
-        onAuthStateChanged(auth, async (user) => {
-            const linkItem = document.getElementById('dynamicProfileLink');
-            if (user) {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-                    linkItem.style.display = "block";
-                    document.getElementById('userGreeting').innerText = `Bonjour, ${userData.firstName}`;
-                    document.getElementById('profileAnchor').href = userData.role === "vendor" ? "dachv.html" : "profil_client.html";
-                    document.getElementById('profileText').innerText = userData.role === "vendor" ? "Dashboard Pro" : "Mon Espace";
-                }
-            }
-        });
+        function render() {
+            const grid = document.getElementById('productGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const activeCat = document.querySelector('.pill.active').dataset.cat;
 
-        async function loadProducts() {
-            const grid = document.getElementById('productsGrid');
-            try {
-                const q = query(collection(db, "products"), orderBy("createdAt", "desc"));
-                const snapshot = await getDocs(q);
-                grid.innerHTML = "";
+            const filtered = allProducts.filter(p => {
+                const matchSearch = p.name.toLowerCase().includes(search) || p.vendorName.toLowerCase().includes(search);
+                const matchCat = (activeCat === 'all' || p.category === activeCat);
+                return matchSearch && matchCat;
+            });
 
-                if (snapshot.empty) {
-                    grid.innerHTML = "<p>Aucun produit disponible.</p>";
-                    return;
-                }
+            grid.innerHTML = "";
+            document.getElementById('no-result').style.display = filtered.length ? 'none' : 'block';
 
-                // Utilisation de Promise.all pour charger les vendeurs en parallèle
-                const cardsHTML = await Promise.all(snapshot.docs.map(async (pDoc) => {
-                    const p = pDoc.data();
-                    const vendorName = await getVendorName(p.vendorId);
-                    
-                    return `
-                        <div class="product-card">
-                            <img src="${p.imageUrl || 'https://via.placeholder.com/300'}" class="product-img">
-                            <div style="margin-top:12px;">
-                                <span class="badge">${p.category}</span>
-                                <h3 style="margin:8px 0 2px; font-size:1rem;">${p.name}</h3>
-                                <span class="vendor-name"><i class="fa-solid fa-store"></i> ${vendorName}</span>
-                                
-                                <p style="font-size:0.8rem; color:#666; margin:8px 0 0 0;">
-                                    <i class="fa-solid fa-location-dot"></i> ${p.city}
-                                </p>
-                                
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px; border-top:1px solid #f8f9fa; padding-top:10px;">
-                                    <span class="price-tag">${p.price} <small style="font-size:0.7rem;">DH/${p.unit}</small></span>
-                                    <a href="datapro.html?id=${pDoc.id}" style="color:var(--primary); font-size:0.85rem; font-weight:700; text-decoration:none;">DÉTAILS</a>
-                                </div>
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="card">
+                        <div class="card-img-wrapper">
+                            <span class="city-tag"><i class="fas fa-location-dot"></i> ${p.city}</span>
+                            <img src="${p.imageUrl}" class="card-img" alt="${p.name}">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-cat">${p.category.replace('-', ' ')}</span>
+                            <h3 class="card-title">${p.name}</h3>
+                            <div class="vendor-line">
+                                <i class="fas fa-check-circle"></i> ${p.vendorName}
+                            </div>
+                            <div class="price-row">
+                                <div class="price-val">${p.price} <small>DH/${p.unit}</small></div>
+                                <a href="datapro.html?id=${p.id}" class="btn-view">Détails</a>
                             </div>
                         </div>
-                    `;
-                }));
-
-                grid.innerHTML = cardsHTML.join('');
-            } catch (err) {
-                grid.innerHTML = "<p>Erreur de chargement.</p>";
-                console.error(err);
-            }
+                    </div>
+                `;
+            });
         }
 
-        loadProducts();
+        // --- INTERACTION ---
+        document.getElementById('searchInput').addEventListener('input', render);
+
+        document.querySelectorAll('.pill').forEach(pill => {
+            pill.onclick = (e) => {
+                document.querySelector('.pill.active').classList.remove('active');
+                pill.classList.add('active');
+                render();
+            };
+        });
+
+        init();
     </script>
 </body>
 </html>

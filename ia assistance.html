@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr" id="html-tag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BinaaAI | Expert Comptable & Devis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #e67e22; --secondary: #1a2b3c; --bg: #f1f5f9; --white: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { font-family: 'Poppins', 'Tajawal', sans-serif; background: var(--bg); height: 100vh; display: flex; flex-direction: column; }
+
+        /* Navbar responsive */
+        .navbar { 
+            background: var(--secondary); color: white; padding: 15px 20px; 
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .logo { font-size: 1.4rem; font-weight: 800; color: var(--primary); }
+
+        .lang-switch {
+            background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--primary);
+            padding: 6px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+        }
+
+        /* Chat Container */
+        #chat-window { 
+            flex: 1; padding: 20px; overflow-y: auto; 
+            display: flex; flex-direction: column; gap: 15px;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        .message { max-width: 85%; padding: 12px 18px; border-radius: 15px; font-size: 0.9rem; line-height: 1.5; position: relative; }
+        .ai-msg { 
+            align-self: flex-start; background: var(--white); color: #333; 
+            border-bottom-left-radius: 2px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        }
+        .user-msg { 
+            align-self: flex-end; background: var(--primary); color: white; 
+            border-bottom-right-radius: 2px; 
+        }
+
+        /* Input Area (Phone friendly) */
+        .input-area { 
+            padding: 15px; background: var(--white); border-top: 1px solid #ddd;
+            display: flex; gap: 10px; align-items: center;
+        }
+        #user-input { 
+            flex: 1; padding: 12px 20px; border: 1px solid #ddd; 
+            border-radius: 30px; outline: none; font-size: 1rem;
+        }
+        .send-btn { 
+            background: var(--primary); color: white; border: none; 
+            width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .loader { display: none; text-align: center; padding: 5px; font-size: 0.8rem; color: var(--primary); }
+
+        /* RTL Adjustments */
+        [dir="rtl"] .ai-msg { align-self: flex-start; border-bottom-left-radius: 15px; border-bottom-right-radius: 2px; }
+        [dir="rtl"] .user-msg { align-self: flex-end; border-bottom-right-radius: 15px; border-bottom-left-radius: 2px; }
+
+        @media (min-width: 768px) {
+            .message { max-width: 60%; }
+            body { flex-direction: row; }
+            .navbar { width: 280px; height: 100vh; flex-direction: column; justify-content: flex-start; gap: 30px; }
+            .input-area { padding: 25px 10%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">BinaaAI <i class="fas fa-calculator"></i></div>
+        <p style="font-size: 0.8rem; opacity: 0.7; text-align: center;" id="side-desc">Votre Expert Comptable BTP au Maroc.</p>
+        <button class="lang-switch" onclick="toggleLanguage()">
+            <i class="fas fa-language"></i> <span id="lang-text">العربية</span>
+        </button>
+    </div>
+
+    <div style="flex: 1; display: flex; flex-direction: column; width: 100%;">
+        <div id="chat-window">
+            <div class="message ai-msg">
+                <b>BinaaAI:</b> Bonjour ! Je suis votre assistant comptable. 
+                Je peux vous aider à calculer le budget de votre chantier ou comparer les prix des matériaux.
+            </div>
+        </div>
+
+        <div class="loader" id="loader"><i class="fas fa-sync fa-spin"></i> Calcul en cours...</div>
+
+        <form class="input-area" id="chat-form">
+            <input type="text" id="user-input" placeholder="Ex: Quel budget pour 100m² de dalle ?" autocomplete="off">
+            <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+        // CONFIGURATION FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const API_KEY = "AIzaSyAiaaVaswBCvz3q9AeblxwOfRUSXxYt1Z4";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        let currentLang = 'fr';
+        const translations = {
+            fr: { side: "Votre Expert Comptable BTP au Maroc.", placeholder: "Posez votre question financière...", switch: "العربية" },
+            ar: { side: "خبيرك المحاسبي لمشاريع البناء في المغرب.", placeholder: "اطرح سؤالك حول التكاليف...", switch: "Français" }
+        };
+
+        window.toggleLanguage = () => {
+            currentLang = currentLang === 'fr' ? 'ar' : 'fr';
+            document.getElementById('html-tag').dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('lang-text').innerText = translations[currentLang].switch;
+            document.getElementById('side-desc').innerText = translations[currentLang].side;
+            document.getElementById('user-input').placeholder = translations[currentLang].placeholder;
+        };
+
+        async function getRealTimeContext() {
+            const snapshot = await getDocs(collection(db, "products"));
+            let context = "Voici les prix actuels du marché marocain :\n";
+            snapshot.forEach(doc => {
+                const p = doc.data();
+                context += `- ${p.name}: ${p.price} DH (Ville: ${p.city})\n`;
+            });
+            return context;
+        }
+
+        function addMsg(text, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}-msg`;
+            div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>');
+            document.getElementById('chat-window').appendChild(div);
+            document.getElementById('chat-window').scrollTop = document.getElementById('chat-window').scrollHeight;
+        }
+
+        document.getElementById('chat-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('user-input');
+            const val = input.value.trim();
+            if(!val) return;
+
+            addMsg(val, 'user');
+            input.value = '';
+            document.getElementById('loader').style.display = 'block';
+
+            try {
+                const marketData = await getRealTimeContext();
+                const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+                
+                // LE PROMPT COMPTABLE
+                const systemPrompt = `
+                Tu es BinaaAI, un expert comptable spécialisé dans le bâtiment au Maroc.
+                Ta mission : 
+                1. Utiliser les prix réels fournis : ${marketData}.
+                2. Si l'utilisateur demande un calcul (ex: budget pour une maison), fais une estimation détaillée.
+                3. Donne toujours les prix en Dirhams (DH).
+                4. Sois pro, rigoureux et conseille l'option la moins chère.
+                Langue de réponse : ${currentLang}.`;
+
+                const result = await model.generateContent(systemPrompt + "\nQuestion : " + val);
+                addMsg(result.response.text(), 'ai');
+            } catch (err) {
+                addMsg("Désolé, j'ai une erreur technique. Vérifiez votre connexion.", 'ai');
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>

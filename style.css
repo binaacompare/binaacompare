@@ -133,68 +133,7 @@ body {
 
 .btn-secondary { background: var(--secondary-color); color: var(--white); margin-right: 10px; }
 
-/* 4. HERO SECTION */
 
-    header.hero-section {
-        /* Utilisation d'un motif Zellige Marocain traditionnel */
-        background: linear-gradient(rgba(26, 43, 60, 0.8), rgba(26, 43, 60, 0.8)), 
-                    url('https://thumbs.dreamstime.com/b/zellige-marocain-couture-95584462.jpg') !important;
-        
-        background-size: 300px !important; /* Le zellige est un motif, "300px" permet de le répéter joliment */
-        background-position: center !important;
-        background-repeat: repeat !important; /* On répète le motif pour couvrir tout le fond */
-        
-        min-height: 400px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white !important;
-        text-align: center;
-    }
-
-    .hero-section h1 {
-        color: white !important;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Ajoute une ombre pour mieux lire le texte sur le motif */
-    }
-
-.hero-section h1 { font-size: 2.5rem; margin-bottom: 15px; }
-
-.search-box {
-    background: var(--white);
-    padding: 10px;
-    border-radius: 50px;
-    display: flex;
-    max-width: 800px;
-    margin: 40px auto 0;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.input-group {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    border-right: 1px solid #eee;
-}
-
-.input-group i { color: var(--primary-color); margin-right: 10px; }
-
-.input-group input {
-    border: none;
-    outline: none;
-    width: 100%;
-    padding: 10px 0;
-}
-
-.btn-search {
-    background: var(--primary-color);
-    color: var(--white);
-    border: none;
-    padding: 10px 30px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-}
 
 /* 5. GRIDS & CARDS */
 .section-padding { padding: 80px 0; }

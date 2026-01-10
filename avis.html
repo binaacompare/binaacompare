@@ -3,149 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conseils & Avis Experts | BinaaCompare</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Avis Plateforme | BinaaCompare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #e67e22;
-            --secondary: #2c3e50;
-            --bg-light: #f9f9f9;
-            --border: #eeeeee;
+            --secondary: #1a2b3c;
+            --bg: #f4f7fa;
+            --white: #ffffff;
+            --success: #27ae60;
         }
 
-        body { font-family: 'Poppins', sans-serif; background: var(--bg-light); margin: 0; color: #333; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; color: #333; overflow-x: hidden; }
 
-        /* Header de section */
-        .section-intro { text-align: center; margin-bottom: 50px; }
-        .section-intro h1 { font-size: 2rem; color: var(--secondary); margin-bottom: 10px; }
-        .section-intro p { color: #777; font-size: 1rem; }
+        /* Animation d'arrière-plan */
+        .bg-animate { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.04; pointer-events: none; }
+        .bg-animate i { position: absolute; font-size: 4rem; animation: float 15s infinite linear; }
 
-        /* Grille de Conseils (Articles) */
-        .grid-conseils {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-bottom: 60px;
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        .card-conseil {
-            background: white;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            transition: 0.3s;
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+
+        /* Header */
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-header h1 { color: var(--secondary); font-size: 2.2rem; margin-bottom: 10px; }
+        .page-header p { color: #666; }
+
+        /* Formulaire d'avis (Espace Écriture) */
+        .write-review-box { 
+            background: var(--white); border-radius: 20px; padding: 30px; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); margin-bottom: 50px;
+            border-top: 5px solid var(--primary); transform: translateY(0);
+            transition: 0.4s; display: none; /* Caché par défaut, s'affiche si connecté */
         }
+        .write-review-box.active { display: block; animation: slideIn 0.5s ease-out; }
 
-        .card-conseil:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card-image {
-            width: 100%;
-            height: 180px;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
+        .star-rating { display: flex; gap: 10px; margin: 15px 0; justify-content: center; }
+        .star-rating i { font-size: 2rem; color: #ddd; cursor: pointer; transition: 0.2s; }
+        .star-rating i.active { color: #f1c40f; transform: scale(1.2); }
+
+        textarea { 
+            width: 100%; border: 1px solid #ddd; border-radius: 12px; padding: 15px;
+            font-family: inherit; font-size: 1rem; margin-bottom: 15px; box-sizing: border-box;
+            resize: none; transition: 0.3s;
         }
+        textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(230, 126, 34, 0.1); }
 
-        .card-body { padding: 20px; }
-        .category-tag { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--primary); letter-spacing: 1px; }
-        .card-body h3 { font-size: 1.1rem; margin: 10px 0; color: var(--secondary); line-height: 1.4; }
-        .card-body p { font-size: 0.85rem; color: #666; line-height: 1.6; }
-        .read-more { display: inline-block; margin-top: 15px; font-size: 0.85rem; font-weight: 600; color: var(--secondary); text-decoration: none; border-bottom: 2px solid var(--primary); }
-
-        /* Section Avis Clients */
-        .reviews-section { background: white; padding: 40px; border-radius: 4px; border: 1px solid var(--border); }
-        .reviews-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        
-        .review-item {
-            border-bottom: 1px solid var(--border);
-            padding: 20px 0;
-            display: flex;
-            gap: 20px;
+        .btn-submit { 
+            background: var(--primary); color: white; border: none; padding: 15px 30px; 
+            border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%;
+            font-size: 1rem; transition: 0.3s; letter-spacing: 1px;
         }
+        .btn-submit:hover { background: var(--secondary); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-        .user-avatar { width: 50px; height: 50px; border-radius: 4px; background: var(--secondary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; }
-        
-        .review-content h4 { margin: 0; font-size: 0.95rem; color: var(--secondary); }
-        .stars { color: #f1c40f; font-size: 0.8rem; margin: 5px 0; }
-        .review-text { font-size: 0.9rem; color: #555; font-style: italic; }
-        .review-date { font-size: 0.75rem; color: #bbb; margin-top: 5px; }
+        /* Grille des Avis */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px; }
 
-        @media (max-width: 768px) {
-            .grid-conseils { grid-template-columns: 1fr; }
+        .review-card { 
+            background: var(--white); border-radius: 15px; padding: 25px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); position: relative;
+            overflow: hidden; transition: 0.3s; border: 1px solid transparent;
         }
+        .review-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+
+        .card-btp-icon { 
+            position: absolute; right: -15px; top: -15px; font-size: 5rem; 
+            color: rgba(230, 126, 34, 0.05); transform: rotate(-20deg); transition: 0.5s;
+        }
+        .review-card:hover .card-btp-icon { transform: rotate(0deg) scale(1.1); color: rgba(230, 126, 34, 0.1); }
+
+        .user-info { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .user-init { 
+            width: 45px; height: 45px; border-radius: 10px; background: var(--secondary);
+            color: white; display: flex; align-items: center; justify-content: center; font-weight: 700;
+        }
+        .user-details h4 { margin: 0; font-size: 0.95rem; color: var(--secondary); }
+        .role-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--primary); }
+
+        .stars-display { color: #f1c40f; font-size: 0.8rem; margin-bottom: 10px; }
+        .review-msg { font-size: 0.9rem; color: #555; line-height: 1.6; font-style: italic; }
+
+        .login-msg { text-align: center; background: #eee; padding: 20px; border-radius: 15px; color: #666; }
+
+        @media (max-width: 600px) { .reviews-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header class="section-intro">
-        <h1>Conseils d'Experts & Retours d'Expérience</h1>
-        <p>Optimisez vos achats et vos chantiers avec nos guides techniques.</p>
-    </header>
+    <div class="bg-animate" id="bgIcons"></div>
 
-    <div class="grid-conseils">
-        <article class="card-conseil">
-            <div class="card-image"><i class="fa-solid fa-hard-hat fa-3x"></i></div>
-            <div class="card-body">
-                <span class="category-tag">Gros Œuvre</span>
-                <h3>Comment choisir son ciment pour les fondations ?</h3>
-                <p>Découvrez les différences entre CPJ45 et CPJ35 pour assurer la durabilité de votre structure...</p>
-                <a href="#" class="read-more">Lire l'article</a>
-            </div>
-        </article>
+    <div class="container">
+        <header class="page-header">
+            <h1>Avis sur BinaaCompare</h1>
+            <p>Partagez votre expérience globale sur notre plateforme BTP au Maroc.</p>
+        </header>
 
-        <article class="card-conseil">
-            <div class="card-image"><i class="fa-solid fa-faucet fa-3x"></i></div>
-            <div class="card-body">
-                <span class="category-tag">Plomberie</span>
-                <h3>Multicouche vs Cuivre : le comparatif complet</h3>
-                <p>Analyse des coûts, de la facilité de pose et de la longévité pour vos installations d'eau...</p>
-                <a href="#" class="read-more">Lire l'article</a>
+        <div id="reviewFormContainer" class="write-review-box">
+            <h3 style="text-align: center; margin-top: 0;">Donner mon avis</h3>
+            <div class="star-rating" id="starSelector">
+                <i class="fas fa-star" data-v="1"></i>
+                <i class="fas fa-star" data-v="2"></i>
+                <i class="fas fa-star" data-v="3"></i>
+                <i class="fas fa-star" data-v="4"></i>
+                <i class="fas fa-star" data-v="5"></i>
             </div>
-        </article>
+            <textarea id="reviewText" rows="4" placeholder="Qu'avez-vous pensé de BinaaCompare ? (facilité d'utilisation, gain de temps, choix...)"></textarea>
+            <button class="btn-submit" id="btnSubmitReview">PUBLIER MON EXPÉRIENCE</button>
+        </div>
 
-        <article class="card-conseil">
-            <div class="card-image"><i class="fa-solid fa-solar-panel fa-3x"></i></div>
-            <div class="card-body">
-                <span class="category-tag">Énergie</span>
-                <h3>L'efficacité des panneaux solaires au Maroc</h3>
-                <p>Rentabilisez votre installation en fonction de votre région et des subventions actuelles...</p>
-                <a href="#" class="read-more">Lire l'article</a>
+        <div id="authPrompt" class="login-msg">
+            <i class="fas fa-lock"></i> Connectez-vous pour partager votre avis sur la plateforme.
+        </div>
+
+        <div class="reviews-grid" id="platformReviews">
             </div>
-        </article>
     </div>
 
-    <section class="reviews-section">
-        <div class="reviews-header">
-            <h2>Derniers Avis Vérifiés</h2>
-            <button style="background: var(--secondary); color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Donner mon avis</button>
-        </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        <div class="review-item">
-            <div class="user-avatar">YS</div>
-            <div class="review-content">
-                <h4>Youssef S. <span style="font-weight: 400; color: #999; font-size: 0.8rem;">(Architecte - Rabat)</span></h4>
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                <p class="review-text">"Excellent comparatif sur les aciers. Les prix indiqués par les fournisseurs sur BinaaCompare étaient très proches de la réalité du marché."</p>
-                <div class="review-date">Il y a 2 jours</div>
-            </div>
-        </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            messagingSenderId: "667570543544",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
 
-        <div class="review-item">
-            <div class="user-avatar">MK</div>
-            <div class="review-content">
-                <h4>Meryem K. <span style="font-weight: 400; color: #999; font-size: 0.8rem;">(Promoteur - Casablanca)</span></h4>
-                <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
-                <p class="review-text">"La section conseil sur l'étanchéité m'a permis d'éviter une erreur coûteuse sur mon dernier projet. Très instructif."</p>
-                <div class="review-date">Il y a 1 semaine</div>
-            </div>
-        </div>
-    </section>
-</div>
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
+        let selectedStars = 0;
+        let userData = null;
+
+        // 1. Créer les icônes flottantes
+        const icons = ['fa-hammer', 'fa-helmet-safety', 'fa-trowel', 'fa-truck-pickup', 'fa-ruler-combined', 'fa-hard-hat'];
+        const bgContainer = document.getElementById('bgIcons');
+        for(let i=0; i<15; i++) {
+            const icon = document.createElement('i');
+            icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]}`;
+            icon.style.left = Math.random() * 100 + "vw";
+            icon.style.animationDelay = Math.random() * 15 + "s";
+            bgContainer.appendChild(icon);
+        }
+
+        // 2. Gérer l'authentification
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const userDoc = await getDoc(doc(db, "users", user.uid));
+                if (userDoc.exists()) {
+                    userData = userDoc.data();
+                    document.getElementById('reviewFormContainer').classList.add('active');
+                    document.getElementById('authPrompt').style.display = 'none';
+                }
+            }
+        });
+
+        // 3. Système d'étoiles
+        const stars = document.querySelectorAll('#starSelector i');
+        stars.forEach(s => {
+            s.onclick = () => {
+                selectedStars = s.dataset.v;
+                stars.forEach(st => st.classList.toggle('active', st.dataset.v <= selectedStars));
+            };
+        });
+
+        // 4. Publier l'avis (Général)
+        document.getElementById('btnSubmitReview').onclick = async () => {
+            const text = document.getElementById('reviewText').value;
+            if(selectedStars === 0 || text.length < 5) return alert("Note et message requis !");
+
+            try {
+                await addDoc(collection(db, "platform_reviews"), {
+                    userName: userData.firstName + " " + userData.lastName,
+                    role: userData.role || "Utilisateur",
+                    rating: parseInt(selectedStars),
+                    comment: text,
+                    createdAt: serverTimestamp()
+                });
+                location.reload();
+            } catch (e) { alert("Erreur lors de l'envoi."); }
+        };
+
+        // 5. Charger les avis
+        async function loadReviews() {
+            const grid = document.getElementById('platformReviews');
+            const q = query(collection(db, "platform_reviews"), orderBy("createdAt", "desc"));
+            const snap = await getDocs(q);
+            
+            grid.innerHTML = "";
+            const btpIcons = ['fa-trowel-bricks', 'fa-helmet-safety', 'fa-hammer', 'fa-wrench'];
+
+            snap.forEach(docR => {
+                const r = docR.data();
+                const randomIcon = btpIcons[Math.floor(Math.random()*btpIcons.length)];
+                const starHtml = '<i class="fas fa-star"></i>'.repeat(r.rating) + '<i class="far fa-star"></i>'.repeat(5-r.rating);
+                
+                grid.innerHTML += `
+                    <div class="review-card">
+                        <i class="fas ${randomIcon} card-btp-icon"></i>
+                        <div class="user-info">
+                            <div class="user-init">${r.userName.charAt(0)}</div>
+                            <div class="user-details">
+                                <h4>${r.userName}</h4>
+                                <span class="role-tag">${r.role}</span>
+                            </div>
+                        </div>
+                        <div class="stars-display">${starHtml}</div>
+                        <p class="review-msg">"${r.comment}"</p>
+                    </div>
+                `;
+            });
+        }
+
+        loadReviews();
+    </script>
 </body>
 </html>

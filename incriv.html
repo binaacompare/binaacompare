@@ -3,225 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devenir Fournisseur | BinaaPro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Inscription Pro | BinaaCompare Maroc</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary: #e67e22;
-            --secondary: #0f172a;
-            --bg: #f8fafc;
+            --secondary: #1a2b3c;
             --white: #ffffff;
-            --border: #e2e8f0;
-            --text-main: #1e293b;
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
             --text-muted: #64748b;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; }
+        body { font-family: 'Poppins', sans-serif; background: var(--white); color: var(--text-dark); overflow-x: hidden; }
 
-        .auth-wrapper { display: flex; width: 100%; }
-        
-        .auth-sidebar {
-            flex: 1; background: var(--secondary); padding: 60px;
-            display: flex; flex-direction: column; justify-content: center; color: white;
+        /* --- BOUTON RETOUR FLOTTANT --- */
+        .back-router-btn {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
+            background: var(--white);
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .back-router-btn:hover {
+            transform: scale(1.05);
+            background: var(--secondary);
+            color: white;
         }
 
-        .auth-sidebar .logo { font-size: 2rem; font-weight: 800; text-decoration: none; color: white; margin-bottom: 2rem; }
-        .auth-sidebar .logo span { color: var(--primary); }
-        
-        .feature-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 30px; }
-        .feature-item i { color: var(--primary); font-size: 1.2rem; margin-top: 5px; }
-        .feature-item h4 { font-size: 1.1rem; margin-bottom: 5px; }
-        .feature-item p { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
+        /* --- LAYOUT --- */
+        .split-screen { display: flex; min-height: 100vh; }
 
-        .auth-form-area {
-            flex: 1.2; background: var(--bg); display: flex;
-            align-items: center; justify-content: center; padding: 40px;
+        /* GAUCHE : VISUEL ANIMÉ */
+        .visual-side {
+            flex: 1;
+            background: linear-gradient(135deg, var(--secondary) 0%, #0f172a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: white;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
 
-        .form-card {
-            background: var(--white); width: 100%; max-width: 550px;
-            padding: 40px; border-radius: 20px; border: 1px solid var(--border);
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+        .giant-icon-box {
+            position: relative;
+            margin-bottom: 30px;
         }
 
-        .form-card h2 { font-size: 1.75rem; font-weight: 700; margin-bottom: 10px; color: var(--secondary); }
-        .subtitle { color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem; }
+        .giant-vendor-icon {
+            font-size: 10rem;
+            color: var(--primary);
+            animation: floatIcon 5s ease-in-out infinite;
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.4));
+        }
 
-        .profile-upload-container { text-align: center; margin-bottom: 30px; }
-        .profile-preview {
-            width: 110px; height: 110px; border-radius: 50%;
-            object-fit: cover; border: 4px solid var(--white);
-            box-shadow: 0 0 0 2px var(--primary); margin: 0 auto 15px; background: #f1f5f9;
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(5deg); }
+        }
+
+        .visual-side h2 { font-size: 2.2rem; font-weight: 800; text-align: center; margin-top: 20px; }
+        .visual-side p { opacity: 0.7; text-align: center; max-width: 400px; margin-top: 15px; font-weight: 300; }
+
+        /* DROITE : FORMULAIRE */
+        .form-side {
+            flex: 1.5;
+            padding: 80px 60px;
+            background: var(--white);
+        }
+
+        .form-content { width: 100%; max-width: 700px; margin: 0 auto; }
+        .form-header { margin-bottom: 40px; }
+        .form-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--secondary); letter-spacing: -1px; }
+
+        /* SECTIONS */
+        .form-section {
+            background: var(--bg-light);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+        .section-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .section-head i { color: var(--primary); font-size: 1.4rem; }
+
+        /* PHOTO UPLOAD */
+        .upload-container { text-align: center; margin-bottom: 30px; }
+        .preview-img {
+            width: 130px; height: 130px; border-radius: 30px;
+            object-fit: cover; border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); background: #e2e8f0;
         }
         .upload-btn {
-            background: var(--secondary); color: white; padding: 8px 16px;
-            border-radius: 20px; font-size: 0.75rem; cursor: pointer; font-weight: 600;
+            display: inline-block; margin-top: 15px; padding: 10px 20px;
+            background: var(--secondary); color: white; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.3s;
         }
-        #profileInput { display: none; }
+        .upload-btn:hover { background: var(--primary); }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        /* GRIDS & INPUTS */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; color: var(--secondary); }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 8px; color: var(--secondary); text-transform: uppercase; }
         
-        .input-field {
-            width: 100%; padding: 12px 16px; border-radius: 10px;
-            border: 1.5px solid var(--border); font-size: 0.95rem;
+        .field {
+            width: 100%; padding: 15px; border-radius: 12px;
+            border: 2px solid #eef2f6; background: white;
+            font-family: inherit; font-size: 1rem; transition: 0.3s;
         }
-        .input-field:focus { outline: none; border-color: var(--primary); }
+        .field:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(230,126,34,0.1); }
 
         .submit-btn {
-            width: 100%; padding: 14px; background: var(--primary);
-            color: white; border: none; border-radius: 10px;
-            font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+            width: 100%; padding: 20px; background: var(--primary);
+            color: white; border: none; border-radius: 15px;
+            font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            transition: 0.4s; box-shadow: 0 15px 30px rgba(230,126,34,0.3);
+            margin-top: 20px;
         }
-        .submit-btn:hover { background: #d35400; }
-        .submit-btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        .submit-btn:hover { background: var(--secondary); transform: translateY(-5px); }
 
-        /* Notification Success Style */
-        #success-msg {
-            display: none; background: #ecfdf5; border: 1px solid #10b981;
-            color: #065f46; padding: 20px; border-radius: 12px; text-align: center;
+        .login-footer { text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 1rem; }
+        .login-footer a { color: var(--primary); font-weight: 700; text-decoration: none; }
+
+        /* MOBILE */
+        @media (max-width: 1100px) {
+            .visual-side { display: none; }
+            .form-side { padding: 100px 20px 40px; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .back-router-btn { top: 15px; left: 15px; padding: 10px 18px; font-size: 0.8rem; }
         }
-
-        @media (max-width: 992px) { .auth-sidebar { display: none; } }
     </style>
 </head>
 <body>
 
-    <div class="auth-wrapper">
-        <div class="auth-sidebar">
-            <a href="index.html" class="logo">Binaa<span>Pro</span></a>
-            <div class="feature-item">
-                <i class="fa-solid fa-rocket"></i>
-                <div>
-                    <h4>Visibilité Maximale</h4>
-                    <p>Exposez vos produits à des milliers d'acheteurs qualifiés.</p>
-                </div>
+    <a href="index.html" class="back-router-btn">
+        <i class="fa-solid fa-house-chimney"></i> Retour à l'accueil
+    </a>
+
+    <div class="split-screen">
+        
+        <div class="visual-side">
+            <div class="giant-icon-box">
+                <i class="fa-solid fa-truck-fast giant-vendor-icon"></i>
             </div>
-            <div class="feature-item">
-                <i class="fa-solid fa-shield-check"></i>
-                <div>
-                    <h4>Vérification Requise</h4>
-                    <p>Un e-mail de confirmation sera envoyé pour sécuriser votre accès pro.</p>
-                </div>
-            </div>
+            <h2>BinaaPro Maroc</h2>
+            <p>Rejoignez la révolution digitale du BTP. Gérez vos stocks, vos prix et vos clients en un seul endroit.</p>
         </div>
 
-        <div class="auth-form-area">
-            <div class="form-card">
-                <div id="registration-content">
-                    <h2>Rejoindre le réseau</h2>
-                    <p class="subtitle">Créez votre compte marchand en moins de 2 minutes.</p>
-
-                    <form id="vendeurRegisterForm">
-                        <div class="profile-upload-container">
-                            <img src="https://ui-avatars.com/api/?name=Vendor&background=f1f5f9&color=cbd5e1" id="imgPreview" class="profile-preview">
-                            <label for="profileInput" class="upload-btn"><i class="fa-solid fa-camera"></i> Logo Société</label>
-                            <input type="file" id="profileInput" accept="image/*">
-                        </div>
-
-                        <div class="form-grid">
-                            <div class="input-group"><label>Prénom</label><input type="text" id="firstName" class="input-field" required></div>
-                            <div class="input-group"><label>Nom</label><input type="text" id="lastName" class="input-field" required></div>
-                        </div>
-
-                        <div class="input-group"><label>Entreprise</label><input type="text" id="companyName" class="input-field" required></div>
-                        <div class="input-group"><label>ICE (15 chiffres)</label><input type="text" id="ice" class="input-field" maxlength="15" pattern="\d{15}" required></div>
-                        <div class="input-group"><label>Email Pro</label><input type="email" id="email" class="input-field" required></div>
-                        <div class="input-group"><label>Mot de passe</label><input type="password" id="password" class="input-field" minlength="8" required></div>
-
-                        <button type="submit" id="submitBtn" class="submit-btn">Créer mon espace marchand</button>
-                    </form>
+        <div class="form-side">
+            <div class="form-content">
+                <div class="form-header">
+                    <h1>Devenir Fournisseur</h1>
+                    <p>Complétez votre profil professionnel pour commencer à vendre.</p>
                 </div>
 
-                <div id="success-msg">
-                    <i class="fa-solid fa-envelope-circle-check" style="font-size: 3rem; color: #10b981; margin-bottom: 15px;"></i>
-                    <h3>Vérifiez votre e-mail</h3>
-                    <p style="margin-top: 10px;">Un lien de confirmation a été envoyé à votre adresse. Veuillez cliquer sur ce lien pour activer votre compte vendeur.</p>
-                    <a href="cnx%20vendeur.html" class="submit-btn" style="display:block; text-decoration:none; margin-top:20px;">Aller à la page de connexion</a>
+                <form id="proRegisterForm">
+                    
+                    <div class="form-section">
+                        <div class="section-head"><i class="fa-solid fa-id-card"></i> Identité du Responsable</div>
+                        <div class="upload-container">
+                            <img src="https://ui-avatars.com/api/?name=Pro&background=f1f5f9&color=e67e22" id="imgPreview" class="preview-img">
+                            <br>
+                            <label for="logoInput" class="upload-btn"><i class="fa-solid fa-camera"></i> Ajouter un Logo / Photo</label>
+                            <input type="file" id="logoInput" hidden accept="image/*">
+                        </div>
+                        <div class="grid-2">
+                            <div class="input-group"><label>Prénom</label><input type="text" class="field" placeholder="Ex: Ahmed" required></div>
+                            <div class="input-group"><label>Nom</label><input type="text" class="field" placeholder="Ex: El Mansouri" required></div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-head"><i class="fa-solid fa-building-shield"></i> Informations Société</div>
+                        <div class="input-group"><label>Nom commercial de l'entreprise</label><input type="text" class="field" placeholder="Ex: Atlas Matériaux SARL" required></div>
+                        <div class="grid-2">
+                            <div class="input-group"><label>ICE (15 chiffres)</label><input type="text" class="field" maxlength="15" pattern="\d{15}" placeholder="001234567890001" required></div>
+                            <div class="input-group">
+                                <label>Spécialité</label>
+                                <select class="field">
+                                    <option>Quincaillerie Générale</option>
+                                    <option>Gros Œuvre (Ciment, Acier)</option>
+                                    <option>Électricité & Plomberie</option>
+                                    <option>Peinture & Décoration</option>
+                                    <option>Outillage Professionnel</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-head"><i class="fa-solid fa-map-location-dot"></i> Localisation</div>
+                        <div class="grid-2">
+                            <div class="input-group">
+                                <label>Ville du Maroc</label>
+                                <select class="field" required>
+                                    <option value="">-- Sélectionner --</option>
+                                    <option>Casablanca</option><option>Rabat</option><option>Fès</option>
+                                    <option>Tanger</option><option>Marrakech</option><option>Salé</option>
+                                    <option>Meknès</option><option>Agadir</option><option>Oujda</option>
+                                    <option>Kenitra</option><option>Tétouan</option><option>Safi</option>
+                                    <option>Mohammedia</option><option>Khouribga</option><option>El Jadida</option>
+                                    <option>Beni Mellal</option><option>Nador</option><option>Taza</option>
+                                    <option>Settat</option><option>Berrechid</option><option>Khemisset</option>
+                                    <option>Inezgane</option><option>Larache</option><option>Guelmim</option>
+                                    <option>Ksar El Kebir</option><option>Berkane</option><option>Errachidia</option>
+                                    <option>Ouarzazate</option><option>Tiznit</option><option>Taroudant</option>
+                                    <option>Fnideq</option><option>Ouazzane</option><option>Guercif</option>
+                                    <option>Al Hoceima</option><option>Dakhla</option><option>Laâyoune</option>
+                                    <option>Essaouira</option><option>Youssoufia</option><option>Benguerir</option>
+                                    <option>Tan-Tan</option><option>Sidi Slimane</option><option>Sidi Kacem</option>
+                                </select>
+                            </div>
+                            <div class="input-group"><label>Téléphone Pro</label><input type="tel" class="field" placeholder="05 22 XX XX XX" required></div>
+                        </div>
+                        <div class="input-group"><label>Adresse du Magasin / Dépôt</label><input type="text" class="field" placeholder="Rue, Quartier, N°..."></div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-head"><i class="fa-solid fa-lock"></i> Accès Compte</div>
+                        <div class="input-group"><label>Email de connexion</label><input type="email" class="field" placeholder="contact@entreprise.ma" required></div>
+                        <div class="grid-2">
+                            <div class="input-group"><label>Mot de passe</label><input type="password" class="field" placeholder="••••••••" required></div>
+                            <div class="input-group"><label>Confirmer</label><input type="password" class="field" placeholder="••••••••" required></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">VALIDER MON INSCRIPTION <i class="fa-solid fa-paper-plane"></i></button>
+
+                </form>
+
+                <div class="login-footer">
+                    Déjà inscrit ? <a href="cnx cendeur.html">Connectez-vous à votre espace marchand</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
-            authDomain: "binaacompare-fa5e1.firebaseapp.com",
-            projectId: "binaacompare-fa5e1",
-            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
-            messagingSenderId: "667570543544",
-            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let base64Image = "";
-        document.getElementById('profileInput').addEventListener('change', function() {
+    <script>
+        // Aperçu de l'image
+        document.getElementById('logoInput').addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (e) => { 
                     document.getElementById('imgPreview').src = e.target.result;
-                    base64Image = e.target.result;
                 };
                 reader.readAsDataURL(file);
             }
         });
-
-        const registerForm = document.getElementById('vendeurRegisterForm');
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "Création du compte...";
-
-            try {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // 1. Création du compte
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                // 2. Envoi de l'email de vérification
-                await sendEmailVerification(user);
-
-                // 3. Sauvegarde dans Firestore
-                await setDoc(doc(db, "users", user.uid), {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    companyName: document.getElementById('companyName').value,
-                    ice: document.getElementById('ice').value,
-                    email: email,
-                    profilePic: base64Image || "default",
-                    role: "vendor",
-                    emailVerified: false,
-                    createdAt: new Date(),
-                    status: "pending_email"
-                });
-
-                // 4. Déconnexion immédiate (pour forcer le login après vérification)
-                await signOut(auth);
-
-                // 5. Affichage du message de succès
-                document.getElementById('registration-content').style.display = 'none';
-                document.getElementById('success-msg').style.display = 'block';
-
-            } catch (error) {
-                alert("Erreur : " + error.message);
-                btn.disabled = false;
-                btn.innerText = "Créer mon espace marchand";
-            }
-        });
     </script>
+
 </body>
 </html>

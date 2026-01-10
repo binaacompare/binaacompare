@@ -8,157 +8,139 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root { --orange: #e67e22; --blue: #1a2b3c; --bg: #f4f7fa; --white: #ffffff; }
-        
         body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; padding: 0; color: #333; }
-        
-        /* Header responsive */
-        .header-vendor { 
-            background: var(--blue); 
-            color: white; 
-            padding: 40px 15px 60px; 
-            text-align: center; 
-        }
-        .vendor-badge { 
-            background: var(--orange); 
-            padding: 6px 15px; 
-            border-radius: 50px; 
-            font-size: 0.75rem; 
-            font-weight: 700; 
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
         .container { max-width: 1100px; margin: 0 auto; padding: 0 15px; }
 
-        /* Info Card Responsive */
-        .info-card { 
-            background: var(--white); 
-            border-radius: 15px; 
-            padding: 25px; 
-            margin-top: -40px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 25px;
-        }
-        
-        .info-item h3 { font-size: 1rem; margin-bottom: 15px; color: var(--blue); border-bottom: 2px solid #f4f7fa; padding-bottom: 5px; }
-        .info-item p { margin: 8px 0; font-size: 0.9rem; display: flex; align-items: center; }
-        .info-item i { color: var(--orange); margin-right: 12px; width: 18px; text-align: center; }
-
-        /* Products Grid */
-        .vendor-products { margin-top: 40px; padding-bottom: 40px; }
-        .vendor-products h2 { font-size: 1.3rem; color: var(--blue); margin-bottom: 20px; }
-        
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-            gap: 20px; 
-        }
-
-        /* Product Card style */
-        .p-card { 
-            background: var(--white); 
-            border-radius: 12px; 
-            padding: 12px; 
-            border: 1px solid #eee; 
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-        .p-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        
-        .p-card img { 
-            width: 100%; 
-            height: 160px; 
-            object-fit: cover; 
-            border-radius: 8px; 
-            background: #f9f9f9;
-        }
-        
-        .p-info { padding: 10px 5px; flex-grow: 1; }
-        .p-info h4 { margin: 5px 0; font-size: 1rem; color: var(--blue); }
-        .p-info small { color: #888; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.5px; }
-        
-        .p-price { 
-            font-weight: 700; 
-            color: #27ae60; 
-            margin-top: 8px; 
-            font-size: 1.1rem; 
-            display: block; 
-        }
-
-        .btn-detail {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            padding: 10px;
-            background: #f4f7fa;
-            color: var(--blue);
+        /* BOUTON RETOUR */
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 18px;
+            border-radius: 50px;
             text-decoration: none;
-            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 600;
-            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
             transition: 0.3s;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .btn-detail:hover { background: var(--orange); color: white; }
+        .btn-back:hover { background: var(--orange); border-color: var(--orange); }
 
-        /* MOBILE OPTIMIZATION */
-        @media (max-width: 768px) {
-            .info-card { grid-template-columns: 1fr; gap: 20px; }
-            .header-vendor { padding: 30px 15px 50px; }
-            .header-vendor h1 { font-size: 1.5rem; }
-            
-            /* Sur petit mobile, on peut passer les produits en 2 colonnes */
-            .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .p-card { padding: 8px; }
-            .p-card img { height: 120px; }
-            .p-info h4 { font-size: 0.85rem; }
-            .p-price { font-size: 0.95rem; }
+        /* Header */
+        .header-vendor { background: var(--blue); color: white; padding: 60px 15px 80px; text-align: center; position: relative; }
+        .vendor-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid white; object-fit: cover; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .v-badge { background: var(--orange); padding: 5px 15px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-top: 10px; }
+
+        /* Sections */
+        .info-card, .about-section, .catalogue-section, .rev-box { 
+            background: white; border-radius: 15px; padding: 25px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin-bottom: 25px;
         }
+        .info-card { margin-top: -50px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; position: relative; }
+        
+        .section-title { font-size: 1.3rem; color: var(--blue); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-left: 5px solid var(--orange); padding-left: 15px; }
+        
+        .item { display: flex; margin-bottom: 10px; font-size: 0.9rem; }
+        .item i { color: var(--orange); width: 25px; }
 
-        @media (max-width: 480px) {
-            /* Très petit écran : 1 seule colonne pour la lisibilité */
-            .grid { grid-template-columns: 1fr; }
-            .p-card img { height: 180px; }
+        /* Catalogue Grid */
+        .grid-prods { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .card-p { background: white; border: 1px solid #eee; border-radius: 12px; padding: 12px; transition: 0.3s; display: flex; flex-direction: column; }
+        .card-p:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card-p img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; background: #f9f9f9; }
+        .card-p h4 { margin: 12px 0 5px; font-size: 1rem; color: var(--blue); }
+        .card-p .price { color: #27ae60; font-weight: 700; font-size: 1.1rem; margin-bottom: 15px; }
+        .btn-view { background: var(--bg); color: var(--blue); text-decoration: none; text-align: center; padding: 8px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+        .btn-view:hover { background: var(--orange); color: white; }
+
+        /* Reviews */
+        .stars-in i { font-size: 1.5rem; color: #ccc; cursor: pointer; }
+        .stars-in i.active { color: #f1c40f; }
+        textarea { width: 100%; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-top: 10px; font-family: inherit; box-sizing: border-box; }
+        .btn-send { background: var(--orange); color: white; border: none; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 700; width: 100%; margin-top: 10px; }
+        .rev-item { padding: 15px 0; border-bottom: 1px solid #f4f7fa; }
+        .rev-user { font-weight: 700; color: var(--blue); font-size: 0.95rem; }
+
+        @media (max-width: 768px) { 
+            .info-card { grid-template-columns: 1fr; } 
+            .grid-prods { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .card-p img { height: 130px; }
+            .btn-back { top: 10px; left: 10px; padding: 8px 12px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 
+    <a href="javascript:history.back()" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+
     <div class="header-vendor">
         <div class="container">
-            <span class="vendor-badge"><i class="fas fa-check-circle"></i> Fournisseur Vérifié</span>
-            <h1 id="companyName">Chargement...</h1>
-            <p id="vendorCity"><i class="fas fa-map-marker-alt"></i> --</p>
+            <img id="vendorLogo" src="https://ui-avatars.com/api/?name=F&background=e67e22&color=fff" class="vendor-img">
+            <br><span class="v-badge"><i class="fas fa-check-circle"></i> Fournisseur Vérifié</span>
+            <h1 id="vName" style="margin:10px 0 5px;">Chargement...</h1>
+            <p id="vCityTop"><i class="fas fa-map-marker-alt"></i> --</p>
         </div>
     </div>
 
     <div class="container">
         <div class="info-card">
-            <div class="info-item">
-                <h3><i class="fas fa-info-circle"></i> Coordonnées</h3>
-                <p id="vendorEmail"><i class="fas fa-envelope"></i> --</p>
-                <p id="vendorPhone"><i class="fas fa-phone"></i> --</p>
-                <p id="vendorLocation"><i class="fas fa-building"></i> Siège social au Maroc</p>
+            <div class="info-group">
+                <h3><i class="fas fa-id-card"></i> Entreprise</h3>
+                <div class="item"><i class="fas fa-hashtag"></i> <b>ICE :</b> <span id="vICE">--</span></div>
+                <div class="item"><i class="fas fa-map-marker-alt"></i> <b>Adresse :</b> <span id="vAddr">--</span></div>
+                <div class="item"><i class="fas fa-phone"></i> <b>Tél :</b> <span id="vTel">--</span></div>
             </div>
-            <div class="info-item">
-                <h3><i class="fas fa-star"></i> À propos</h3>
-                <p id="vendorDesc" style="line-height: 1.5; color: #666;">Ce partenaire professionnel s'engage à fournir des matériaux conformes aux normes de construction en vigueur au Maroc.</p>
+            <div class="info-group">
+                <h3><i class="fas fa-envelope"></i> Contact</h3>
+                <div class="item"><i class="fas fa-envelope"></i> <b>Email :</b> <span id="vEmail">--</span></div>
+                <div class="item"><i class="fas fa-city"></i> <b>Ville :</b> <span id="vCity">--</span></div>
             </div>
         </div>
 
-        <div class="vendor-products">
-            <h2>Catalogue Produits</h2>
-            <div id="vendorProductsGrid" class="grid">
-                <p style="text-align: center; grid-column: 1/-1; padding: 20px;">Recherche des articles...</p>
+        <div class="about-section">
+            <h3 class="section-title"><i class="fas fa-info-circle"></i> À propos</h3>
+            <p id="vAbout" style="color:#666; font-size:0.95rem; line-height:1.6;">Chargement...</p>
+        </div>
+
+        <div class="catalogue-section">
+            <h3 class="section-title"><i class="fas fa-boxes"></i> Catalogue de produits</h3>
+            <div id="gridProducts" class="grid-prods">
+                <p style="text-align:center; grid-column:1/-1; color:#999;">Recherche des produits...</p>
             </div>
+        </div>
+
+        <h3 class="section-title"><i class="fas fa-star"></i> Avis des clients</h3>
+        <div class="rev-box">
+            <div id="formReview" style="display:none; background:#f9f9f9; padding:20px; border-radius:10px; margin-bottom:20px; border: 1px solid #ddd;">
+                <p style="margin:0 0 10px; font-weight:600;">Laisser un avis :</p>
+                <div class="stars-in" id="starInput">
+                    <i class="fas fa-star" data-v="1"></i><i class="fas fa-star" data-v="2"></i><i class="fas fa-star" data-v="3"></i><i class="fas fa-star" data-v="4"></i><i class="fas fa-star" data-v="5"></i>
+                </div>
+                <textarea id="txtComment" rows="3" placeholder="Partagez votre expérience..."></textarea>
+                <button class="btn-send" id="btnPublish">PUBLIER MON AVIS</button>
+            </div>
+            
+            <p id="noAuthMsg" style="text-align:center; color:#888; background:#eee; padding:15px; border-radius:8px;">
+                Connectez-vous en tant qu'<b>Acheteur</b> pour donner votre avis.
+            </p>
+
+            <div id="listReviews"></div>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
@@ -171,59 +153,100 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
-        async function loadVendorProfile() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const vendorId = urlParams.get('id');
+        const vendorId = new URLSearchParams(window.location.search).get('id');
+        let selectedStars = 0;
+        let buyerFullName = "Client Vérifié";
 
-            if (!vendorId) {
-                document.body.innerHTML = "<div style='text-align:center; padding:50px;'><h2>Erreur : Fournisseur introuvable.</h2><a href='index.html'>Retour</a></div>";
-                return;
+        // 1. Auth & Role Check (buyer)
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                const uDoc = await getDoc(doc(db, "users", user.uid));
+                if (uDoc.exists() && uDoc.data().role === "buyer") {
+                    document.getElementById('formReview').style.display = 'block';
+                    document.getElementById('noAuthMsg').style.display = 'none';
+                    buyerFullName = (uDoc.data().firstName || "") + " " + (uDoc.data().lastName || "");
+                }
+            }
+        });
+
+        // 2. Stars
+        document.querySelectorAll('#starInput i').forEach(s => {
+            s.onclick = () => {
+                selectedStars = s.dataset.v;
+                document.querySelectorAll('#starInput i').forEach(i => i.classList.toggle('active', i.dataset.v <= selectedStars));
+            };
+        });
+
+        // 3. Main Loader
+        async function initPage() {
+            if(!vendorId) return;
+
+            const vSnap = await getDoc(doc(db, "users", vendorId));
+            if(vSnap.exists()) {
+                const v = vSnap.data();
+                document.getElementById('vName').innerText = v.companyName || (v.firstName + " " + v.lastName);
+                document.getElementById('vICE').innerText = v.ice || "--";
+                document.getElementById('vAddr').innerText = v.address || "--";
+                document.getElementById('vTel').innerText = v.phone || "--";
+                document.getElementById('vEmail').innerText = v.email || "--";
+                document.getElementById('vCity').innerText = v.city || "--";
+                document.getElementById('vCityTop').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${v.city || 'Maroc'}`;
+                document.getElementById('vAbout').innerText = v.about || v.description || "Aucune description disponible.";
+                if(v.profilePic) document.getElementById('vendorLogo').src = v.profilePic;
             }
 
-            try {
-                // 1. Infos Fournisseur
-                const userDoc = await getDoc(doc(db, "users", vendorId));
-                if (userDoc.exists()) {
-                    const data = userDoc.data();
-                    document.getElementById('companyName').innerText = data.companyName || (data.firstName + " " + data.lastName);
-                    document.getElementById('vendorCity').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city || 'Maroc'}`;
-                    document.getElementById('vendorEmail').innerHTML = `<i class="fas fa-envelope"></i> ${data.email}`;
-                    document.getElementById('vendorPhone').innerHTML = `<i class="fas fa-phone"></i> ${data.phone || 'Contact via Email'}`;
-                }
+            const pSnap = await getDocs(query(collection(db, "products"), where("vendorId", "==", vendorId)));
+            const pGrid = document.getElementById('gridProducts');
+            pGrid.innerHTML = pSnap.empty ? "<p style='grid-column:1/-1; text-align:center;'>Aucun produit catalogue.</p>" : "";
+            pSnap.forEach(docP => {
+                const p = docP.data();
+                pGrid.innerHTML += `
+                    <div class="card-p">
+                        <img src="${p.imageUrl || 'https://via.placeholder.com/200'}">
+                        <h4>${p.name}</h4>
+                        <p class="price">${p.price} DH <small style="font-size:0.7rem; color:#777;">/ ${p.unit || 'u'}</small></p>
+                        <a href="datapro.html?id=${docP.id}" class="btn-view">Détails</a>
+                    </div>`;
+            });
 
-                // 2. Produits
-                const q = query(collection(db, "products"), where("vendorId", "==", vendorId));
-                const querySnapshot = await getDocs(q);
-                const grid = document.getElementById('vendorProductsGrid');
-                grid.innerHTML = "";
-
-                if (querySnapshot.empty) {
-                    grid.innerHTML = "<p style='grid-column:1/-1; text-align:center; color:#888;'>Aucun produit disponible pour le moment.</p>";
-                    return;
-                }
-
-                querySnapshot.forEach((docSnap) => {
-                    const p = docSnap.data();
-                    grid.innerHTML += `
-                        <div class="p-card">
-                            <img src="${p.imageUrl || 'https://via.placeholder.com/300x200?text=Pas+d\'image'}" alt="${p.name}">
-                            <div class="p-info">
-                                <small>${p.category || 'Matériau'}</small>
-                                <h4>${p.name}</h4>
-                                <span class="p-price">${p.price} DH <small style="color:#777; font-size:0.7rem;">/ ${p.unit || 'unité'}</small></span>
-                            </div>
-                            <a href="datapro.html?id=${docSnap.id}" class="btn-detail">VOIR DÉTAILS</a>
-                        </div>
-                    `;
-                });
-
-            } catch (error) {
-                console.error("Erreur de chargement:", error);
-            }
+            loadReviews();
         }
 
-        loadVendorProfile();
+        async function loadReviews() {
+            const list = document.getElementById('listReviews');
+            const rSnap = await getDocs(query(collection(db, "reviews"), where("vendorId", "==", vendorId)));
+            if(rSnap.empty) {
+                list.innerHTML = "<p style='color:#999; text-align:center;'>Pas encore d'avis.</p>";
+                return;
+            }
+            const sorted = rSnap.docs.sort((a,b) => (b.data().createdAt?.seconds || 0) - (a.data().createdAt?.seconds || 0));
+            list.innerHTML = "";
+            sorted.forEach(docR => {
+                const r = docR.data();
+                const stars = '<i class="fas fa-star" style="color:#f1c40f;"></i>'.repeat(r.rating) + '<i class="far fa-star" style="color:#ccc;"></i>'.repeat(5-r.rating);
+                list.innerHTML += `<div class="rev-item">
+                    <div style="display:flex; justify-content:space-between;"><b>${r.buyerName}</b> <span>${stars}</span></div>
+                    <p style="margin:5px 0; font-size:0.9rem;">${r.comment}</p>
+                </div>`;
+            });
+        }
+
+        document.getElementById('btnPublish').onclick = async () => {
+            const comment = document.getElementById('txtComment').value;
+            if(selectedStars === 0 || comment.length < 3) return alert("Note et commentaire requis.");
+            await addDoc(collection(db, "reviews"), {
+                vendorId: vendorId,
+                buyerName: buyerFullName,
+                rating: parseInt(selectedStars),
+                comment: comment,
+                createdAt: serverTimestamp()
+            });
+            location.reload();
+        };
+
+        initPage();
     </script>
 </body>
 </html>
