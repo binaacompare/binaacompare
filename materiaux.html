@@ -9,6 +9,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    /* Ajuster la navigation */
+    nav {
+        padding: 10px 15px;
+    }
+    .logo {
+        font-size: 1.3rem;
+    }
+
+    /* Hero section moins haute sur mobile */
+    .hero {
+        padding: 40px 0 20px;
+    }
+    .hero h1 {
+        font-size: 1.8rem; /* Titre plus petit */
+        padding: 0 10px;
+    }
+
+    /* Barre de recherche plus compacte */
+    .search-container {
+        width: 90%;
+        margin-bottom: 25px;
+    }
+    .search-input {
+        padding: 14px 20px 14px 50px;
+        font-size: 0.9rem;
+    }
+
+    /* Filtres (Pills) défilables horizontalement */
+    /* C'est crucial : sur mobile, les boutons ne doivent pas s'empiler sur 3 lignes */
+    .category-filter {
+        display: flex;
+        justify-content: flex-start; /* Aligner à gauche */
+        flex-wrap: nowrap; /* Empêcher le retour à la ligne */
+        overflow-x: auto; /* Activer le défilement horizontal */
+        padding: 10px 20px;
+        gap: 10px;
+        -webkit-overflow-scrolling: touch; /* Défilement fluide sur iPhone */
+    }
+    .pill {
+        flex: 0 0 auto; /* Empêcher les boutons de rétrécir */
+        padding: 10px 20px;
+        font-size: 0.8rem;
+    }
+    .pill.active {
+        transform: scale(1.05); /* Animation plus douce sur mobile */
+    }
+
+    /* Ajuster la grille de produits */
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* 2 colonnes sur petit écran */
+        gap: 15px;
+        padding: 0 10px 50px;
+    }
+
+    /* Ajuster les cartes pour le mode 2 colonnes */
+    .card-img-wrapper {
+        height: 140px; /* Image moins haute */
+    }
+    .card-content {
+        padding: 12px;
+    }
+    .card-title {
+        font-size: 0.95rem;
+        height: 2.4em; /* Limiter à 2 lignes */
+        overflow: hidden;
+    }
+    .price-val {
+        font-size: 1rem;
+    }
+    .btn-view {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Très petits écrans (iPhone SE, etc.) */
+@media (max-width: 360px) {
+    .grid {
+        grid-template-columns: 1fr; /* 1 seule colonne si l'écran est minuscule */
+    }
+}
         :root {
             --primary: #e67e22;
             --dark: #1a2b3c;
