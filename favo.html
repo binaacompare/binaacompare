@@ -12,8 +12,8 @@
             --primary: #e67e22;
             --primary-light: #ff9f43;
             --dark: #0f172a;
-            --accent: #38bdf8;
             --glass: rgba(255, 255, 255, 0.9);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         }
 
         body {
@@ -24,121 +24,143 @@
             color: var(--dark);
         }
 
-        /* --- BACKGROUND ANIMÉ --- */
-        #bg-canvas {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
+        /* --- ANIMATION D'ARRIÈRE-PLAN --- */
+        .bg-animate {
+            position: fixed; inset: 0; z-index: -1; background: var(--bg-gradient);
+            display: none; /* Activé seulement sur l'overlay */
         }
 
         .floating-icon {
-            position: absolute; color: rgba(230, 126, 34, 0.1);
+            position: absolute; color: rgba(230, 126, 34, 0.2);
             animation: move linear infinite; pointer-events: none;
         }
 
         @keyframes move {
-            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            from { transform: translateY(110vh) rotate(0deg); opacity: 0; }
             50% { opacity: 1; }
             to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* --- NAVBAR --- */
+        /* --- OVERLAY DE SÉCURITÉ MODERNE --- */
+        #auth-overlay {
+            position: fixed; inset: 0; background: var(--bg-gradient); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+
+        .access-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 40px;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        .access-card i.main-lock {
+            font-size: 4rem; color: var(--primary); margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(230, 126, 34, 0.4));
+        }
+
+        .instruction-badge {
+            background: rgba(230, 126, 34, 0.1);
+            color: var(--primary-light);
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .btn-access {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            background: var(--primary); color: white; text-decoration: none;
+            padding: 18px; border-radius: 20px; font-weight: 700; margin-top: 25px;
+            transition: 0.4s; border: none; cursor: pointer;
+        }
+
+        .btn-access:hover { transform: translateY(-5px); background: var(--primary-light); }
+
+        /* --- NAVBAR & FILTRES --- */
         .navbar {
             background: var(--glass); backdrop-filter: blur(15px);
             padding: 15px 5%; display: flex; justify-content: space-between;
-            align-items: center; sticky: top; top: 0; z-index: 100;
+            align-items: center; position: sticky; top: 0; z-index: 100;
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .btn-nav {
-            padding: 12px 24px; border-radius: 14px; text-decoration: none;
-            font-weight: 700; transition: 0.4s; display: flex; align-items: center; gap: 10px;
+        .search-container { position: relative; width: 40%; }
+        .search-container input {
+            width: 100%; padding: 12px 20px; border-radius: 15px;
+            border: 1px solid #ddd; outline: none;
         }
-
-        .btn-back { color: var(--dark); background: #fff; border: 1px solid #ddd; }
-        .btn-dash { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); }
-        .btn-dash:hover { transform: scale(1.05); background: var(--primary-light); }
 
         /* --- GRILLE D'OFFRES --- */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 25px; display: none; }
-
-        .market-header { margin-bottom: 40px; animation: fadeInUp 0.8s ease; }
-
-        .market-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
-            gap: 30px; 
-        }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: none; }
+        .market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
 
         .offer-card {
-            background: var(--glass); border-radius: 28px; padding: 30px;
-            border: 1px solid rgba(255,255,255,0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            background: white; border-radius: 32px; padding: 24px;
+            border: 1px solid #e2e8f0; transition: 0.4s;
             display: flex; flex-direction: column;
         }
-
-        .offer-card:hover {
-            transform: translateY(-12px); border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
-
-        .offer-card i.main-icon {
-            font-size: 3rem; color: var(--primary); opacity: 0.1;
-            position: absolute; right: -10px; bottom: -10px;
-        }
-
-        .badge-status {
-            background: #dcfce7; color: #15803d; padding: 6px 14px;
-            border-radius: 50px; font-size: 0.75rem; font-weight: 800; align-self: flex-start;
-        }
-
-        .offer-title { font-size: 1.5rem; font-weight: 800; margin: 15px 0 10px; color: var(--dark); }
-
-        .info-tag {
-            display: flex; align-items: center; gap: 8px; color: #64748b;
-            margin-bottom: 8px; font-size: 0.95rem; font-weight: 500;
-        }
-
-        .description {
-            background: rgba(241, 245, 249, 0.5); padding: 15px;
-            border-radius: 18px; margin: 15px 0; font-size: 0.9rem; line-height: 1.6;
-            color: #475569; border-left: 5px solid var(--primary);
-        }
+        .offer-card:hover { transform: translateY(-10px); border-color: var(--primary); }
 
         .btn-action {
             margin-top: auto; padding: 16px; background: var(--dark);
             color: white; border: none; border-radius: 18px; font-weight: 700;
-            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
-            justify-content: center; gap: 10px;
+            cursor: pointer; transition: 0.3s;
         }
-
-        .btn-action:hover { background: var(--primary); }
-
-        /* --- LOADER OVERLAY --- */
-        #auth-overlay {
-            position: fixed; inset: 0; background: #fff; z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="bg-canvas"></div>
+    <div id="bg-canvas" class="bg-animate"></div>
     
     <div id="auth-overlay">
-        <i class="fas fa-hammer fa-spin fa-3x" style="color:var(--primary)"></i>
-        <h2 id="status-text">Sécurisation de l'accès...</h2>
+        <div id="loader">
+            <i class="fas fa-hammer fa-spin fa-3x" style="color:var(--primary)"></i>
+            <h2 style="color:white; margin-top:20px;">Vérification...</h2>
+        </div>
+
+        <div id="denied-msg" class="access-card" style="display:none;">
+            <div class="instruction-badge">ACCÈS PROFESSIONNEL</div>
+            <i class="fas fa-user-shield main-lock"></i>
+            <h2>Zone Réservée aux Vendeurs</h2>
+            <p style="color:#94a3b8; line-height:1.6;">Cette plateforme regroupe des appels d'offres stratégiques. L'accès est strictement réservé aux comptes <b>Vendeur certifiés</b>.</p>
+            
+            <div style="text-align: left; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 20px; margin: 20px 0;">
+                <p style="margin:0; font-size: 0.9rem;"><i class="fas fa-info-circle" style="color:var(--primary)"></i> <b>Vendeur :</b> Connectez-vous pour répondre.</p>
+                <p style="margin:10px 0 0; font-size: 0.9rem;"><i class="fas fa-plus-circle" style="color:var(--primary)"></i> <b>Acheteur :</b> Publiez vos besoins via votre menu.</p>
+            </div>
+
+            <a href="cnx cendeur.html" class="btn-access">
+                <i class="fas fa-sign-in-alt"></i> Accéder au Marché Pro
+            </a>
+            
+            <a href="index.html" style="display:block; margin-top:20px; color:#64748b; text-decoration:none; font-size:0.9rem;">
+                <i class="fas fa-arrow-left"></i> Retour à l'accueil
+            </a>
+        </div>
     </div>
 
     <nav class="navbar">
-        <a href="index.html" class="btn-nav btn-back"><i class="fa-solid fa-chevron-left"></i> Retour</a>
-        <div id="nav-action"></div>
+        <a href="index.html" style="text-decoration:none; color:var(--dark); font-weight:800;">offres <span style="color:var(--primary)">Pro</span></a>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Filtrer par ville ou produit..." onkeyup="filterOffers()">
+        </div>
+
+        <a href="cnx cendeur.html" style="color:var(--dark); font-weight:700; text-decoration:none;">Connexion</a>
     </nav>
 
     <div class="container" id="main-content">
-        <div class="market-header">
-            <h1 style="font-size: 2.5rem; margin:0;">Opportunités de Chantiers 🚀</h1>
-            <p style="color:#64748b; font-size: 1.1rem;">Répondez aux appels d'offres en un clic.</p>
+        <div style="margin-bottom:30px;">
+            <h1 style="font-size: 2.2rem; margin:0;">Opportunités de Chantiers 🚀</h1>
+            <p style="color:#64748b;">Consultez les demandes réelles et envoyez vos devis en un clic.</p>
         </div>
         <div id="market-grid" class="market-grid"></div>
     </div>
@@ -159,13 +181,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-
         let vendorData = null;
 
-        // --- ANIMATION DE FOND ---
-        function createIcons() {
-            const icons = ['fa-trowel-bricks', 'fa-truck-pickup', 'fa-helmet-safety', 'fa-compass-drafting', 'fa-ruler-combined'];
+        // Animation d'arrière-plan
+        function createBgAnimation() {
+            const icons = ['fa-helmet-safety', 'fa-truck-pickup', 'fa-trowel-bricks', 'fa-tools'];
             const container = document.getElementById('bg-canvas');
+            container.style.display = 'block';
             for(let i=0; i<15; i++) {
                 const icon = document.createElement('i');
                 icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} floating-icon`;
@@ -177,86 +199,90 @@
             }
         }
 
-        // --- AUTH & ROLE CHECK ---
         onAuthStateChanged(auth, async (user) => {
             const overlay = document.getElementById('auth-overlay');
-            const statusText = document.getElementById('status-text');
+            const loader = document.getElementById('loader');
+            const denied = document.getElementById('denied-msg');
 
             if (user) {
                 const userSnap = await getDoc(doc(db, "users", user.uid));
                 if (userSnap.exists() && userSnap.data().role === "vendor") {
                     vendorData = userSnap.data();
-                    overlay.style.opacity = '0';
-                    setTimeout(() => overlay.style.display = 'none', 500);
+                    overlay.style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
-                    
-                    document.getElementById('nav-action').innerHTML = `
-                        <a href="dachv.html" class="btn-nav btn-dash">
-                            <i class="fa-solid fa-grip"></i> Mon Dashboard
-                        </a>`;
-                    
-                    createIcons();
                     loadOffers();
                 } else {
-                    statusText.innerHTML = "Accès Refusé <br> <small>Espace réservé aux vendeurs</small>";
+                    loader.style.display = 'none';
+                    denied.style.display = 'block';
+                    createBgAnimation();
                 }
             } else {
-                window.location.href = "cnx cendeur.html";
+                loader.style.display = 'none';
+                denied.style.display = 'block';
+                createBgAnimation();
             }
         });
 
-        // --- CHARGEMENT DES OFFRES ---
         async function loadOffers() {
             const grid = document.getElementById('market-grid');
             const q = query(collection(db, "demandes"), where("status", "==", "open"));
             const snap = await getDocs(q);
-            
             grid.innerHTML = "";
             snap.forEach(docSnap => {
                 const d = docSnap.data();
                 const card = document.createElement('div');
                 card.className = 'offer-card';
-                card.style.animation = `fadeInUp ${0.3 + (grid.children.length * 0.1)}s ease forwards`;
-                
                 card.innerHTML = `
-                    <i class="fas fa-city main-icon"></i>
-                    <span class="badge-status">ANNONCE VÉRIFIÉE</span>
-                    <h2 class="offer-title">${d.title}</h2>
-                    <div class="info-tag"><i class="fas fa-map-marker-alt"></i> ${d.city}</div>
-                    <div class="info-tag"><i class="fas fa-calendar-day"></i> Publié récemment</div>
-                    <div class="description">${d.description}</div>
+                    <span style="background:#dcfce7; color:#166534; padding:5px 12px; border-radius:50px; font-size:0.7rem; font-weight:800; align-self:start;">ACHETEUR VÉRIFIÉ</span>
+                    <h2 style="font-size:1.4rem; margin:15px 0 10px;">${d.title}</h2>
+                    <div style="color:#64748b; font-size:0.9rem; margin-bottom:15px;"><i class="fas fa-map-marker-alt"></i> ${d.city}</div>
+                    <div style="background:#f8fafc; padding:15px; border-radius:18px; font-size:0.9rem; margin-bottom:15px; border-left:4px solid var(--primary);">${d.description}</div>
                     <button class="btn-action" onclick="sendProfessionalEmail('${d.buyerEmail}', '${d.title}', '${d.city}', '${d.buyerName || 'Acheteur'}')">
-                        <i class="fas fa-paper-plane"></i> Envoyer mon offre
+                        <i class="fas fa-paper-plane"></i> Répondre au client
                     </button>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // --- GÉNÉRATEUR D'EMAIL PROFESSIONNEL ---
-        window.sendProfessionalEmail = (buyerEmail, jobTitle, city, buyerName) => {
-            const vName = vendorData.companyName || `${vendorData.firstname} ${vendorData.lastname}`;
-            const subject = encodeURIComponent(`[BinaaCompare] Offre Commerciale - ${jobTitle}`);
-            
-            const body = encodeURIComponent(
-                `Bonjour ${buyerName},\n\n` +
-                `Je suis ${vName}, partenaire certifié sur la plateforme BinaaCompare.\n\n` +
-                `J'ai pris connaissance de votre appel d'offres concernant : "${jobTitle}" à ${city}.\n` +
-                `Notre expertise dans le secteur du bâtiment nous permet de répondre efficacement à vos besoins avec des matériaux de haute qualité.\n\n` +
-                `POURQUOI NOUS CHOISIR :\n` +
-                `- Entreprise : ${vName}\n` +
-                `- Localisation : ${vendorData.city || 'Maroc'}\n` +
-                `- Contact Direct : ${vendorData.phone}\n\n` +
-                `Pourriez-vous nous transmettre plus de détails (quantités, délais) afin que je puisse vous établir un devis personnalisé ?\n\n` +
-                `Dans l'attente de votre retour.\n\n` +
-                `Cordialement,\n\n` +
-                `${vendorData.firstname} ${vendorData.lastname}\n` +
-                `${vName}\n` +
-                `Contact via BinaaCompare.ma`
-            );
-
-            window.location.href = `mailto:${buyerEmail}?subject=${subject}&body=${body}`;
+        window.filterOffers = () => {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('offer-card');
+            for (let card of cards) {
+                card.style.display = card.innerText.toLowerCase().includes(input) ? "flex" : "none";
+            }
         };
+
+        window.sendProfessionalEmail = (buyerEmail, jobTitle, city, buyerName) => {
+    // Récupération sécurisée du nom de l'entreprise ou du nom propre
+    const vName = vendorData.companyName || `${vendorData.firstname} ${vendorData.lastname}`;
+    const vPhone = vendorData.phone || "Non renseigné";
+    const vEmail = auth.currentUser.email; // Email du vendeur actuellement connecté
+
+    // Construction d'un objet percutant
+    const subject = encodeURIComponent(`PROPOSITION COMMERCIALE - ${jobTitle.toUpperCase()} (${city})`);
+
+    // Corps du message structuré professionnellement
+    const body = encodeURIComponent(
+        `Bonjour ${buyerName},\n\n` +
+        `Suite à votre demande publiée sur BinaaCompare concernant : "${jobTitle}" à ${city}, ` +
+        `notre entreprise ${vName} a le plaisir de vous soumettre son intérêt.\n\n` +
+        `--- DÉTAILS DE NOTRE INTERVENTION ---\n` +
+        `• Service : ${jobTitle}\n` +
+        `• Localisation : ${city}\n` +
+        `• Statut : Partenaire certifié BinaaCompare\n\n` +
+        `Nous sommes disponibles pour discuter des détails techniques et vous établir un devis personnalisé adapté à votre budget.\n\n` +
+        `--- NOS COORDONNÉES DIRECTES ---\n` +
+        `📞 Téléphone : ${vPhone}\n` +
+        `📧 Email : ${vEmail}\n\n` +
+        `Dans l'attente de votre retour pour fixer un rendez-vous ou un appel.\n\n` +
+        `Cordialement,\n` +
+        `L'équipe ${vName}`
+    );
+
+    // Déclenchement de l'envoi
+    window.location.href = `mailto:${buyerEmail}?subject=${subject}&body=${body}`;
+};
     </script>
 </body>
 </html>
