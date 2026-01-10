@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marché Élite | BinaaCompare Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #e67e22;
+            --primary-light: #ff9f43;
+            --dark: #0f172a;
+            --accent: #38bdf8;
+            --glass: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            overflow-x: hidden;
+            color: var(--dark);
+        }
+
+        /* --- BACKGROUND ANIMÉ --- */
+        #bg-canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: linear-gradient(135deg, #f0f2f5 0%, #e2e8f0 100%);
+        }
+
+        .floating-icon {
+            position: absolute; color: rgba(230, 126, 34, 0.1);
+            animation: move linear infinite; pointer-events: none;
+        }
+
+        @keyframes move {
+            from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 1; }
+            to { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: 15px 5%; display: flex; justify-content: space-between;
+            align-items: center; sticky: top; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .btn-nav {
+            padding: 12px 24px; border-radius: 14px; text-decoration: none;
+            font-weight: 700; transition: 0.4s; display: flex; align-items: center; gap: 10px;
+        }
+
+        .btn-back { color: var(--dark); background: #fff; border: 1px solid #ddd; }
+        .btn-dash { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); }
+        .btn-dash:hover { transform: scale(1.05); background: var(--primary-light); }
+
+        /* --- GRILLE D'OFFRES --- */
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 25px; display: none; }
+
+        .market-header { margin-bottom: 40px; animation: fadeInUp 0.8s ease; }
+
+        .market-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .offer-card {
+            background: var(--glass); border-radius: 28px; padding: 30px;
+            border: 1px solid rgba(255,255,255,0.8); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            display: flex; flex-direction: column;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-12px); border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .offer-card i.main-icon {
+            font-size: 3rem; color: var(--primary); opacity: 0.1;
+            position: absolute; right: -10px; bottom: -10px;
+        }
+
+        .badge-status {
+            background: #dcfce7; color: #15803d; padding: 6px 14px;
+            border-radius: 50px; font-size: 0.75rem; font-weight: 800; align-self: flex-start;
+        }
+
+        .offer-title { font-size: 1.5rem; font-weight: 800; margin: 15px 0 10px; color: var(--dark); }
+
+        .info-tag {
+            display: flex; align-items: center; gap: 8px; color: #64748b;
+            margin-bottom: 8px; font-size: 0.95rem; font-weight: 500;
+        }
+
+        .description {
+            background: rgba(241, 245, 249, 0.5); padding: 15px;
+            border-radius: 18px; margin: 15px 0; font-size: 0.9rem; line-height: 1.6;
+            color: #475569; border-left: 5px solid var(--primary);
+        }
+
+        .btn-action {
+            margin-top: auto; padding: 16px; background: var(--dark);
+            color: white; border: none; border-radius: 18px; font-weight: 700;
+            cursor: pointer; transition: 0.3s; display: flex; align-items: center;
+            justify-content: center; gap: 10px;
+        }
+
+        .btn-action:hover { background: var(--primary); }
+
+        /* --- LOADER OVERLAY --- */
+        #auth-overlay {
+            position: fixed; inset: 0; background: #fff; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div id="bg-canvas"></div>
+    
+    <div id="auth-overlay">
+        <i class="fas fa-hammer fa-spin fa-3x" style="color:var(--primary)"></i>
+        <h2 id="status-text">Sécurisation de l'accès...</h2>
+    </div>
+
+    <nav class="navbar">
+        <a href="index.html" class="btn-nav btn-back"><i class="fa-solid fa-chevron-left"></i> Retour</a>
+        <div id="nav-action"></div>
+    </nav>
+
+    <div class="container" id="main-content">
+        <div class="market-header">
+            <h1 style="font-size: 2.5rem; margin:0;">Opportunités de Chantiers 🚀</h1>
+            <p style="color:#64748b; font-size: 1.1rem;">Répondez aux appels d'offres en un clic.</p>
+        </div>
+        <div id="market-grid" class="market-grid"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let vendorData = null;
+
+        // --- ANIMATION DE FOND ---
+        function createIcons() {
+            const icons = ['fa-trowel-bricks', 'fa-truck-pickup', 'fa-helmet-safety', 'fa-compass-drafting', 'fa-ruler-combined'];
+            const container = document.getElementById('bg-canvas');
+            for(let i=0; i<15; i++) {
+                const icon = document.createElement('i');
+                icon.className = `fas ${icons[Math.floor(Math.random()*icons.length)]} floating-icon`;
+                icon.style.left = Math.random() * 100 + 'vw';
+                icon.style.fontSize = Math.random() * 30 + 20 + 'px';
+                icon.style.animationDuration = Math.random() * 10 + 10 + 's';
+                icon.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(icon);
+            }
+        }
+
+        // --- AUTH & ROLE CHECK ---
+        onAuthStateChanged(auth, async (user) => {
+            const overlay = document.getElementById('auth-overlay');
+            const statusText = document.getElementById('status-text');
+
+            if (user) {
+                const userSnap = await getDoc(doc(db, "users", user.uid));
+                if (userSnap.exists() && userSnap.data().role === "vendor") {
+                    vendorData = userSnap.data();
+                    overlay.style.opacity = '0';
+                    setTimeout(() => overlay.style.display = 'none', 500);
+                    document.getElementById('main-content').style.display = 'block';
+                    
+                    document.getElementById('nav-action').innerHTML = `
+                        <a href="dachv.html" class="btn-nav btn-dash">
+                            <i class="fa-solid fa-grip"></i> Mon Dashboard
+                        </a>`;
+                    
+                    createIcons();
+                    loadOffers();
+                } else {
+                    statusText.innerHTML = "Accès Refusé <br> <small>Espace réservé aux vendeurs</small>";
+                }
+            } else {
+                window.location.href = "cnx cendeur.html";
+            }
+        });
+
+        // --- CHARGEMENT DES OFFRES ---
+        async function loadOffers() {
+            const grid = document.getElementById('market-grid');
+            const q = query(collection(db, "demandes"), where("status", "==", "open"));
+            const snap = await getDocs(q);
+            
+            grid.innerHTML = "";
+            snap.forEach(docSnap => {
+                const d = docSnap.data();
+                const card = document.createElement('div');
+                card.className = 'offer-card';
+                card.style.animation = `fadeInUp ${0.3 + (grid.children.length * 0.1)}s ease forwards`;
+                
+                card.innerHTML = `
+                    <i class="fas fa-city main-icon"></i>
+                    <span class="badge-status">ANNONCE VÉRIFIÉE</span>
+                    <h2 class="offer-title">${d.title}</h2>
+                    <div class="info-tag"><i class="fas fa-map-marker-alt"></i> ${d.city}</div>
+                    <div class="info-tag"><i class="fas fa-calendar-day"></i> Publié récemment</div>
+                    <div class="description">${d.description}</div>
+                    <button class="btn-action" onclick="sendProfessionalEmail('${d.buyerEmail}', '${d.title}', '${d.city}', '${d.buyerName || 'Acheteur'}')">
+                        <i class="fas fa-paper-plane"></i> Envoyer mon offre
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- GÉNÉRATEUR D'EMAIL PROFESSIONNEL ---
+        window.sendProfessionalEmail = (buyerEmail, jobTitle, city, buyerName) => {
+            const vName = vendorData.companyName || `${vendorData.firstname} ${vendorData.lastname}`;
+            const subject = encodeURIComponent(`[BinaaCompare] Offre Commerciale - ${jobTitle}`);
+            
+            const body = encodeURIComponent(
+                `Bonjour ${buyerName},\n\n` +
+                `Je suis ${vName}, partenaire certifié sur la plateforme BinaaCompare.\n\n` +
+                `J'ai pris connaissance de votre appel d'offres concernant : "${jobTitle}" à ${city}.\n` +
+                `Notre expertise dans le secteur du bâtiment nous permet de répondre efficacement à vos besoins avec des matériaux de haute qualité.\n\n` +
+                `POURQUOI NOUS CHOISIR :\n` +
+                `- Entreprise : ${vName}\n` +
+                `- Localisation : ${vendorData.city || 'Maroc'}\n` +
+                `- Contact Direct : ${vendorData.phone}\n\n` +
+                `Pourriez-vous nous transmettre plus de détails (quantités, délais) afin que je puisse vous établir un devis personnalisé ?\n\n` +
+                `Dans l'attente de votre retour.\n\n` +
+                `Cordialement,\n\n` +
+                `${vendorData.firstname} ${vendorData.lastname}\n` +
+                `${vName}\n` +
+                `Contact via BinaaCompare.ma`
+            );
+
+            window.location.href = `mailto:${buyerEmail}?subject=${subject}&body=${body}`;
+        };
+    </script>
+</body>
+</html>

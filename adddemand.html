@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publier une Demande | BinaaCompare</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #e67e22;
+            --dark: #1a2b3c;
+            --bg: #f8fafc;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- DESIGN DU FORMULAIRE --- */
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .form-header { text-align: center; margin-bottom: 30px; }
+        .form-header i { color: var(--primary); font-size: 3rem; margin-bottom: 10px; }
+        .form-header h1 { font-size: 1.8rem; color: var(--dark); }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            outline: none;
+            transition: 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        /* Animation de chargement */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .form-container { margin: 20px; padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-header">
+            <i class="fa-solid fa-bullhorn"></i>
+            <h1>Publier une Demande</h1>
+            <p>Décrivez vos besoins pour recevoir des devis</p>
+        </div>
+
+        <form id="demandForm">
+            <div class="form-group">
+                <label>Que recherchez-vous ?</label>
+                <input type="text" id="title" placeholder="Ex: 50 sacs de Ciment CPJ 45" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ville de livraison</label>
+                <input type="text" id="city" placeholder="Ex: Casablanca, Marrakech..." required>
+            </div>
+
+            <div class="form-group">
+                <label>Catégorie</label>
+                <select id="category">
+                    <option value="gros-oeuvre">Gros Œuvre</option>
+                    <option value="acier">Acier & Fer</option>
+                    <option value="finition">Finition / Peinture</option>
+                    <option value="electricite">Électricité / Plomberie</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Description détaillée</label>
+                <textarea id="description" rows="4" placeholder="Précisez la quantité, les dimensions, etc." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span class="spinner" id="spinner"></span>
+                Publier ma demande
+            </button>
+        </form>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
+            authDomain: "binaacompare-fa5e1.firebaseapp.com",
+            projectId: "binaacompare-fa5e1",
+            storageBucket: "binaacompare-fa5e1.firebasestorage.app",
+            appId: "1:667570543544:web:652218ab5a773eb2154d4d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        // Vérifier si l'utilisateur est connecté
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+            } else {
+                alert("Vous devez être connecté pour publier une demande.");
+                window.location.href = "conx.html";
+            }
+        });
+
+        // Gérer l'envoi du formulaire
+        const demandForm = document.getElementById('demandForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const spinner = document.getElementById('spinner');
+
+        demandForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentUser) return;
+
+            // Afficher le chargement
+            submitBtn.disabled = true;
+            spinner.style.display = "block";
+
+            const demandData = {
+                title: document.getElementById('title').value,
+                city: document.getElementById('city').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                buyerId: currentUser.uid,
+                buyerEmail: currentUser.email,
+                status: "open", // La demande est ouverte aux offres
+                createdAt: serverTimestamp()
+            };
+
+            try {
+                // Ajouter à Firestore
+                await addDoc(collection(db, "demandes"), demandData);
+                
+                alert("Votre demande a été publiée avec succès !");
+                window.location.href = "dasha.html"; // Redirection vers le dashboard
+            } catch (error) {
+                console.error("Erreur lors de la publication :", error);
+                alert("Une erreur est survenue.");
+            } finally {
+                submitBtn.disabled = false;
+                spinner.style.display = "none";
+            }
+        });
+        // 1. Initialisation des événements au rendu
+function setupListeners() {
+    document.querySelectorAll('.btn-fav').forEach(btn => {
+        btn.onclick = () => {
+            // On récupère toutes les données du produit depuis les attributs data-
+            const productData = {
+                id: btn.dataset.id,
+                name: btn.dataset.name,
+                price: btn.dataset.price,
+                vendor: btn.dataset.vendor,
+                image: btn.dataset.image
+            };
+            handleFavorite(productData, btn);
+        };
+    });
+}
+
+// 2. Logique de gestion des favoris (Ajout/Suppression avec données complètes)
+async function handleFavorite(product, btn) {
+    if (!user) { 
+        alert("🔒 Connectez-vous pour sauvegarder ce produit !"); 
+        return; 
+    }
+    
+    const favId = `${user.uid}_${product.id}`;
+    const ref = doc(db, "favorites", favId);
+
+    try {
+        if (favorites.includes(product.id)) {
+            // SUPPRESSION
+            await deleteDoc(ref);
+            favorites = favorites.filter(fid => fid !== product.id);
+            
+            // Animation de retrait
+            btn.classList.remove('active');
+            btn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+            console.log("Retiré des favoris");
+        } else {
+            // AJOUT AVEC DATA COMPLETE
+            await setDoc(ref, { 
+                userId: user.uid, 
+                productId: product.id,
+                productName: product.name,
+                productPrice: product.price,
+                vendorName: product.vendor,
+                productImage: product.image,
+                addedAt: new Date().toISOString()
+            });
+            
+            favorites.push(product.id);
+            
+            // Animation d'ajout
+            btn.classList.add('active');
+            btn.innerHTML = '<i class="fa-solid fa-heart animate__animated animate__bounceIn" style="color: #e74c3c;"></i>';
+            console.log("Ajouté aux favoris avec succès");
+        }
+    } catch (error) {
+        console.error("Erreur Favoris:", error);
+        alert("Une erreur est survenue lors de l'enregistrement.");
+    }
+}
+
+// 3. Exemple de structure HTML pour vos boutons (dans votre fonction render)
+/*
+   Il est crucial d'ajouter ces dataset dans votre boucle de produits :
+   <button class="btn-fav ${favorites.includes(p.id) ? 'active' : ''}" 
+           data-id="${p.id}" 
+           data-name="${p.name}" 
+           data-price="${p.price}" 
+           data-vendor="${p.vendorName}" 
+           data-image="${p.imageUrl}">
+       <i class="${favorites.includes(p.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart'}"></i>
+   </button>
+*/
+    </script>
+</body>
+</html>
