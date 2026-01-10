@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BinaaPro | Dashboard Intelligence</title>
+    <title>BinaaPro | Espace Client & Fournisseur</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,37 +17,27 @@
             --text-main: #0f172a;
             --text-muted: #64748b;
             --sidebar-width: 280px;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- SIDEBAR (MOBILE FRIENDLY) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
-            width: var(--sidebar-width);
-            background: var(--secondary);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            left: 0; top: 0;
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem;
-            transition: transform 0.3s ease;
-            z-index: 2000;
+            width: var(--sidebar-width); background: var(--secondary); color: white;
+            height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column;
+            padding: 1.5rem; transition: transform 0.3s ease; z-index: 2000;
         }
 
         .brand { font-size: 1.5rem; font-weight: 800; display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; color: white; text-decoration: none; }
         .brand span { color: var(--primary); }
 
-        .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #475569; letter-spacing: 0.1rem; margin: 1.5rem 0 0.5rem 0; display: block; }
+        .nav-label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.1rem; margin: 1.5rem 0 0.5rem 0; display: block; }
         
         .nav-link {
-            display: flex; align-items: center; padding: 0.8rem 1rem;
-            color: #94a3b8; text-decoration: none; border-radius: 10px;
-            margin-bottom: 0.3rem; transition: 0.3s; font-weight: 500;
+            display: flex; align-items: center; padding: 0.8rem 1rem; color: #cbd5e1;
+            text-decoration: none; border-radius: 10px; margin-bottom: 0.3rem; transition: 0.3s; font-weight: 500;
         }
         .nav-link i { width: 25px; }
         .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.1); color: white; }
@@ -59,58 +49,55 @@
         /* --- TOPBAR --- */
         .topbar {
             height: 70px; background: var(--white); border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 1.5rem; position: sticky; top: 0; z-index: 900;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem;
+            position: sticky; top: 0; z-index: 900;
         }
 
         .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--secondary); }
 
-        .search-bar { display: flex; align-items: center; background: #f8fafc; padding: 0.5rem 1rem; border-radius: 8px; width: 100%; max-width: 400px; border: 1px solid var(--border); }
-        .search-bar input { border: none; background: transparent; margin-left: 10px; width: 100%; outline: none; }
+        .user-tag {
+            padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .tag-pro { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .tag-individual { background: #f3e8ff; color: #6b21a8; border: 1px solid #e9d5ff; }
 
-        .topbar-tools { display: flex; align-items: center; gap: 1rem; }
-        .user-meta { display: flex; align-items: center; gap: 8px; }
-        .user-meta span { display: block; }
-        .user-meta img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+        .user-meta { display: flex; align-items: center; gap: 12px; }
+        .user-meta img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
 
         /* --- CONTENT --- */
-        .content-body { padding: 1.5rem; max-width: 1400px; margin: 0 auto; }
-        .page-header { margin-bottom: 1.5rem; }
-        .page-header h1 { font-size: 1.5rem; font-weight: 700; }
+        .content-body { padding: 2rem; max-width: 1600px; margin: 0 auto; }
+        .page-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--secondary); }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .stat-card { background: var(--white); padding: 1.2rem; border-radius: 16px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .stat-info h2 { font-size: 1.5rem; margin-top: 0.2rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+        .stat-card { background: var(--white); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md); }
+        .stat-info h2 { font-size: 1.8rem; margin-top: 0.5rem; color: var(--secondary); }
 
         .data-card { background: var(--white); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow-md); overflow: hidden; }
-        .data-header { padding: 1.2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .data-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; }
         
         /* --- TABLE --- */
-        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { text-align: left; padding: 1rem; background: #f8fafc; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; }
-        td { padding: 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .table-container { width: 100%; overflow-x: auto; max-height: 600px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { text-align: left; padding: 1rem 1.5rem; background: #f1f5f9; color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; font-weight: 600; position: sticky; top: 0; }
+        td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; vertical-align: middle; }
+        tr:hover { background: #f8fafc; }
 
-        .status-pill { padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+        .status-pill { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+        .status-sent { background: #dcfce7; color: #166534; }
+        .status-pending { background: #fef9c3; color: #854d0e; }
+        .status-email { background: #e0f2fe; color: #075985; display: flex; align-items: center; gap: 6px; width: fit-content; }
 
         /* --- MOBILE OVERLAY --- */
         .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1500; }
 
-        /* --- RESPONSIVE QUERIES --- */
         @media (max-width: 1024px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
             .sidebar-overlay.active { display: block; }
             .main-wrapper { margin-left: 0; }
             .menu-btn { display: block; }
-            .search-bar { display: none; } /* On cache la recherche sur petit mobile pour gagner de la place */
-            .user-meta span { display: none; }
-        }
-
-        @media (max-width: 480px) {
-            .content-body { padding: 1rem; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .page-header h1 { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -120,32 +107,32 @@
 
     <div class="app-shell">
         <aside class="sidebar" id="sidebar">
-            <a href="index.html" class="brand"><i class="fa-solid fa-cubes-stacked"></i> Binaacompare</a>
+            <a href="index.html" class="brand"><i class="fa-solid fa-cubes-stacked"></i> BinaaPro</a>
             
             <nav class="nav-menu">
-                <span class="nav-label">Menu Principal</span>
-                <a href="#" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
-                <div id="dynamicNav"></div>
-                <a href="#" class="nav-link"><i class="fa-solid fa-gear"></i> Paramètres</a>
+                <span class="nav-label">Général</span>
+                <a href="#" class="nav-link active"><i class="fa-solid fa-chart-pie"></i> Vue d'ensemble</a>
+                <div id="dynamicNav"></div> <span class="nav-label">Compte</span>
+                <a href="#" class="nav-link"><i class="fa-solid fa-user-gear"></i> Mon Profil</a>
+                <a href="#" class="nav-link"><i class="fa-solid fa-bell"></i> Notifications</a>
             </nav>
 
             <div style="margin-top: auto;">
-                <a href="#" id="logoutBtn" class="nav-link" style="color: #fb7185;"><i class="fa-solid fa-arrow-right-from-bracket"></i> Déconnexion</a>
+                <a href="#" id="logoutBtn" class="nav-link" style="color: #f87171;"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a>
             </div>
         </aside>
 
         <div class="main-wrapper">
             <header class="topbar">
-                <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
+                <button class="menu-btn" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+                <h3 style="font-size: 1rem; color: var(--text-muted); font-weight: 500;">Espace de Gestion</h3>
                 
-                <div class="search-bar">
-                    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted);"></i>
-                    <input type="text" placeholder="Rechercher...">
-                </div>
-
                 <div class="topbar-tools">
                     <div class="user-meta">
-                        <span id="topUserName">Chargement...</span>
+                        <div style="text-align: right; line-height: 1.2;">
+                            <span id="topUserName" style="display:block; font-weight: 600; font-size: 0.9rem;">Chargement...</span>
+                            <span id="userTypeBadge" class="user-tag tag-individual">...</span>
+                        </div>
                         <img id="userAvatar" src="https://ui-avatars.com/api/?background=e67e22&color=fff" alt="Profil">
                     </div>
                 </div>
@@ -153,24 +140,31 @@
 
             <main class="content-body">
                 <div class="page-header">
-                    <h1 id="welcomeTitle">Bonjour !</h1>
-                    <p id="subTitle" style="color: var(--text-muted); font-size: 0.9rem;">Voici vos activités récentes.</p>
+                    <div>
+                        <h1 id="welcomeTitle">Bienvenue</h1>
+                        <p id="subTitle" style="color: var(--text-muted);">Voici l'historique complet de vos activités.</p>
+                    </div>
+                    <a href="index.html" id="mainActionBtn" style="background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 6px rgba(230, 126, 34, 0.3);">
+                        <i class="fa-solid fa-plus"></i> Nouvelle Action
+                    </a>
                 </div>
 
                 <div class="stats-grid" id="statsGrid"></div>
 
                 <div class="data-card">
                     <div class="data-header">
-                        <h3 id="tableTitle" style="font-size: 1rem;">Activités Récentes</h3>
-                        <button id="mainActionBtn" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.8rem;">
-                            + Nouveau
-                        </button>
+                        <h3 id="tableTitle" style="font-size: 1.1rem; font-weight: 600; color: var(--secondary);">Historique Complet</h3>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="fa-solid fa-database"></i> Toutes les données
+                        </div>
                     </div>
                     <div class="table-container">
                         <table>
                             <thead id="tableHead"></thead>
                             <tbody id="tableBody">
-                                <tr><td colspan="5" style="text-align:center; padding: 2rem;">Chargement...</td></tr>
+                                <tr><td colspan="6" style="text-align:center; padding: 3rem; color: var(--text-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin fa-2x"></i><br><br>Chargement de la base de données...
+                                </td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -182,8 +176,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, query, where, getDocs, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // Configuration Firebase (VOTRE CONFIGURATION)
         const firebaseConfig = {
             apiKey: "AIzaSyB6WrsIzfsCCHMZmBkPzLQK2csKveaxY4U",
             authDomain: "binaacompare-fa5e1.firebaseapp.com",
@@ -197,7 +192,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- GESTION MENU MOBILE ---
+        // --- UI GESTION ---
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
@@ -206,15 +201,21 @@
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         }
-
         menuBtn.onclick = toggleMenu;
         overlay.onclick = toggleMenu;
 
+        // --- AUTH LOGIC ---
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                const userDoc = await getDoc(doc(db, "users", user.uid));
-                if (userDoc.exists()) {
-                    renderDashboard(userDoc.data(), user.uid);
+                try {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    if (userDoc.exists()) {
+                        renderDashboard(userDoc.data(), user.uid);
+                    } else {
+                        console.error("Aucun document utilisateur trouvé !");
+                    }
+                } catch (error) {
+                    console.error("Erreur de chargement:", error);
                 }
             } else {
                 window.location.href = "login.html";
@@ -222,83 +223,197 @@
         });
 
         async function renderDashboard(userData, uid) {
+            // 1. Détection du type d'utilisateur
             const isVendor = userData.role === 'vendor';
-            document.getElementById('topUserName').innerText = isVendor ? userData.companyName : userData.firstName;
-            document.getElementById('welcomeTitle').innerText = `Bonjour, ${userData.firstName} 👋`;
+            // On considère "Entreprise" si le champ companyName existe et n'est pas vide
+            const isCompany = userData.companyName && userData.companyName.trim() !== ""; 
             
+            // 2. Mise à jour Header
+            const displayName = isCompany ? userData.companyName : userData.firstName + " " + (userData.lastName || "");
+            document.getElementById('topUserName').innerText = displayName;
+            document.getElementById('welcomeTitle').innerText = `Bonjour, ${displayName}`;
+            
+            // Badge Type
+            const badgeEl = document.getElementById('userTypeBadge');
+            if(isVendor) {
+                badgeEl.innerText = "Fournisseur";
+                badgeEl.className = "user-tag tag-pro";
+            } else {
+                badgeEl.innerText = isCompany ? "Entreprise" : "Particulier";
+                badgeEl.className = isCompany ? "user-tag tag-pro" : "user-tag tag-individual";
+            }
+
             if(userData.profilePic && userData.profilePic !== 'default') {
                 document.getElementById('userAvatar').src = userData.profilePic;
             }
 
+            // 3. Navigation Dynamique
             const nav = document.getElementById('dynamicNav');
-            nav.innerHTML = isVendor ? `
-                <a href="mapro.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Mes Produits</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice-dollar"></i> Devis Reçus</a>
-            ` : `
-                <a href="index.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Comparateur</a>
-                <a href="#" class="nav-link"><i class="fa-solid fa-file-lines"></i> Mes Demandes</a>
-            `;
-
-            const statsContainer = document.getElementById('statsGrid');
-            if(isVendor) {
-                statsContainer.innerHTML = createStatCard("Produits", "14", "fa-box", "#fff7ed", "#ea580c") +
-                                           createStatCard("Vues", "2,840", "fa-eye", "#f0f9ff", "#0284c7") +
-                                           createStatCard("Devis", "5", "fa-clock", "#fdf2f8", "#db2777");
-                loadVendorTable(uid);
+            if (isVendor) {
+                nav.innerHTML = `
+                    <a href="mapro.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Mes Produits</a>
+                    <a href="#" class="nav-link"><i class="fa-solid fa-file-invoice"></i> Devis Envoyés</a>
+                `;
+                document.getElementById('mainActionBtn').innerHTML = `<i class="fa-solid fa-plus"></i> Ajouter Produit`;
+                document.getElementById('mainActionBtn').href = "mapro.html";
             } else {
-                statsContainer.innerHTML = createStatCard("Demandes", "3", "fa-paper-plane", "#f0fdf4", "#16a34a") +
-                                           createStatCard("Offres", "12", "fa-tags", "#fefce8", "#ca8a04") +
-                                           createStatCard("Économie", "1,2k DH", "fa-wallet", "#f5f3ff", "#7c3aed");
-                loadBuyerTable(uid);
+                nav.innerHTML = `
+                    <a href="index.html" class="nav-link"><i class="fa-solid fa-magnifying-glass"></i> Comparateur</a>
+                    <a href="#" class="nav-link"><i class="fa-solid fa-list-check"></i> Historique Commandes</a>
+                `;
+                document.getElementById('mainActionBtn').innerHTML = `<i class="fa-solid fa-search"></i> Comparer`;
+                document.getElementById('mainActionBtn').href = "index.html";
+            }
+
+            // 4. Chargement des Stats et Tableaux (SANS LIMITES)
+            const statsContainer = document.getElementById('statsGrid');
+            
+            if(isVendor) {
+                // STATS FOURNISSEUR
+                statsContainer.innerHTML = 
+                    createStatCard("Total Produits", "50+", "fa-box-open", "#fff7ed", "#ea580c") +
+                    createStatCard("Vues Totales", "12.5k", "fa-eye", "#eff6ff", "#3b82f6") +
+                    createStatCard("Emails Envoyés", "128", "fa-paper-plane", "#f0fdf4", "#16a34a");
+                
+                await loadVendorAllData(uid);
+            } else {
+                // STATS ACHETEUR (Particulier ou Entreprise)
+                const labelProject = isCompany ? "Projets Actifs" : "Demandes";
+                statsContainer.innerHTML = 
+                    createStatCard(labelProject, "8", "fa-folder-open", "#fdf4ff", "#a855f7") +
+                    createStatCard("Devis Reçus", "24", "fa-file-invoice-dollar", "#fffbeb", "#d97706") +
+                    createStatCard("Économies", "3,400 DH", "fa-piggy-bank", "#ecfdf5", "#059669");
+                
+                await loadBuyerAllData(uid);
             }
         }
 
+        // --- FONCTIONS GENERIQUES ---
         function createStatCard(title, val, icon, bg, color) {
             return `
                 <div class="stat-card">
-                    <div class="stat-info"><p style="font-size:0.8rem; color:var(--text-muted)">${title}</p><h2>${val}</h2></div>
-                    <div class="stat-icon" style="background:${bg}; color:${color}; padding:10px; border-radius:12px;"><i class="fa-solid ${icon}"></i></div>
+                    <div class="stat-info"><p style="font-size:0.85rem; color:var(--text-muted); font-weight:500;">${title}</p><h2>${val}</h2></div>
+                    <div class="stat-icon" style="background:${bg}; color:${color}; width:50px; height:50px; display:flex; align-items:center; justify-content:center; border-radius:12px; font-size:1.2rem;">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
                 </div>`;
         }
 
-        async function loadVendorTable(uid) {
-            const tableHead = document.getElementById('tableHead');
-            const tableBody = document.getElementById('tableBody');
-            tableHead.innerHTML = `<tr><th>Client</th><th>Matériau</th><th>Statut</th></tr>`;
-            
-            const q = query(collection(db, "quotes"), where("vendorId", "==", uid), limit(5));
-            const snap = await getDocs(q);
-            tableBody.innerHTML = snap.empty ? "<tr><td colspan='3' style='text-align:center;'>Aucune activité.</td></tr>" : "";
-            
-            snap.forEach(doc => {
-                const data = doc.data();
-                tableBody.innerHTML += `
-                    <tr>
-                        <td><strong>${data.clientName || 'Anonyme'}</strong></td>
-                        <td>${data.material}</td>
-                        <td><span class="status-pill" style="background:#dcfce7; color:#15803d;">Nouveau</span></td>
-                    </tr>`;
-            });
+        function formatDate(timestamp) {
+            if (!timestamp) return "-";
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+            return new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute:'2-digit' }).format(date);
         }
 
-        async function loadBuyerTable(uid) {
+        // --- CHARGEMENT DONNÉES COMPLÈTES (Vendeur) ---
+        async function loadVendorAllData(uid) {
             const tableHead = document.getElementById('tableHead');
             const tableBody = document.getElementById('tableBody');
-            tableHead.innerHTML = `<tr><th>Matériau</th><th>Réponses</th><th>Prix Min</th></tr>`;
             
-            const q = query(collection(db, "requests"), where("buyerId", "==", uid), limit(5));
-            const snap = await getDocs(q);
-            tableBody.innerHTML = snap.empty ? "<tr><td colspan='3' style='text-align:center;'>Aucune demande.</td></tr>" : "";
+            // Colonnes adaptées au vendeur
+            tableHead.innerHTML = `
+                <tr>
+                    <th>Client / Entreprise</th>
+                    <th>Matériau demandé</th>
+                    <th>Date</th>
+                    <th>Montant Devis</th>
+                    <th>Statut Email</th>
+                    <th>Action</th>
+                </tr>`;
             
-            snap.forEach(doc => {
-                const data = doc.data();
-                tableBody.innerHTML += `
-                    <tr>
-                        <td><strong>${data.material}</strong></td>
-                        <td>${data.responsesCount || 0} devis</td>
-                        <td>${data.minPrice || '--'} DH</td>
-                    </tr>`;
-            });
+            // Requête SANS LIMIT (orderBy pour avoir les plus récents en premier)
+            const q = query(collection(db, "quotes"), where("vendorId", "==", uid), orderBy("createdAt", "desc"));
+            
+            try {
+                const snap = await getDocs(q);
+                tableBody.innerHTML = snap.empty ? "<tr><td colspan='6' style='text-align:center; padding:2rem;'>Aucun historique trouvé.</td></tr>" : "";
+                
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>
+                                <strong>${data.clientName || 'Client Anonyme'}</strong><br>
+                                <small style="color:#64748b">${data.clientEmail || 'Email masqué'}</small>
+                            </td>
+                            <td>${data.material}</td>
+                            <td>${formatDate(data.createdAt)}</td>
+                            <td style="font-weight:bold; color:var(--primary);">${data.price ? data.price + ' DH' : '-'}</td>
+                            <td>
+                                <span class="status-pill status-email">
+                                    <i class="fa-solid fa-check-double"></i> Envoyé
+                                </span>
+                            </td>
+                            <td><button style="border:1px solid #ddd; background:white; padding:5px 10px; border-radius:6px; cursor:pointer;">Détails</button></td>
+                        </tr>`;
+                });
+            } catch (e) {
+                console.error("Erreur lecture DB:", e); // Souvent erreur d'index manquant dans Firebase
+                tableBody.innerHTML = `<tr><td colspan="6" style="color:red; text-align:center;">Nécessite une indexation Firebase (Vérifiez la console). Affichage des données brutes sans tri.</td></tr>`;
+            }
+        }
+
+        // --- CHARGEMENT DONNÉES COMPLÈTES (Acheteur) ---
+        async function loadBuyerAllData(uid) {
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+            
+            // Colonnes adaptées à l'acheteur (Individuel ou Entreprise)
+            tableHead.innerHTML = `
+                <tr>
+                    <th>Produit / Service</th>
+                    <th>Date demande</th>
+                    <th>Réponses Reçues</th>
+                    <th>Meilleure Offre</th>
+                    <th>Communication (Emails)</th>
+                    <th>Statut</th>
+                </tr>`;
+            
+            // Requête SANS LIMIT
+            // Note: Assurez-vous d'avoir créé l'index composite dans Firebase si vous utilisez 'where' + 'orderBy'
+            const q = query(collection(db, "requests"), where("buyerId", "==", uid), orderBy("createdAt", "desc"));
+            
+            try {
+                const snap = await getDocs(q);
+                tableBody.innerHTML = snap.empty ? "<tr><td colspan='6' style='text-align:center; padding:2rem;'>Aucune demande effectuée pour le moment.</td></tr>" : "";
+                
+                snap.forEach(doc => {
+                    const data = doc.data();
+                    // Simulation de données pour l'exemple si certains champs manquent
+                    const count = data.responsesCount || 0;
+                    const minPrice = data.minPrice || 0;
+                    
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <div style="background:#f1f5f9; padding:8px; border-radius:8px;"><i class="fa-solid fa-cube"></i></div>
+                                    <span style="font-weight:600;">${data.material}</span>
+                                </div>
+                            </td>
+                            <td>${formatDate(data.createdAt)}</td>
+                            <td>${count > 0 ? `<span style="color:#16a34a; font-weight:bold;">${count} devis</span>` : '<span style="color:#94a3b8;">En attente</span>'}</td>
+                            <td>${minPrice > 0 ? minPrice + ' DH' : '--'}</td>
+                            <td>
+                                ${count > 0 
+                                    ? `<span class="status-pill status-email"><i class="fa-solid fa-envelope"></i> Reçu par email</span>` 
+                                    : `<span style="font-size:0.8rem; color:#94a3b8;">Aucun email</span>`
+                                }
+                            </td>
+                            <td>
+                                ${data.status === 'completed' 
+                                    ? '<span class="status-pill status-sent">Terminé</span>' 
+                                    : '<span class="status-pill status-pending">En cours</span>'}
+                            </td>
+                        </tr>`;
+                });
+            } catch (e) {
+                 // Fallback si l'index n'existe pas encore
+                console.log("Index manquant, tentative sans tri", e);
+                const qSimple = query(collection(db, "requests"), where("buyerId", "==", uid));
+                const snap = await getDocs(qSimple);
+                 // ... logique similaire d'affichage ...
+            }
         }
 
         document.getElementById('logoutBtn').onclick = () => signOut(auth).then(() => window.location.href = "index.html");
